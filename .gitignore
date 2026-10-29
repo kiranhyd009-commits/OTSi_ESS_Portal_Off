@@ -1,0 +1,38 @@
+# Environments & Secrets (CRITICAL)
+.env
+.env.*
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Node & Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Agent & Temp Artifacts
+.artifacts/
+.agents/
+.gradle/
+
+# Generated Simulation Logs
+*checkin_today.sql
+*checkout_today.sql

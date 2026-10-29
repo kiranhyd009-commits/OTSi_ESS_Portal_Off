@@ -1,0 +1,8 @@
+search-path = [
+    "ESS_Backend",
+    "ESS_Backend/venv/Lib/site-packages"
+]
+
+site-package-path = [
+    "ESS_Backend/venv/Lib/site-packages"
+]
