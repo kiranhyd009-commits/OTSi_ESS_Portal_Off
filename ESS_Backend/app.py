@@ -62,6 +62,25 @@ def serve_image(filename):
     return send_file(os.path.join(images_dir, filename))
 
 
+@app.route('/manifest.json', methods=['GET'])
+def manifest():
+    """Serve PWA manifest."""
+    manifest_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'manifest.json'))
+    response = make_response(send_file(manifest_path, mimetype='application/manifest+json'))
+    response.headers['Cache-Control'] = 'no-cache'
+    return response
+
+
+@app.route('/sw.js', methods=['GET'])
+def service_worker():
+    """Serve PWA service worker with root scope."""
+    sw_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'sw.js'))
+    response = make_response(send_file(sw_path, mimetype='application/javascript'))
+    response.headers['Service-Worker-Allowed'] = '/'
+    response.headers['Cache-Control'] = 'no-cache'
+    return response
+
+
 @app.route('/favicon.ico', methods=['GET'])
 def favicon():
     """Silence favicon.ico 404 warning logs."""

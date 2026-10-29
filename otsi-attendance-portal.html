@@ -11012,19 +11012,35 @@
 
       // ─── PWA & SERVICE WORKER MOBILE REGISTRATION ───
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
           .then(reg => console.log('[PWA] Service Worker registered:', reg.scope))
           .catch(err => console.log('[PWA] Service Worker registration failed:', err));
       }
     });
 
     let deferredInstallPrompt = null;
+    const isMobileDevice = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 820;
+    const isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredInstallPrompt = e;
-      const banner = document.getElementById('pwa-install-banner');
-      if (banner) banner.style.display = 'flex';
+      showPwaInstallBanner();
     });
+
+    // Auto-show banner on mobile when not already installed
+    window.addEventListener('load', () => {
+      if (isMobileDevice && !isStandaloneMode) {
+        setTimeout(showPwaInstallBanner, 1200);
+      }
+    });
+
+    function showPwaInstallBanner() {
+      const banner = document.getElementById('pwa-install-banner');
+      if (banner && !isStandaloneMode) {
+        banner.style.display = 'flex';
+      }
+    }
 
     function triggerPwaInstall() {
       if (deferredInstallPrompt) {
@@ -11036,6 +11052,13 @@
           }
           deferredInstallPrompt = null;
         });
+      } else {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          alert('To install OTSi ESS on iPhone:\n1. Tap the Share button (square with arrow)\n2. Scroll down and tap "Add to Home Screen"');
+        } else {
+          alert('To install OTSi ESS on Android:\n1. Tap the 3 dots in Chrome (top right)\n2. Select "Install app" or "Add to Home screen"');
+        }
       }
     }
   </script>
