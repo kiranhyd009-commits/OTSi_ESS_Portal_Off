@@ -122,7 +122,10 @@ class SupabaseDB:
         """Upsert multiple records"""
         try:
             tbl = SupabaseDB.get_table(table)
-            query = tbl.upsert(data, on_conflict=on_conflict) if on_conflict else tbl.upsert(data)
+            # postgrest-py type hints annotate json as dict instead of Union[dict, list],
+            # but PostgREST supports batch upserting via a list of records at runtime.
+            payload = cast(Any, data)
+            query = tbl.upsert(payload, on_conflict=on_conflict) if on_conflict else tbl.upsert(payload)
             response = query.execute()
             return response.data
         except Exception as e:
