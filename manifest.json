@@ -1,0 +1,49 @@
+{
+  "name": "OTSi ESS Employee Portal",
+  "short_name": "OTSi ESS",
+  "description": "Employee Self-Service, Attendance, Timesheets & Leave Management Portal — Object Technology Solutions Inc.",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A192F",
+  "theme_color": "#004B87",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Clock In / Punch",
+      "url": "/index.html#att",
+      "description": "Quick biometric punch in/out"
+    },
+    {
+      "name": "Apply Leave",
+      "url": "/index.html#leave",
+      "description": "Submit a leave application"
+    },
+    {
+      "name": "360° Executive Hub",
+      "url": "/index.html#360",
+      "description": "Open employee command center"
+    }
+  ]
+}
