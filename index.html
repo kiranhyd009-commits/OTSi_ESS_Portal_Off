@@ -6738,9 +6738,13 @@
     let lastCheckedDate = '';
     let userLeaveBalances = {};
 
-    const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || !window.location.origin.startsWith('http'))
-      ? 'http://localhost:5000/api'
-      : 'https://otsi-ess-portal-off.onrender.com/api';
+    const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? `${window.location.origin}/api`
+      : (!window.location.origin || !window.location.origin.startsWith('http'))
+        ? 'http://localhost:5000/api'
+        : (window.location.hostname.includes('workers.dev') || window.location.hostname.includes('pages.dev'))
+          ? 'https://otsi-ess-portal-off.onrender.com/api'
+          : `${window.location.origin}/api`;
 
     async function apiFetch(path, options = {}) {
       const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };

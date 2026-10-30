@@ -67,6 +67,15 @@ class SupabaseDB:
             supabase_key = os.getenv('SUPABASE_KEY')
             
             if not supabase_url or not supabase_key:
+                from dotenv import load_dotenv
+                _bdir = os.path.dirname(os.path.abspath(__file__))
+                for _ef in [os.path.join(_bdir, '.env'), os.path.abspath(os.path.join(_bdir, '..', '.env'))]:
+                    if os.path.exists(_ef):
+                        load_dotenv(_ef)
+                supabase_url = os.getenv('SUPABASE_URL')
+                supabase_key = os.getenv('SUPABASE_KEY')
+
+            if not supabase_url or not supabase_key:
                 raise ValueError("SUPABASE_URL and SUPABASE_KEY must be set in environment variables")
             
             schema = os.getenv('SUPABASE_SCHEMA', 'public').strip() or 'public'

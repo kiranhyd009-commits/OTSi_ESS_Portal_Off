@@ -24,7 +24,12 @@ from utils import (
     NotificationUtils, EmailService, log_audit
 )
 
-# Load environment variables
+# Load environment variables (from ESS_Backend/.env or workspace root)
+_backend_dir = os.path.dirname(os.path.abspath(__file__))
+_root_dir = os.path.abspath(os.path.join(_backend_dir, '..'))
+for _env_file in [os.path.join(_backend_dir, '.env'), os.path.join(_root_dir, '.env')]:
+    if os.path.exists(_env_file):
+        load_dotenv(_env_file)
 load_dotenv()
 
 # Configure logging
