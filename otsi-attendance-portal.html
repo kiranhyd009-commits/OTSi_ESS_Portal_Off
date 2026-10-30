@@ -5020,80 +5020,8 @@
             </div>
           </div>
 
-          <!-- ─── OTSi Career Journey & Work Anniversary Shelf ─── -->
-          <div class="journey-card" id="journey-shelf">
-            <div class="journey-top-row">
-              <div class="journey-title">
-                <i class="fas fa-medal" style="color:#FBBF24;"></i> OTSi Career Journey & Milestones
-              </div>
-              <div class="anniversary-badge" id="journey-anniversary-badge">
-                <i class="fas fa-gift" style="color:#FDE68A;"></i> Anniversary in <span
-                  id="anniversary-days-count">--</span> days
-              </div>
-            </div>
-            <div class="journey-tenure-text" id="journey-tenure-text">
-              <i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi:
-              <strong>--</strong>
-            </div>
-            <div class="year-spine-container" id="journey-year-spines">
-              <!-- Dynamically populated year milestone tabs -->
-            </div>
-          </div>
-
-          <!-- ─── Multi-Timescale Attendance Analytics Hub ─── -->
-          <div class="att-analytics-section">
-            <div class="att-analytics-header">
-              <div class="att-analytics-title">
-                <i class="fas fa-chart-pie" style="color:var(--otsi-blue);"></i> Attendance & Compliance Analytics
-              </div>
-              <div class="timescale-tab-bar">
-                <button class="timescale-btn active" id="ts-btn-daily"
-                  onclick="switchTimescaleView('daily')">Daily</button>
-                <button class="timescale-btn" id="ts-btn-weekly" onclick="switchTimescaleView('weekly')">Weekly</button>
-                <button class="timescale-btn" id="ts-btn-monthly"
-                  onclick="switchTimescaleView('monthly')">Monthly</button>
-                <button class="timescale-btn" id="ts-btn-yearly" onclick="switchTimescaleView('yearly')">Yearly
-                  Ledger</button>
-              </div>
-            </div>
-
-            <!-- Executive KPI Strip (6-Metric Row) -->
-            <div class="exec-kpi-grid">
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-compliance" style="color:#16A34A;">96.4%</div>
-                <div class="exec-kpi-lbl">Compliance</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-present-days">--</div>
-                <div class="exec-kpi-lbl">Office Days</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-wfh-days">--</div>
-                <div class="exec-kpi-lbl">Remote WFH</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-streak" style="color:#EA580C;">15 Days 🔥</div>
-                <div class="exec-kpi-lbl">Best Streak</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-ontime" style="color:var(--otsi-blue);">98%</div>
-                <div class="exec-kpi-lbl">On-Time Rate</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-career-days">--</div>
-                <div class="exec-kpi-lbl">Career Days</div>
-              </div>
-            </div>
-
-            <!-- Multi-Timescale Content Panes -->
-            <div id="timescale-content-pane" class="timescale-view-pane">
-              <!-- Dynamically populated via renderTimescaleContent() -->
-            </div>
-          </div>
-
-          <!-- Recent Log -->
-          <div class="sec-label" style="margin-top:20px">Recent Attendance <a onclick="openHistoryModal()">View all</a>
-          </div>
+          <!-- Recent Attendance Log (Elevated directly below Correction Form) -->
+          <div class="sec-label" style="margin-top:16px;">Recent Attendance <a onclick="openHistoryModal()">View all</a></div>
           <div class="log-list" id="recent-attendance-list">
             <div style="padding:20px;text-align:center;color:var(--slate-light)">Loading recent attendance...</div>
           </div>
@@ -5874,6 +5802,28 @@
             <div class="pinfo-row">
               <div class="pinfo-key">Role</div>
               <div class="pinfo-val" id="p-role-row">Employee</div>
+            </div>
+          </div>
+
+          <!-- ─── OTSi Career Journey & Work Anniversary Shelf (Profile View) ─── -->
+          <div style="padding: 0 14px 14px;">
+            <div class="journey-card" style="margin: 0; box-shadow: 0 4px 16px rgba(4, 70, 108, 0.16);">
+              <div class="journey-top-row">
+                <div class="journey-title">
+                  <i class="fas fa-medal" style="color:#FBBF24;"></i> OTSi Career Journey & Milestones
+                </div>
+                <div class="anniversary-badge">
+                  <i class="fas fa-gift" style="color:#FDE68A;"></i> Anniversary in <span
+                    class="anniversary-days-count">--</span> days
+                </div>
+              </div>
+              <div class="journey-tenure-text">
+                <i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi:
+                <strong>--</strong>
+              </div>
+              <div class="year-spine-container">
+                <!-- Dynamically populated year milestone tabs -->
+              </div>
             </div>
           </div>
           <!-- Organization Reporting Hierarchy Visual Card -->
@@ -6777,6 +6727,7 @@
     let currentProfile = null;
     let isCheckedIn = false;
     let isWFH = false;
+    let cachedAttendanceStats = null;
     let checkinTime = null;
     let locationAllowed = false;
     let locationChecked = false;
@@ -7241,6 +7192,7 @@
       try {
         const stats = await apiFetch('/attendance/stats');
         if (stats) {
+          cachedAttendanceStats = stats;
           document.getElementById('stat-val-present').textContent = stats.present || 0;
           document.getElementById('stat-val-wfh').textContent = stats.wfh || 0;
           document.getElementById('stat-val-onleave').textContent = stats.on_leave || 0;
@@ -8538,6 +8490,7 @@
       } else if (name === 'ts') {
         loadTimesheet();
       } else if (name === 'profile') {
+        calculateCareerJourney();
         const isManager = currentRole === 'hr' || currentRole === 'admin' || (currentProfile && currentProfile.is_manager);
         if (isManager) {
           loadHrDashboard();
@@ -9454,22 +9407,26 @@
 
     function calculateCareerJourney() {
       const joiningDateStr = currentProfile ? currentProfile.date_of_joining : null;
-      const tenureEl = document.getElementById('journey-tenure-text');
-      const annivCountEl = document.getElementById('anniversary-days-count');
-      const annivBadge = document.getElementById('journey-anniversary-badge');
-      const careerDaysEl = document.getElementById('kpi-career-days');
-      const spinesContainer = document.getElementById('journey-year-spines');
+      const tenureEls = document.querySelectorAll('.journey-tenure-text');
+      const annivCountEls = document.querySelectorAll('.anniversary-days-count, #anniversary-days-count');
+      const annivBadges = document.querySelectorAll('.anniversary-badge, #journey-anniversary-badge');
+      const careerDaysEls = document.querySelectorAll('.kpi-career-days, #kpi-career-days');
+      const spinesContainers = document.querySelectorAll('.year-spine-container, #journey-year-spines');
 
       if (!joiningDateStr) {
-        if (tenureEl) tenureEl.innerHTML = `<i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi: <span style="opacity:0.85; font-style:italic;">Joining Date will be updated soon by HR</span>`;
-        if (annivBadge) annivBadge.style.display = 'none';
-        if (careerDaysEl) careerDaysEl.textContent = '—';
-        if (spinesContainer) spinesContainer.innerHTML = '<div style="font-size:11px; opacity:0.8; padding:4px 0;">Career milestones will be available once HR updates the joining record.</div>';
+        tenureEls.forEach(el => {
+          el.innerHTML = `<i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi: <span style="opacity:0.85; font-style:italic;">Joining Date will be updated soon by HR</span>`;
+        });
+        annivBadges.forEach(b => b.style.display = 'none');
+        careerDaysEls.forEach(el => el.textContent = '-');
+        spinesContainers.forEach(c => {
+          c.innerHTML = '<div style="font-size:11px; opacity:0.8; padding:4px 0;">Career milestones will be available once HR updates the joining record.</div>';
+        });
         renderTimescaleContent();
         return;
       }
 
-      if (annivBadge) annivBadge.style.display = 'flex';
+      annivBadges.forEach(b => b.style.display = 'flex');
       const joinDate = new Date(joiningDateStr);
       const today = new Date();
 
@@ -9493,7 +9450,9 @@
       }
 
       const tenureStr = `${years} Years, ${months} Months, ${days} Days (${totalDays.toLocaleString()} Days Total)`;
-      if (tenureEl) tenureEl.innerHTML = `<i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi: <strong>${tenureStr}</strong>`;
+      tenureEls.forEach(el => {
+        el.innerHTML = `<i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi: <strong>${tenureStr}</strong>`;
+      });
 
       // Next Anniversary Countdown
       let nextAnniversary = new Date(today.getFullYear(), joinDate.getMonth(), joinDate.getDate());
@@ -9501,16 +9460,16 @@
         nextAnniversary = new Date(today.getFullYear() + 1, joinDate.getMonth(), joinDate.getDate());
       }
       const daysUntilAnniv = Math.ceil((nextAnniversary - today) / (1000 * 60 * 60 * 24));
-      if (annivCountEl) annivCountEl.textContent = daysUntilAnniv;
+      annivCountEls.forEach(el => el.textContent = daysUntilAnniv);
 
       // KPI tiles
-      if (careerDaysEl) careerDaysEl.textContent = `${totalDays}d`;
+      careerDaysEls.forEach(el => el.textContent = `${totalDays}d`);
 
-      // Build Year Spines Tabs dynamically from DB start year
-      if (spinesContainer) {
-        spinesContainer.innerHTML = '';
-        const startYear = joinDate.getFullYear();
-        const currentYear = today.getFullYear();
+      // Build Year Spines Tabs dynamically from DB start year for all containers
+      const startYear = joinDate.getFullYear();
+      const currentYear = today.getFullYear();
+      spinesContainers.forEach(container => {
+        container.innerHTML = '';
         for (let y = startYear; y <= currentYear; y++) {
           const spine = document.createElement('div');
           const yearNum = (y - startYear) + 1;
@@ -9521,10 +9480,22 @@
           `;
           spine.onclick = () => {
             selectedJourneyYear = y;
-            document.querySelectorAll('.year-spine').forEach(s => s.classList.remove('active'));
-            spine.classList.add('active');
+            document.querySelectorAll('.year-spine').forEach(s => {
+              const valEl = s.querySelector('.year-spine-val');
+              if (valEl && parseInt(valEl.textContent) === y) {
+                s.classList.add('active');
+              } else {
+                s.classList.remove('active');
+              }
+            });
             renderTimescaleContent();
           };
+          container.appendChild(spine);
+        }
+      });
+
+      renderTimescaleContent();
+    };
           spinesContainer.appendChild(spine);
         }
       }
@@ -9745,15 +9716,21 @@
               </div>
             </div>
 
-            <!-- Experience & Milestones Card -->
-            <div class="omni-card">
-              <div class="omni-card-title"><i class="fas fa-history" style="color:#F59E0B;"></i> Career Experience & Tenure</div>
-              <div style="font-size:12px; line-height:1.7; color:var(--otsi-navy);">
-                <div><strong>Total Experience:</strong> ~7.5 Years in IT</div>
-                <div><strong>OTSi Tenure:</strong> 5 Years, 0 Months (1,839 Days)</div>
-                <div><strong>Date of Joining:</strong> ${doj}</div>
-                <div><strong>Career Level:</strong> Band L3 (Senior Engineer)</div>
-                <div style="margin-top:6px; color:#16A34A; font-weight:700;">🎉 Next Work Anniversary in 353 Days</div>
+            <!-- OTSi Career Journey & Milestones Live Card -->
+            <div class="omni-card" style="background: linear-gradient(135deg, rgba(4, 70, 108, 0.98) 0%, rgba(16, 159, 218, 0.95) 100%); color:#fff; border:none; box-shadow:0 4px 16px rgba(4,70,108,0.2);">
+              <div class="journey-top-row" style="margin-bottom:8px;">
+                <div class="journey-title" style="color:#fff; font-size:13.5px;">
+                  <i class="fas fa-medal" style="color:#FBBF24;"></i> OTSi Career Journey & Milestones
+                </div>
+                <div class="anniversary-badge" id="omni-journey-anniversary-badge">
+                  <i class="fas fa-gift" style="color:#FDE68A;"></i> in <span class="anniversary-days-count">--</span>d
+                </div>
+              </div>
+              <div class="journey-tenure-text" style="color:rgba(255,255,255,0.95); font-size:12px; margin-bottom:8px;">
+                <i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi: <strong>--</strong>
+              </div>
+              <div class="year-spine-container" style="padding-top:4px;">
+                <!-- Dynamically populated year milestone tabs -->
               </div>
             </div>
           </div>
@@ -9763,16 +9740,16 @@
             <div class="omni-card-title"><i class="fas fa-chart-bar" style="color:var(--otsi-blue);"></i> Executive Health & Compliance</div>
             <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; text-align:center;">
               <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
-                <div style="font-size:15px; font-weight:800; color:#16A34A;">96.4%</div>
+                <div style="font-size:15px; font-weight:800; color:#16A34A;" id="omni-kpi-compliance">96.4%</div>
                 <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Attendance Rate</div>
               </div>
               <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
-                <div style="font-size:15px; font-weight:800; color:#EA580C;">15 Days 🔥</div>
+                <div style="font-size:15px; font-weight:800; color:#EA580C;" id="omni-kpi-streak">15 Days 🔥</div>
                 <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Active Streak</div>
               </div>
               <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
-                <div style="font-size:15px; font-weight:800; color:var(--otsi-navy);">17 / 27</div>
-                <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Leaves Left</div>
+                <div style="font-size:15px; font-weight:800; color:var(--otsi-navy);" id="omni-kpi-leaves">${(cachedAttendanceStats && cachedAttendanceStats.on_leave !== undefined) ? cachedAttendanceStats.on_leave : '--'}</div>
+                <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Leaves Logged</div>
               </div>
               <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
                 <div style="font-size:15px; font-weight:800; color:var(--otsi-blue);">100%</div>
@@ -9781,6 +9758,7 @@
             </div>
           </div>
         `;
+        calculateCareerJourney();
       } else if (currentOmniTab === 'projects') {
         body.innerHTML = `
           <div class="omni-card">
@@ -9835,41 +9813,60 @@
           </div>
         `;
       } else if (currentOmniTab === 'analytics') {
+        const pres = (cachedAttendanceStats && cachedAttendanceStats.present !== undefined) ? cachedAttendanceStats.present : '--';
+        const wfh = (cachedAttendanceStats && cachedAttendanceStats.wfh !== undefined) ? cachedAttendanceStats.wfh : '--';
         body.innerHTML = `
-          <div class="omni-card">
-            <div class="omni-card-title"><i class="fas fa-calendar-check" style="color:var(--otsi-blue);"></i> 2026 Attendance & Compliance Overview</div>
-            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:12px; text-align:center;">
-              <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:8px;">
-                <div style="font-size:16px; font-weight:800; color:#16A34A;">142</div>
-                <div style="font-size:10px; font-weight:700; color:#15803D;">OFFICE DAYS</div>
+          <div class="att-analytics-section" style="margin:0; box-shadow:none; border:none; padding:4px 0;">
+            <div class="att-analytics-header" style="margin-bottom:10px;">
+              <div class="att-analytics-title" style="font-size:13.5px;">
+                <i class="fas fa-chart-pie" style="color:var(--otsi-blue);"></i> Attendance & Compliance Analytics
               </div>
-              <div style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:8px; padding:8px;">
-                <div style="font-size:16px; font-weight:800; color:#1D4ED8;">24</div>
-                <div style="font-size:10px; font-weight:700; color:#1E40AF;">REMOTE WFH</div>
-              </div>
-              <div style="background:#FEF2F2; border:1px solid #FECACA; border-radius:8px; padding:8px;">
-                <div style="font-size:16px; font-weight:800; color:#DC2626;">10</div>
-                <div style="font-size:10px; font-weight:700; color:#991B1B;">LEAVE DAYS</div>
+              <div class="timescale-tab-bar">
+                <button class="timescale-btn ${currentTimescale==='daily'?'active':''}" id="ts-btn-daily"
+                  onclick="switchTimescaleView('daily')">Daily</button>
+                <button class="timescale-btn ${currentTimescale==='weekly'?'active':''}" id="ts-btn-weekly" onclick="switchTimescaleView('weekly')">Weekly</button>
+                <button class="timescale-btn ${currentTimescale==='monthly'?'active':''}" id="ts-btn-monthly"
+                  onclick="switchTimescaleView('monthly')">Monthly</button>
+                <button class="timescale-btn ${currentTimescale==='yearly'?'active':''}" id="ts-btn-yearly" onclick="switchTimescaleView('yearly')">Yearly Ledger</button>
               </div>
             </div>
-            <div style="font-size:11.5px; font-weight:700; color:var(--otsi-navy); margin-bottom:6px;">Recent Monthly Performance:</div>
-            <div class="month-bar-row">
-              <div class="month-bar-name">September</div>
-              <div class="month-bar-track"><div class="month-bar-fill" style="width:100%;"></div></div>
-              <div class="month-bar-pct" style="color:#16A34A;">100%</div>
+
+            <!-- Executive KPI Strip (6-Metric Row) -->
+            <div class="exec-kpi-grid" style="margin-bottom:12px;">
+              <div class="exec-kpi-tile">
+                <div class="exec-kpi-num" id="kpi-compliance" style="color:#16A34A;">96.4%</div>
+                <div class="exec-kpi-lbl">Compliance</div>
+              </div>
+              <div class="exec-kpi-tile">
+                <div class="exec-kpi-num" id="kpi-present-days">${pres}</div>
+                <div class="exec-kpi-lbl">Office Days</div>
+              </div>
+              <div class="exec-kpi-tile">
+                <div class="exec-kpi-num" id="kpi-wfh-days">${wfh}</div>
+                <div class="exec-kpi-lbl">Remote WFH</div>
+              </div>
+              <div class="exec-kpi-tile">
+                <div class="exec-kpi-num" id="kpi-streak" style="color:#EA580C;">15 Days 🔥</div>
+                <div class="exec-kpi-lbl">Best Streak</div>
+              </div>
+              <div class="exec-kpi-tile">
+                <div class="exec-kpi-num" id="kpi-ontime" style="color:var(--otsi-blue);">98%</div>
+                <div class="exec-kpi-lbl">On-Time Rate</div>
+              </div>
+              <div class="exec-kpi-tile">
+                <div class="exec-kpi-num" id="kpi-career-days">--</div>
+                <div class="exec-kpi-lbl">Career Days</div>
+              </div>
             </div>
-            <div class="month-bar-row">
-              <div class="month-bar-name">August</div>
-              <div class="month-bar-track"><div class="month-bar-fill" style="width:96%;"></div></div>
-              <div class="month-bar-pct" style="color:#16A34A;">96%</div>
-            </div>
-            <div class="month-bar-row">
-              <div class="month-bar-name">July</div>
-              <div class="month-bar-track"><div class="month-bar-fill" style="width:98%;"></div></div>
-              <div class="month-bar-pct" style="color:#16A34A;">98%</div>
+
+            <!-- Multi-Timescale Content Panes -->
+            <div id="timescale-content-pane" class="timescale-view-pane">
+              <!-- Dynamically populated via renderTimescaleContent() -->
             </div>
           </div>
         `;
+        calculateCareerJourney();
+        renderTimescaleContent();
       } else if (currentOmniTab === 'achievements') {
         body.innerHTML = `
           <div class="omni-card">
