@@ -1,5 +1,5 @@
 // OTSi ESS Portal - Mobile Service Worker
-const CACHE_NAME = 'otsi-ess-v2';
+const CACHE_NAME = 'otsi-ess-v3';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -7,7 +7,8 @@ const STATIC_ASSETS = [
   '/images/otsi-mp-3.svg',
   '/images/icon-192.png',
   '/images/icon-512.png',
-  '/images/icon-maskable.png'
+  '/images/icon-maskable.png',
+  '/images/apple-touch-icon.png'
 ];
 
 // Install: Cache essential app shell with fault tolerance
