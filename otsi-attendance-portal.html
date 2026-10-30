@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="OTSi ESS">
@@ -3996,6 +3997,7 @@
         grid-template-columns: 1fr;
       }
     }
+
     /* ─── REPORTING & ORG HIERARCHY ALIGNMENT & TREE RENDERER ─── */
     .org-card-header {
       display: flex;
@@ -4094,7 +4096,7 @@
       font-weight: 800;
       font-size: 12px;
       flex-shrink: 0;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
     }
 
     /* Hierarchical CSS Tree Renderer (Multi-level Tree Chart) */
@@ -4136,7 +4138,8 @@
     }
 
     /* Horizontal branch rails and vertical drop lines */
-    .org-tree li::before, .org-tree li::after {
+    .org-tree li::before,
+    .org-tree li::after {
       content: '';
       position: absolute;
       top: 0;
@@ -4152,7 +4155,8 @@
       border-left: 2px solid #CBD5E1;
     }
 
-    .org-tree li:only-child::after, .org-tree li:only-child::before {
+    .org-tree li:only-child::after,
+    .org-tree li:only-child::before {
       display: none;
     }
 
@@ -4160,7 +4164,8 @@
       padding-top: 0;
     }
 
-    .org-tree li:first-child::before, .org-tree li:last-child::after {
+    .org-tree li:first-child::before,
+    .org-tree li:last-child::after {
       border: 0 none;
     }
 
@@ -4269,7 +4274,7 @@
       border-color: var(--otsi-blue);
     }
 
-    .org-tree-collapsed > ul {
+    .org-tree-collapsed>ul {
       display: none !important;
     }
 
@@ -4440,7 +4445,7 @@
         border-radius: 10px;
       }
 
-      .leave-table th, 
+      .leave-table th,
       .leave-table td {
         padding: 9px 8px;
         font-size: 11.5px;
@@ -4474,7 +4479,8 @@
       /* Modals on Mobile: Full-screen Sheet Comfort */
       .modal-overlay {
         padding: 8px !important;
-        align-items: flex-end; /* Bottom sheet style on mobile */
+        align-items: flex-end;
+        /* Bottom sheet style on mobile */
       }
 
       .modal-sheet {
@@ -4499,7 +4505,8 @@
 
       .modal-footer button {
         width: 100%;
-        height: 44px; /* Touch target guideline */
+        height: 44px;
+        /* Touch target guideline */
       }
 
       /* Bottom Nav Bar Touch Target Enhancement */
@@ -4637,18 +4644,21 @@
               </div>
             </div>
           </div>
-                    <div style="display:flex; gap:8px; margin-bottom:12px;">
-            <button type="button" onclick="quickFillLogin('EMP1075', 'M@llem5831!')" style="flex:1; background:rgba(16,159,218,0.12); border:1px solid rgba(16,159,218,0.4); border-radius:8px; padding:7px 8px; font-size:11.5px; font-weight:700; color:var(--otsi-blue); cursor:pointer; transition:all 0.2s;">
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button type="button" onclick="quickFillLogin('EMP1075', 'M@llem5831!')"
+              style="flex:1; background:rgba(16,159,218,0.12); border:1px solid rgba(16,159,218,0.4); border-radius:8px; padding:7px 8px; font-size:11.5px; font-weight:700; color:var(--otsi-blue); cursor:pointer; transition:all 0.2s;">
               👤 Fill: Ravi (EMP1075)
             </button>
-            <button type="button" onclick="quickFillLogin('EMP1001', 'M@llem5831!')" style="flex:1; background:rgba(22,163,74,0.12); border:1px solid rgba(22,163,74,0.4); border-radius:8px; padding:7px 8px; font-size:11.5px; font-weight:700; color:#16a34a; cursor:pointer; transition:all 0.2s;">
+            <button type="button" onclick="quickFillLogin('EMP1001', 'M@llem5831!')"
+              style="flex:1; background:rgba(22,163,74,0.12); border:1px solid rgba(22,163,74,0.4); border-radius:8px; padding:7px 8px; font-size:11.5px; font-weight:700; color:#16a34a; cursor:pointer; transition:all 0.2s;">
               ⚙️ Fill: Admin (EMP1001)
             </button>
           </div>
           <button class="btn-main" onclick="doLogin()">Sign In →</button>
           <div class="auth-footer">Forgot password? <a onclick="openForgotModal()">Reset here</a></div>
           <div style="margin-top:14px; text-align:center;">
-            <button type="button" id="login-pwa-btn" onclick="triggerPwaInstall()" style="display:none; width:100%; align-items:center; justify-content:center; gap:8px; background:rgba(16,159,218,0.12); border:1px solid rgba(16,159,218,0.35); color:#109fda; border-radius:8px; padding:9px 14px; font-size:12.5px; font-weight:700; cursor:pointer; transition:all 0.2s;">
+            <button type="button" id="login-pwa-btn" onclick="triggerPwaInstall()"
+              style="display:none; width:100%; align-items:center; justify-content:center; gap:8px; background:rgba(16,159,218,0.12); border:1px solid rgba(16,159,218,0.35); color:#109fda; border-radius:8px; padding:9px 14px; font-size:12.5px; font-weight:700; cursor:pointer; transition:all 0.2s;">
               <i class="fas fa-mobile-alt"></i> Install OTSi Mobile App
             </button>
           </div>
@@ -5029,7 +5039,8 @@
           </div>
 
           <!-- Recent Attendance Log (Elevated directly below Correction Form) -->
-          <div class="sec-label" style="margin-top:16px;">Recent Attendance <a onclick="openHistoryModal()">View all</a></div>
+          <div class="sec-label" style="margin-top:16px;">Recent Attendance <a onclick="openHistoryModal()">View all</a>
+          </div>
           <div class="log-list" id="recent-attendance-list">
             <div style="padding:20px;text-align:center;color:var(--slate-light)">Loading recent attendance...</div>
           </div>
@@ -5851,22 +5862,28 @@
               </div>
             </div>
 
-            <div style="background:#ffffff; border-radius:12px; padding:16px; border:1.5px solid var(--border); box-shadow:0 1px 4px rgba(0,0,0,0.02);">
-              
+            <div
+              style="background:#ffffff; border-radius:12px; padding:16px; border:1.5px solid var(--border); box-shadow:0 1px 4px rgba(0,0,0,0.02);">
+
               <!-- VIEW 1: Vertically Aligned Reporting Chain -->
               <div id="org-view-chain" class="org-chain-list">
                 <!-- Seamless Vertical Guide Rail -->
                 <div class="org-chain-rail"></div>
-                <div style="padding:16px; text-align:center; color:var(--slate); font-size:12px;" id="org-chain-placeholder">
-                  <i class="fas fa-spinner fa-spin" style="color:var(--otsi-blue); margin-right:6px;"></i> Loading reporting hierarchy...
+                <div style="padding:16px; text-align:center; color:var(--slate); font-size:12px;"
+                  id="org-chain-placeholder">
+                  <i class="fas fa-spinner fa-spin" style="color:var(--otsi-blue); margin-right:6px;"></i> Loading
+                  reporting hierarchy...
                 </div>
               </div>
 
               <!-- VIEW 2: Hierarchical CSS Tree Renderer (Horizontal rails & vertical drop lines matching Image 2) -->
               <div id="org-view-tree" class="org-tree-wrapper" style="display:none;">
-                <div style="font-size:11px; color:var(--slate); margin-bottom:12px; font-weight:600; text-align:left; display:flex; justify-content:space-between; align-items:center;">
-                  <span><i class="fas fa-sitemap" style="color:var(--otsi-blue);"></i> Interactive Organization Tree</span>
-                  <button class="btn-main" onclick="openOrgTreeModal()" style="margin:0; padding:4px 10px; font-size:10.5px; width:auto; border-radius:6px;">
+                <div
+                  style="font-size:11px; color:var(--slate); margin-bottom:12px; font-weight:600; text-align:left; display:flex; justify-content:space-between; align-items:center;">
+                  <span><i class="fas fa-sitemap" style="color:var(--otsi-blue);"></i> Interactive Organization
+                    Tree</span>
+                  <button class="btn-main" onclick="openOrgTreeModal()"
+                    style="margin:0; padding:4px 10px; font-size:10.5px; width:auto; border-radius:6px;">
                     <i class="fas fa-expand-alt"></i> Full View
                   </button>
                 </div>
@@ -6202,38 +6219,49 @@
 
   <!-- ════ FULL SCREEN INTERACTIVE ORG CHART MODAL (REFERENCE IMAGE 2) ════ -->
   <div class="modal-overlay" id="org-tree-modal">
-    <div class="modal-sheet" style="max-width: 95vw; width: 1100px; height: 88vh; max-height: 800px; display: flex; flex-direction: column;">
+    <div class="modal-sheet"
+      style="max-width: 95vw; width: 1100px; height: 88vh; max-height: 800px; display: flex; flex-direction: column;">
       <div class="modal-header" style="background: #ffffff; border-bottom: 1px solid #E2E8F0; padding: 14px 20px;">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div style="width: 32px; height: 32px; border-radius: 8px; background: #E0F2FE; color: var(--otsi-blue); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">
+          <div
+            style="width: 32px; height: 32px; border-radius: 8px; background: #E0F2FE; color: var(--otsi-blue); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;">
             <i class="fas fa-sitemap"></i>
           </div>
           <div>
-            <div style="font-size: 11px; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px;">COMPANY</div>
+            <div
+              style="font-size: 11px; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.5px;">
+              COMPANY</div>
             <div class="modal-header-title" style="font-size: 16px;">Org Chart</div>
           </div>
         </div>
         <button class="modal-close-btn" onclick="closeOrgTreeModal()" aria-label="Close">&#x2715;</button>
       </div>
-      
+
       <!-- Controls Strip matching Image 2 -->
-      <div style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+      <div
+        style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
         <div style="position: relative; width: 260px;">
-          <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--slate-light); font-size: 12px;"></i>
-          <input type="text" id="org-tree-search-input" onkeyup="filterOrgTree(this.value)" placeholder="Find a person..." style="width: 100%; padding: 7px 12px 7px 32px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 12px; outline: none; background: #ffffff;">
+          <i class="fas fa-search"
+            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--slate-light); font-size: 12px;"></i>
+          <input type="text" id="org-tree-search-input" onkeyup="filterOrgTree(this.value)"
+            placeholder="Find a person..."
+            style="width: 100%; padding: 7px 12px 7px 32px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 12px; outline: none; background: #ffffff;">
         </div>
         <div style="display: flex; gap: 8px;">
-          <button class="btn-main" onclick="expandAllOrgNodes()" style="margin: 0; padding: 6px 14px; font-size: 11.5px; background: #ffffff; color: var(--otsi-navy); border: 1px solid #CBD5E1; width: auto; font-weight: 600; border-radius: 6px;">
+          <button class="btn-main" onclick="expandAllOrgNodes()"
+            style="margin: 0; padding: 6px 14px; font-size: 11.5px; background: #ffffff; color: var(--otsi-navy); border: 1px solid #CBD5E1; width: auto; font-weight: 600; border-radius: 6px;">
             Expand all
           </button>
-          <button class="btn-main" onclick="collapseAllOrgNodes()" style="margin: 0; padding: 6px 14px; font-size: 11.5px; background: #ffffff; color: var(--otsi-navy); border: 1px solid #CBD5E1; width: auto; font-weight: 600; border-radius: 6px;">
+          <button class="btn-main" onclick="collapseAllOrgNodes()"
+            style="margin: 0; padding: 6px 14px; font-size: 11.5px; background: #ffffff; color: var(--otsi-navy); border: 1px solid #CBD5E1; width: auto; font-weight: 600; border-radius: 6px;">
             Collapse all
           </button>
         </div>
       </div>
 
       <!-- Modal Body Canvas -->
-      <div class="modal-body" style="flex: 1; overflow: auto; padding: 30px; background: #F1F5F9; display: flex; justify-content: center; align-items: flex-start;">
+      <div class="modal-body"
+        style="flex: 1; overflow: auto; padding: 30px; background: #F1F5F9; display: flex; justify-content: center; align-items: flex-start;">
         <div class="org-tree" id="modal-org-tree-root">
           <!-- Dynamically populated Org Chart -->
         </div>
@@ -9514,12 +9542,6 @@
       });
 
       renderTimescaleContent();
-    };
-          spinesContainer.appendChild(spine);
-        }
-      }
-
-      renderTimescaleContent();
     }
 
     function switchTimescaleView(view) {
@@ -9841,12 +9863,12 @@
                 <i class="fas fa-chart-pie" style="color:var(--otsi-blue);"></i> Attendance & Compliance Analytics
               </div>
               <div class="timescale-tab-bar">
-                <button class="timescale-btn ${currentTimescale==='daily'?'active':''}" id="ts-btn-daily"
+                <button class="timescale-btn ${currentTimescale === 'daily' ? 'active' : ''}" id="ts-btn-daily"
                   onclick="switchTimescaleView('daily')">Daily</button>
-                <button class="timescale-btn ${currentTimescale==='weekly'?'active':''}" id="ts-btn-weekly" onclick="switchTimescaleView('weekly')">Weekly</button>
-                <button class="timescale-btn ${currentTimescale==='monthly'?'active':''}" id="ts-btn-monthly"
+                <button class="timescale-btn ${currentTimescale === 'weekly' ? 'active' : ''}" id="ts-btn-weekly" onclick="switchTimescaleView('weekly')">Weekly</button>
+                <button class="timescale-btn ${currentTimescale === 'monthly' ? 'active' : ''}" id="ts-btn-monthly"
                   onclick="switchTimescaleView('monthly')">Monthly</button>
-                <button class="timescale-btn ${currentTimescale==='yearly'?'active':''}" id="ts-btn-yearly" onclick="switchTimescaleView('yearly')">Yearly Ledger</button>
+                <button class="timescale-btn ${currentTimescale === 'yearly' ? 'active' : ''}" id="ts-btn-yearly" onclick="switchTimescaleView('yearly')">Yearly Ledger</button>
               </div>
             </div>
 
@@ -10168,8 +10190,8 @@
           empList.innerHTML = '<div style="padding:15px;text-align:center;color:var(--slate-light)">No employee records.</div>';
         }
         await Promise.all([
-          loadOrgOverview().catch(() => {}),
-          loadTeamAttendance().catch(() => {})
+          loadOrgOverview().catch(() => { }),
+          loadTeamAttendance().catch(() => { })
         ]);
       } catch (err) {
         console.error('Failed to load HR Dashboard', err);
@@ -10837,7 +10859,7 @@
       chain.forEach((item, idx) => {
         const isMe = item.isMe || item.employee_id === loginEmpId;
         const activeClass = isMe ? ' active-user' : '';
-        
+
         let tagLabel = 'Manager';
         let tagStyle = 'background:#DCFCE7; color:#166534;';
         let avatarBg = 'background:#DCFCE7; color:#16A34A;';
@@ -11095,17 +11117,21 @@
   </script>
 
   <!-- ════ MOBILE APP INSTALL BANNER (PWA) ════ -->
-  <div id="pwa-install-banner" style="display:none; position:fixed; bottom:75px; left:16px; right:16px; background:linear-gradient(135deg, #04466c, #00223a); border:1px solid rgba(16,159,218,0.5); border-radius:14px; padding:12px 16px; z-index:99999999; box-shadow:0 10px 25px rgba(0,0,0,0.6); align-items:center; justify-content:space-between; backdrop-filter:blur(10px);">
+  <div id="pwa-install-banner"
+    style="display:none; position:fixed; bottom:75px; left:16px; right:16px; background:linear-gradient(135deg, #04466c, #00223a); border:1px solid rgba(16,159,218,0.5); border-radius:14px; padding:12px 16px; z-index:99999999; box-shadow:0 10px 25px rgba(0,0,0,0.6); align-items:center; justify-content:space-between; backdrop-filter:blur(10px);">
     <div style="display:flex; align-items:center; gap:12px;">
-      <img src="/images/otsi-app-icon-192.png?v=5" alt="OTSi App Icon" style="width:42px; height:42px; border-radius:10px; background:#ffffff; box-shadow:0 3px 10px rgba(0,0,0,0.3); padding:2px; object-fit:contain; flex-shrink:0;">
+      <img src="/images/otsi-app-icon-192.png?v=5" alt="OTSi App Icon"
+        style="width:42px; height:42px; border-radius:10px; background:#ffffff; box-shadow:0 3px 10px rgba(0,0,0,0.3); padding:2px; object-fit:contain; flex-shrink:0;">
       <div>
         <div style="font-weight:700; color:#fff; font-size:13.5px;">Install OTSi Mobile App</div>
         <div style="font-size:11px; color:#8dd6f7;">Add to Home Screen for fast mobile punch-in</div>
       </div>
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
-      <button onclick="triggerPwaInstall()" style="background:#109fda; color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;">Install</button>
-      <button onclick="document.getElementById('pwa-install-banner').style.display='none'" style="background:transparent; color:rgba(255,255,255,0.6); border:none; font-size:18px; cursor:pointer; padding:0 4px;">&times;</button>
+      <button onclick="triggerPwaInstall()"
+        style="background:#109fda; color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;">Install</button>
+      <button onclick="document.getElementById('pwa-install-banner').style.display='none'"
+        style="background:transparent; color:rgba(255,255,255,0.6); border:none; font-size:18px; cursor:pointer; padding:0 4px;">&times;</button>
     </div>
   </div>
 </body>
