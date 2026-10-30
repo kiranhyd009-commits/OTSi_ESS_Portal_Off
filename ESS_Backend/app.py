@@ -62,7 +62,9 @@ def frontend():
 def serve_image(filename):
     """Serve image assets."""
     images_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'images'))
-    return send_file(os.path.join(images_dir, filename))
+    response = make_response(send_file(os.path.join(images_dir, filename)))
+    response.headers['Cache-Control'] = 'no-cache, must-revalidate'
+    return response
 
 
 @app.route('/manifest.json', methods=['GET'])
