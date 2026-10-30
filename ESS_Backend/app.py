@@ -44,11 +44,14 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})  # type: ignore[arg-type]
 # ═════════════════════════════════════════════════════════════
 
 @app.route('/', methods=['GET'])
+@app.route('/index.html', methods=['GET'])
 def frontend():
     """Serve the attendance portal frontend."""
-    frontend_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', 'otsi-attendance-portal.html')
-    )
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    index_file = os.path.join(base_dir, 'index.html')
+    alt_file = os.path.join(base_dir, 'otsi-attendance-portal.html')
+    frontend_path = index_file if os.path.exists(index_file) else alt_file
+
     response = make_response(send_file(frontend_path))
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
     response.headers['Pragma'] = 'no-cache'

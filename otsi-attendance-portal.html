@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-title" content="OTSi ESS">
   <meta name="theme-color" content="#04466c">
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="images/icon-192.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="images/icon-192.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/images/icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/images/icon-192.png">
   <title>OTSi ESS Portal — Object Technology Solutions Inc.</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
@@ -4639,6 +4639,11 @@
           </div>
           <button class="btn-main" onclick="doLogin()">Sign In →</button>
           <div class="auth-footer">Forgot password? <a onclick="openForgotModal()">Reset here</a></div>
+          <div style="margin-top:14px; text-align:center;">
+            <button type="button" id="login-pwa-btn" onclick="triggerPwaInstall()" style="display:none; width:100%; align-items:center; justify-content:center; gap:8px; background:rgba(16,159,218,0.12); border:1px solid rgba(16,159,218,0.35); color:#109fda; border-radius:8px; padding:9px 14px; font-size:12.5px; font-weight:700; cursor:pointer; transition:all 0.2s;">
+              <i class="fas fa-mobile-alt"></i> Install OTSi Mobile App
+            </button>
+          </div>
         </div>
 
         <!-- REGISTER -->
@@ -11036,9 +11041,14 @@
     });
 
     function showPwaInstallBanner() {
+      if (isStandaloneMode) return;
       const banner = document.getElementById('pwa-install-banner');
-      if (banner && !isStandaloneMode) {
+      if (banner) {
         banner.style.display = 'flex';
+      }
+      const loginBtn = document.getElementById('login-pwa-btn');
+      if (loginBtn) {
+        loginBtn.style.display = 'flex';
       }
     }
 
@@ -11049,13 +11059,15 @@
           if (choiceResult.outcome === 'accepted') {
             const banner = document.getElementById('pwa-install-banner');
             if (banner) banner.style.display = 'none';
+            const loginBtn = document.getElementById('login-pwa-btn');
+            if (loginBtn) loginBtn.style.display = 'none';
           }
           deferredInstallPrompt = null;
         });
       } else {
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         if (isIOS) {
-          alert('To install OTSi ESS on iPhone:\n1. Tap the Share button (square with arrow)\n2. Scroll down and tap "Add to Home Screen"');
+          alert('To install OTSi ESS on iPhone:\n1. Tap the Share button (square with arrow icon)\n2. Scroll down and tap "Add to Home Screen"');
         } else {
           alert('To install OTSi ESS on Android:\n1. Tap the 3 dots in Chrome (top right)\n2. Select "Install app" or "Add to Home screen"');
         }
@@ -11064,9 +11076,9 @@
   </script>
 
   <!-- ════ MOBILE APP INSTALL BANNER (PWA) ════ -->
-  <div id="pwa-install-banner" style="display:none; position:fixed; bottom:75px; left:16px; right:16px; background:linear-gradient(135deg, #04466c, #00223a); border:1px solid rgba(16,159,218,0.4); border-radius:14px; padding:12px 16px; z-index:9999; box-shadow:0 10px 25px rgba(0,0,0,0.5); align-items:center; justify-content:space-between; backdrop-filter:blur(10px);">
+  <div id="pwa-install-banner" style="display:none; position:fixed; bottom:75px; left:16px; right:16px; background:linear-gradient(135deg, #04466c, #00223a); border:1px solid rgba(16,159,218,0.5); border-radius:14px; padding:12px 16px; z-index:99999999; box-shadow:0 10px 25px rgba(0,0,0,0.6); align-items:center; justify-content:space-between; backdrop-filter:blur(10px);">
     <div style="display:flex; align-items:center; gap:12px;">
-      <img src="images/icon-192.png" alt="OTSi App Icon" style="width:40px; height:40px; border-radius:10px; border:1px solid rgba(255,255,255,0.2);">
+      <img src="/images/icon-192.png" alt="OTSi App Icon" style="width:40px; height:40px; border-radius:10px; border:1px solid rgba(255,255,255,0.2);">
       <div>
         <div style="font-weight:700; color:#fff; font-size:13.5px;">Install OTSi Mobile App</div>
         <div style="font-size:11px; color:#8dd6f7;">Add to Home Screen for fast mobile punch-in</div>

@@ -1,23 +1,24 @@
 // OTSi ESS Portal - Mobile Service Worker
-const CACHE_NAME = 'otsi-ess-v1';
+const CACHE_NAME = 'otsi-ess-v2';
 const STATIC_ASSETS = [
   '/',
-  '/index.html',
+  '/manifest.json',
   '/images/logo.svg',
   '/images/otsi-mp-3.svg',
   '/images/icon-192.png',
   '/images/icon-512.png',
-  '/images/icon-maskable.png',
-  '/manifest.json'
+  '/images/icon-maskable.png'
 ];
 
-// Install: Cache essential app shell
+// Install: Cache essential app shell with fault tolerance
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS).catch((err) => {
-        console.warn('[SW] Pre-caching warning:', err);
-      });
+      return Promise.allSettled(
+        STATIC_ASSETS.map((url) =>
+          cache.add(url).catch((err) => console.warn('[SW] Could not pre-cache:', url, err))
+        )
+      );
     })
   );
   self.skipWaiting();
@@ -39,7 +40,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: Network-first for APIs, Cache-first for static assets
+// Fetch: Network-first for APIs, Stale-while-revalidate for static assets
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
@@ -56,16 +57,18 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. Static assets & HTML navigation: Stale-while-revalidate / cache-first
+  // 2. Navigation & static assets
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const clone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return networkResponse;
-      }).catch(() => cachedResponse);
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(() => cachedResponse);
 
       return cachedResponse || fetchPromise;
     })
