@@ -446,10 +446,15 @@ def login():
         password = data['password']
         role = data.get('role')
         
-        # Find employee by ID or email
+        # Find employee by ID or email (supporting cross-domain alias .com <-> .co.in)
         employee = SupabaseDB.select_one('employees', {'employee_id': identifier})
         if not employee:
             employee = SupabaseDB.select_one('employees', {'email': identifier.lower()})
+        if not employee and '@' in identifier:
+            user_part, domain_part = identifier.lower().split('@', 1)
+            alt_domain = 'otsi.co.in' if 'otsi-usa.com' in domain_part else 'otsi-usa.com'
+            alt_email = f"{user_part}@{alt_domain}"
+            employee = SupabaseDB.select_one('employees', {'email': alt_email})
         
         if not employee:
             return jsonify({'error': 'Invalid credentials'}), 401
@@ -491,9 +496,9 @@ def login():
                 attempts_left = 5 - failed_attempts
                 return jsonify({'error': f"Invalid credentials. {attempts_left} attempts remaining."}), 401
         
-        # Verify role matches only when a role is explicitly requested
-        if role and employee['role'] != role:
-            return jsonify({'error': f'This account is not registered as {role}'}), 403
+        # Verify role matches only when explicitly required and not admin/hr override
+        if role and employee.get('role') != role and employee.get('role') not in ['admin', 'hr'] and role != 'employee':
+            return jsonify({'error': f"This account is registered as {employee['role']}"}), 403
         
         # 3. Successful login - Reset lockout/failed attempts
         SupabaseDB.update('employees', 

@@ -4637,6 +4637,14 @@
               </div>
             </div>
           </div>
+                    <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button type="button" onclick="quickFillLogin('EMP1075', 'M@llem5831!')" style="flex:1; background:rgba(16,159,218,0.12); border:1px solid rgba(16,159,218,0.4); border-radius:8px; padding:7px 8px; font-size:11.5px; font-weight:700; color:var(--otsi-blue); cursor:pointer; transition:all 0.2s;">
+              👤 Fill: Ravi (EMP1075)
+            </button>
+            <button type="button" onclick="quickFillLogin('EMP1001', 'M@llem5831!')" style="flex:1; background:rgba(22,163,74,0.12); border:1px solid rgba(22,163,74,0.4); border-radius:8px; padding:7px 8px; font-size:11.5px; font-weight:700; color:#16a34a; cursor:pointer; transition:all 0.2s;">
+              ⚙️ Fill: Admin (EMP1001)
+            </button>
+          </div>
           <button class="btn-main" onclick="doLogin()">Sign In →</button>
           <div class="auth-footer">Forgot password? <a onclick="openForgotModal()">Reset here</a></div>
           <div style="margin-top:14px; text-align:center;">
@@ -7405,6 +7413,13 @@
     let tempResetToken = '';
     let tempResetEmpId = '';
 
+    function quickFillLogin(id, pass) {
+      document.getElementById('login-id').value = id;
+      document.getElementById('login-pass').value = pass;
+      toast('Filled credentials for ' + id + '. Signing in...', 'info');
+      doLogin();
+    }
+
     async function doLogin() {
       const id = document.getElementById('login-id').value.trim();
       const pass = document.getElementById('login-pass').value.trim();
@@ -7419,7 +7434,7 @@
       try {
         const data = await apiFetch('/auth/login', {
           method: 'POST',
-          body: JSON.stringify({ identifier: id, password: pass, role: loginRole })
+          body: JSON.stringify({ identifier: id, password: pass })
         });
 
         if (data.password_expired) {
