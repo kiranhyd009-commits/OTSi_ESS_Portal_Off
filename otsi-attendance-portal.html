@@ -2540,7 +2540,7 @@
       border-radius: 14px;
       border: 1px solid var(--border);
       overflow: hidden;
-      margin: 14px 14px 0;
+      margin: 14px 14px 16px;
     }
 
     .pinfo-row {
@@ -5867,18 +5867,27 @@
               </div>
 
               <!-- VIEW 2: Hierarchical CSS Tree Renderer (Horizontal rails & vertical drop lines matching Image 2) -->
-              <div id="org-view-tree" class="org-tree-wrapper" style="display:none;">
+              <div id="org-view-tree" class="org-tree-wrapper" style="display:none; overflow:hidden; padding:16px;">
                 <div
-                  style="font-size:11px; color:var(--slate); margin-bottom:12px; font-weight:600; text-align:left; display:flex; justify-content:space-between; align-items:center;">
+                  style="font-size:11px; color:var(--slate); margin-bottom:12px; font-weight:600; text-align:left; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                   <span><i class="fas fa-sitemap" style="color:var(--otsi-blue);"></i> Interactive Organization
-                    Tree</span>
-                  <button class="btn-main" onclick="openOrgTreeModal()"
-                    style="margin:0; padding:4px 10px; font-size:10.5px; width:auto; border-radius:6px;">
-                    <i class="fas fa-expand-alt"></i> Full View
-                  </button>
+                    Tree <span style="font-weight:500; color:var(--slate-light); margin-left:6px;">(Team &amp; Chain · Scroll to zoom)</span></span>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <div style="display:inline-flex; align-items:center; background:#ffffff; border:1px solid #CBD5E1; border-radius:6px; overflow:hidden;">
+                      <button type="button" onclick="setCardOrgZoom(cardOrgZoom - 0.12)" title="Zoom Out" style="border:none; background:transparent; padding:3px 8px; cursor:pointer; font-size:11px; font-weight:700; color:var(--otsi-navy);">−</button>
+                      <span id="org-card-zoom-label" onclick="resetCardOrgZoom()" title="Click to reset zoom" style="font-size:10px; font-weight:700; color:var(--slate); padding:0 6px; cursor:pointer; min-width:38px; text-align:center;">100%</span>
+                      <button type="button" onclick="setCardOrgZoom(cardOrgZoom + 0.12)" title="Zoom In" style="border:none; background:transparent; padding:3px 8px; cursor:pointer; font-size:11px; font-weight:700; color:var(--otsi-navy);">+</button>
+                    </div>
+                    <button class="btn-main" onclick="openOrgTreeModal()"
+                      style="margin:0; padding:4px 10px; font-size:10.5px; width:auto; border-radius:6px;">
+                      <i class="fas fa-expand-alt"></i> Full View
+                    </button>
+                  </div>
                 </div>
-                <div class="org-tree" id="card-org-tree-root">
-                  <!-- Dynamically rendered tree -->
+                <div id="card-org-tree-scroll" style="width:100%; overflow:auto; padding:14px 8px 20px; text-align:center; cursor:grab; max-height:540px;">
+                  <div class="org-tree" id="card-org-tree-root">
+                    <!-- Dynamically rendered tree -->
+                  </div>
                 </div>
               </div>
 
@@ -6237,7 +6246,16 @@
             placeholder="Find a person..."
             style="width: 100%; padding: 7px 12px 7px 32px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 12px; outline: none; background: #ffffff;">
         </div>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <span style="font-size: 11px; color: var(--slate); margin-right: 4px;"><i class="fas fa-mouse" style="color: var(--otsi-blue);"></i> Scroll to zoom · Drag to pan</span>
+          <div style="display: inline-flex; align-items: center; background: #ffffff; border: 1px solid #CBD5E1; border-radius: 6px; overflow: hidden;">
+            <button type="button" onclick="setOrgModalZoom(modalOrgZoom - 0.12)" title="Zoom Out"
+              style="border: none; background: transparent; padding: 5px 10px; cursor: pointer; font-size: 12px; font-weight: 700; color: var(--otsi-navy);">−</button>
+            <span id="org-modal-zoom-label" onclick="resetOrgModalZoom()" title="Click to reset zoom (100%)"
+              style="font-size: 11px; font-weight: 700; color: var(--otsi-navy); padding: 0 8px; cursor: pointer; min-width: 44px; text-align: center; border-left: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0;">100%</span>
+            <button type="button" onclick="setOrgModalZoom(modalOrgZoom + 0.12)" title="Zoom In"
+              style="border: none; background: transparent; padding: 5px 10px; cursor: pointer; font-size: 12px; font-weight: 700; color: var(--otsi-navy);">+</button>
+          </div>
           <button class="btn-main" onclick="expandAllOrgNodes()"
             style="margin: 0; padding: 6px 14px; font-size: 11.5px; background: #ffffff; color: var(--otsi-navy); border: 1px solid #CBD5E1; width: auto; font-weight: 600; border-radius: 6px;">
             Expand all
@@ -6251,7 +6269,7 @@
 
       <!-- Modal Body Canvas -->
       <div class="modal-body"
-        style="flex: 1; overflow: auto; padding: 30px; background: #F1F5F9; display: flex; justify-content: center; align-items: flex-start;">
+        style="flex: 1; overflow: auto; padding: 30px; background: #F1F5F9; text-align: center;">
         <div class="org-tree" id="modal-org-tree-root">
           <!-- Dynamically populated Org Chart -->
         </div>
@@ -10746,9 +10764,9 @@
         let treeRoots = [];
         let chainList = [];
 
-        // 1. Fetch dynamic tree & reporting chain from backend API endpoint /api/org-tree
+        // 1. Fetch complete org tree & reporting chain from backend API endpoint /api/org-tree
         try {
-          const res = await apiFetch(`/org-tree?scope=${scope}&emp_id=${empId}`);
+          const res = await apiFetch(`/org-tree?scope=all&emp_id=${empId}`);
           if (res) {
             if (res.tree && res.tree.length > 0) treeRoots = res.tree;
             if (res.chain && res.chain.length > 0) chainList = res.chain;
@@ -10823,13 +10841,11 @@
 
         markActiveUserInTree(treeRoots, empId);
 
-        if (scope === 'all') {
-          dynamicOrgTreeDataAll = treeRoots;
-        } else {
-          dynamicOrgTreeData = treeRoots;
-        }
+        dynamicOrgTreeDataAll = treeRoots;
+        dynamicOrgTreeData = buildTeamTreeFromFullTree(treeRoots, chainList, empId);
 
         renderOrgTreeRoot('card-org-tree-root', dynamicOrgTreeData);
+        centerCardOrgTree();
         if (document.getElementById('org-tree-modal')?.classList.contains('open')) {
           renderOrgTreeRoot('modal-org-tree-root', dynamicOrgTreeDataAll.length > 0 ? dynamicOrgTreeDataAll : dynamicOrgTreeData);
         }
@@ -10882,6 +10898,247 @@
       container.innerHTML = html;
     }
 
+    let modalOrgZoom = 1;
+    let cardOrgZoom = 1;
+
+    function buildTeamTreeFromFullTree(fullRoots, chain, activeId = null) {
+      const targetId = activeId || loginEmpId;
+      const nodeMap = {};
+      function indexNodes(list) {
+        if (!list) return;
+        list.forEach(n => {
+          if (n.employee_id) nodeMap[n.employee_id] = n;
+          if (n.children && n.children.length > 0) indexNodes(n.children);
+        });
+      }
+      indexNodes(fullRoots);
+
+      function cloneNode(n, isMeFlag = false, includeDirectReports = false, isTopExec = false) {
+        const cleanName = (n.name || '').replace(' (You)', '');
+        const displayName = isMeFlag ? `${cleanName} (You)` : cleanName;
+        const childrenList = (includeDirectReports && n.children && n.children.length > 0)
+          ? n.children.map(ch => cloneNode(ch, ch.employee_id === targetId, false, false))
+          : [];
+        return {
+          id: `team-node-${(n.employee_id || n.id || Math.random()).toString().toLowerCase()}`,
+          employee_id: n.employee_id,
+          name: displayName,
+          initials: n.initials || 'EM',
+          role: n.role || 'Employee',
+          department: n.department || '',
+          raw_role: n.raw_role || 'employee',
+          isMe: isMeFlag,
+          color: isMeFlag ? 'var(--otsi-blue)' : (isTopExec ? '#E0F2FE' : (n.raw_role === 'admin' ? '#DCFCE7' : '#F1F5F9')),
+          textColor: isMeFlag ? '#ffffff' : (isTopExec ? '#0284C7' : (n.raw_role === 'admin' ? '#16A34A' : '#475569')),
+          children: childrenList
+        };
+      }
+
+      const chainIds = (chain && chain.length > 0)
+        ? chain.map(c => c.employee_id).filter(id => nodeMap[id])
+        : [];
+
+      if (chainIds.length >= 2) {
+        const chainNodes = chainIds.map((cid, idx) =>
+          cloneNode(nodeMap[cid], cid === targetId, cid === targetId, idx === 0)
+        );
+        for (let i = 0; i < chainNodes.length - 2; i++) {
+          chainNodes[i].children = [chainNodes[i + 1]];
+        }
+        // Attach all colleagues reporting to the same manager, placing (You) in the center
+        const mgrId = chainIds[chainIds.length - 2];
+        const mgrOrig = nodeMap[mgrId];
+        const meNode = chainNodes[chainNodes.length - 1];
+        const peers = (mgrOrig && mgrOrig.children) ? mgrOrig.children : [];
+        const siblingNodes = peers
+          .filter(p => p.employee_id !== targetId)
+          .map(p => cloneNode(p, false, false, false));
+        const mid = Math.floor(siblingNodes.length / 2);
+        chainNodes[chainNodes.length - 2].children = [
+          ...siblingNodes.slice(0, mid),
+          meNode,
+          ...siblingNodes.slice(mid)
+        ];
+        return [chainNodes[0]];
+      } else if (chainIds.length === 1) {
+        return [cloneNode(nodeMap[chainIds[0]], true, true, true)];
+      }
+      return fullRoots;
+    }
+
+    function centerCardOrgTree() {
+      setTimeout(() => {
+        const scrollEl = document.getElementById('card-org-tree-scroll');
+        if (!scrollEl) return;
+        const meCard = scrollEl.querySelector('.org-tree-node.me');
+        if (meCard) {
+          const scrollRect = scrollEl.getBoundingClientRect();
+          const meRect = meCard.getBoundingClientRect();
+          const offsetLeft = (meRect.left - scrollRect.left) + scrollEl.scrollLeft - (scrollEl.clientWidth / 2) + (meRect.width / 2);
+          scrollEl.scrollLeft = Math.max(0, offsetLeft);
+          scrollEl.scrollTop = 0;
+        } else {
+          scrollEl.scrollLeft = Math.max(0, (scrollEl.scrollWidth - scrollEl.clientWidth) / 2);
+          scrollEl.scrollTop = 0;
+        }
+      }, 40);
+    }
+
+    function setCardOrgZoom(targetZoom, clientX = null, clientY = null) {
+      const scrollEl = document.getElementById('card-org-tree-scroll');
+      const treeEl = document.getElementById('card-org-tree-root');
+      if (!scrollEl || !treeEl) return;
+
+      const prevZoom = cardOrgZoom || 1;
+      const clampedZoom = Math.min(1.8, Math.max(0.3, Math.round(targetZoom * 100) / 100));
+      if (clampedZoom === prevZoom) return;
+
+      const rect = scrollEl.getBoundingClientRect();
+      const focusX = (clientX !== null) ? (clientX - rect.left) : (scrollEl.clientWidth / 2);
+      const focusY = (clientY !== null) ? (clientY - rect.top) : (scrollEl.clientHeight / 3);
+
+      const unscaledX = (scrollEl.scrollLeft + focusX) / prevZoom;
+      const unscaledY = (scrollEl.scrollTop + focusY) / prevZoom;
+
+      cardOrgZoom = clampedZoom;
+      treeEl.style.zoom = cardOrgZoom;
+
+      scrollEl.scrollLeft = Math.max(0, unscaledX * cardOrgZoom - focusX);
+      scrollEl.scrollTop = Math.max(0, unscaledY * cardOrgZoom - focusY);
+
+      const label = document.getElementById('org-card-zoom-label');
+      if (label) label.textContent = `${Math.round(cardOrgZoom * 100)}%`;
+    }
+
+    function resetCardOrgZoom() {
+      cardOrgZoom = 1;
+      const treeEl = document.getElementById('card-org-tree-root');
+      if (treeEl) treeEl.style.zoom = 1;
+      const label = document.getElementById('org-card-zoom-label');
+      if (label) label.textContent = '100%';
+      centerCardOrgTree();
+    }
+
+    function setOrgModalZoom(targetZoom, clientX = null, clientY = null) {
+      const modal = document.getElementById('org-tree-modal');
+      const modalBody = modal ? modal.querySelector('.modal-body') : null;
+      const treeEl = document.getElementById('modal-org-tree-root');
+      if (!modalBody || !treeEl) return;
+
+      const prevZoom = modalOrgZoom || 1;
+      const clampedZoom = Math.min(2.0, Math.max(0.2, Math.round(targetZoom * 100) / 100));
+      if (clampedZoom === prevZoom) return;
+
+      const rect = modalBody.getBoundingClientRect();
+      const focusX = (clientX !== null) ? (clientX - rect.left) : (modalBody.clientWidth / 2);
+      const focusY = (clientY !== null) ? (clientY - rect.top) : (modalBody.clientHeight / 3);
+
+      const unscaledX = (modalBody.scrollLeft + focusX) / prevZoom;
+      const unscaledY = (modalBody.scrollTop + focusY) / prevZoom;
+
+      modalOrgZoom = clampedZoom;
+      treeEl.style.zoom = modalOrgZoom;
+
+      modalBody.scrollLeft = Math.max(0, unscaledX * modalOrgZoom - focusX);
+      modalBody.scrollTop = Math.max(0, unscaledY * modalOrgZoom - focusY);
+
+      const label = document.getElementById('org-modal-zoom-label');
+      if (label) label.textContent = `${Math.round(modalOrgZoom * 100)}%`;
+    }
+
+    function resetOrgModalZoom() {
+      modalOrgZoom = 1;
+      const treeEl = document.getElementById('modal-org-tree-root');
+      if (treeEl) treeEl.style.zoom = 1;
+      const label = document.getElementById('org-modal-zoom-label');
+      if (label) label.textContent = '100%';
+      const modal = document.getElementById('org-tree-modal');
+      const modalBody = modal ? modal.querySelector('.modal-body') : null;
+      const rootCard = document.querySelector('#modal-org-tree-root > ul > li > .org-tree-node');
+      if (modalBody && rootCard) {
+        const bodyRect = modalBody.getBoundingClientRect();
+        const cardRect = rootCard.getBoundingClientRect();
+        modalBody.scrollLeft = Math.max(0, (cardRect.left - bodyRect.left) + modalBody.scrollLeft - (modalBody.clientWidth / 2) + (cardRect.width / 2));
+        modalBody.scrollTop = 0;
+      }
+    }
+
+    function initOrgTreeZoomAndPan() {
+      const modal = document.getElementById('org-tree-modal');
+      const modalBody = modal ? modal.querySelector('.modal-body') : null;
+      if (modalBody && !modalBody.dataset.zoomBound) {
+        modalBody.dataset.zoomBound = 'true';
+        modalBody.style.cursor = 'grab';
+        modalBody.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const step = e.deltaY < 0 ? 0.08 : -0.08;
+          setOrgModalZoom(modalOrgZoom + step, e.clientX, e.clientY);
+        }, { passive: false });
+
+        let isDown = false, startX = 0, startY = 0, scrollL = 0, scrollT = 0;
+        modalBody.addEventListener('mousedown', (e) => {
+          if (e.target.closest('.org-node-badge, button, input')) return;
+          isDown = true;
+          modalBody.style.cursor = 'grabbing';
+          startX = e.pageX - modalBody.offsetLeft;
+          startY = e.pageY - modalBody.offsetTop;
+          scrollL = modalBody.scrollLeft;
+          scrollT = modalBody.scrollTop;
+        });
+        window.addEventListener('mouseup', () => {
+          if (isDown) {
+            isDown = false;
+            modalBody.style.cursor = 'grab';
+          }
+        });
+        modalBody.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - modalBody.offsetLeft;
+          const y = e.pageY - modalBody.offsetTop;
+          modalBody.scrollLeft = scrollL - (x - startX);
+          modalBody.scrollTop = scrollT - (y - startY);
+        });
+      }
+
+      const cardScroll = document.getElementById('card-org-tree-scroll');
+      if (cardScroll && !cardScroll.dataset.zoomBound) {
+        cardScroll.dataset.zoomBound = 'true';
+        cardScroll.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const step = e.deltaY < 0 ? 0.08 : -0.08;
+          setCardOrgZoom(cardOrgZoom + step, e.clientX, e.clientY);
+        }, { passive: false });
+
+        let isCardDown = false, cStartX = 0, cStartY = 0, cScrollL = 0, cScrollT = 0;
+        cardScroll.addEventListener('mousedown', (e) => {
+          if (e.target.closest('.org-node-badge, button, input')) return;
+          isCardDown = true;
+          cardScroll.style.cursor = 'grabbing';
+          cStartX = e.pageX - cardScroll.offsetLeft;
+          cStartY = e.pageY - cardScroll.offsetTop;
+          cScrollL = cardScroll.scrollLeft;
+          cScrollT = cardScroll.scrollTop;
+        });
+        window.addEventListener('mouseup', () => {
+          if (isCardDown) {
+            isCardDown = false;
+            cardScroll.style.cursor = 'grab';
+          }
+        });
+        cardScroll.addEventListener('mousemove', (e) => {
+          if (!isCardDown) return;
+          e.preventDefault();
+          const x = e.pageX - cardScroll.offsetLeft;
+          const y = e.pageY - cardScroll.offsetTop;
+          cardScroll.scrollLeft = cScrollL - (x - cStartX);
+          cardScroll.scrollTop = cScrollT - (y - cStartY);
+        });
+      }
+    }
+
     function markActiveUserInTree(nodes, activeId = null) {
       if (!nodes) return;
       const targetId = activeId || loginEmpId;
@@ -10914,6 +11171,7 @@
         if (treeEl) treeEl.style.display = 'block';
         if (btnChain) btnChain.classList.remove('active');
         if (btnTree) btnTree.classList.add('active');
+        initOrgTreeZoomAndPan();
         loadDynamicOrgTree('team');
       }
     }
@@ -10971,11 +11229,15 @@
       const modal = document.getElementById('org-tree-modal');
       if (modal) {
         modal.classList.add('open');
+        initOrgTreeZoomAndPan();
         const searchInput = document.getElementById('org-tree-search-input');
         if (searchInput) searchInput.value = '';
         renderOrgTreeRoot('modal-org-tree-root', dynamicOrgTreeDataAll.length > 0 ? dynamicOrgTreeDataAll : dynamicOrgTreeData);
         await loadDynamicOrgTree('all');
         renderOrgTreeRoot('modal-org-tree-root', dynamicOrgTreeDataAll.length > 0 ? dynamicOrgTreeDataAll : dynamicOrgTreeData);
+        setTimeout(() => {
+          resetOrgModalZoom();
+        }, 50);
       }
     }
 

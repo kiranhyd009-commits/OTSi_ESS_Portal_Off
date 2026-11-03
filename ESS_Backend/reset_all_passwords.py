@@ -8,7 +8,7 @@ from database import SupabaseDB
 from auth import AuthUtils
 
 def main():
-    password = sys.argv[1] if len(sys.argv) > 1 else 'M@llem5831!'
+    password = sys.argv[1] if len(sys.argv) > 1 else 'M@llem5831!!'
     
     print(f"Preparing to update password for ALL employees to: '{password}'")
     

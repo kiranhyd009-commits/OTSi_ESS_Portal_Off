@@ -1908,18 +1908,44 @@ def get_org_tree():
             else:
                 break
 
-        # Team Scoped Tree vs Company Tree
-        if scope == 'team' and target_emp:
-            # Find the root node of the target employee's hierarchy branch
-            root_node = emp_map.get(target_emp_id)
-            if root_node:
-                p_id = root_node.get('manager_id')
-                p_visited = set([root_node['employee_id']])
-                while p_id and p_id in emp_map and p_id not in p_visited:
-                    p_visited.add(p_id)
-                    root_node = emp_map[p_id]
-                    p_id = root_node.get('manager_id')
-                tree_output = [root_node]
+        # Team Scoped Tree (upward Chain View + colleagues reporting to same manager) vs Company Tree (all)
+        if scope == 'team' and chain:
+            def clone_shallow(n, is_me_flag=False, include_direct_reports=False):
+                c_list = []
+                if include_direct_reports and n.get('children'):
+                    c_list = [clone_shallow(ch, ch['employee_id'] == target_emp_id, False) for ch in n['children']]
+                return {
+                    'id': n['id'],
+                    'employee_id': n['employee_id'],
+                    'name': n['name'],
+                    'initials': n['initials'],
+                    'role': n['role'],
+                    'department': n['department'],
+                    'manager_id': n.get('manager_id'),
+                    'raw_role': n.get('raw_role', 'employee'),
+                    'isMe': is_me_flag,
+                    'children': c_list
+                }
+
+            chain_ids = [item['employee_id'] for item in chain if item['employee_id'] in emp_map]
+            if len(chain_ids) >= 2:
+                chain_nodes = [clone_shallow(emp_map[cid], cid == target_emp_id, cid == target_emp_id) for cid in chain_ids]
+                for i in range(len(chain_nodes) - 2):
+                    chain_nodes[i]['children'] = [chain_nodes[i + 1]]
+                # Direct manager node: attach all colleagues reporting to this same manager, with target employee centered
+                mgr_id = chain_ids[-2]
+                mgr_orig = emp_map[mgr_id]
+                me_node = chain_nodes[-1]
+                sibling_nodes = [
+                    clone_shallow(sib, False, False)
+                    for sib in mgr_orig.get('children', [])
+                    if sib['employee_id'] != target_emp_id
+                ]
+                mid = len(sibling_nodes) // 2
+                chain_nodes[-2]['children'] = sibling_nodes[:mid] + [me_node] + sibling_nodes[mid:]
+                tree_output = [chain_nodes[0]]
+            elif len(chain_ids) == 1:
+                tree_output = [clone_shallow(emp_map[chain_ids[0]], True, True)]
             else:
                 tree_output = full_roots
         else:
