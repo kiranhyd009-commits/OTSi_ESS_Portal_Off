@@ -2682,10 +2682,10 @@
       border-radius: 16px;
     }
 
-    /* Left Executive Identity & Navigation Sidebar */
+    /* Left Executive Identity & Navigation Sidebar — Pandora Blue Palette */
     .omni-sidebar {
       width: 272px;
-      background: linear-gradient(180deg, #032B44 0%, #04466C 55%, #063856 100%);
+      background: linear-gradient(165deg, #1C3F6E 0%, #2E67A0 42%, #109FDA 80%, #5AACCF 100%);
       color: #ffffff;
       display: flex;
       flex-direction: column;
@@ -2715,7 +2715,7 @@
       width: 52px;
       height: 52px;
       border-radius: 14px;
-      background: linear-gradient(135deg, #109FDA, #0284C7);
+      background: linear-gradient(135deg, #2E67A0, #5AACCF);
       border: 2px solid rgba(255, 255, 255, 0.9);
       display: flex;
       align-items: center;
@@ -2860,7 +2860,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #7DD3FC;
+      color: #EFFC93;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
@@ -3100,13 +3100,13 @@
     }
 
     .omni-id-front {
-      background: linear-gradient(135deg, #032B44 0%, #04466C 52%, #0EA5E9 100%);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: linear-gradient(135deg, #1C3F6E 0%, #2E67A0 40%, #109FDA 78%, #5AACCF 100%);
+      border: 1px solid rgba(90, 172, 207, 0.45);
     }
 
     .omni-id-back {
-      background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #04466C 100%);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: linear-gradient(135deg, #0F2347 0%, #1C3F6E 62%, #2E67A0 100%);
+      border: 1px solid rgba(90, 172, 207, 0.45);
       transform: rotateY(180deg);
     }
 
@@ -3305,8 +3305,8 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      background: #FFFBEB;
-      border: 1px solid #FDE68A;
+      background: #F0F7FB;
+      border: 1px solid rgba(90, 172, 207, 0.45);
       border-radius: 12px;
       padding: 13px 16px;
       margin-bottom: 10px;
@@ -3319,7 +3319,7 @@
       padding: 9px 13px;
       font-size: 12px;
       font-weight: 700;
-      color: var(--otsi-navy);
+      color: #0F2347;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -3330,9 +3330,10 @@
 
     .omni-kudos-badge-btn.selected,
     .omni-kudos-badge-btn:hover {
-      background: #FEF3C7;
-      border-color: #F59E0B;
-      color: #92400E;
+      background: #EBF5FA;
+      border-color: #2E67A0;
+      color: #0F2347;
+      box-shadow: 0 3px 10px rgba(46, 103, 160, 0.14);
       transform: translateY(-1px);
     }
 
@@ -3675,19 +3676,11 @@
       font-weight: 600;
     }
 
-    .role-banner.employee {
+    .role-banner.employee,
+    .role-banner.hr,
+    .role-banner.admin {
       background: #E3F2FD;
       color: #1565C0;
-    }
-
-    .role-banner.hr {
-      background: #E8F5E9;
-      color: #2E7D32;
-    }
-
-    .role-banner.admin {
-      background: #FFF3E0;
-      color: #E65100;
     }
 
     .role-banner svg {
@@ -5079,10 +5072,226 @@
         height: 22px;
       }
     }
+
+    /* ══════════════════════════════════════════════════════════════════════════
+       🌌 OTSi UNIFIED PROFESSIONAL VFX ARCHITECTURE
+       • Main Page Dashboard : Clean 360° VFX Design (Original OTSi Colors + 360° Orb HUD + Interactive Particle Explosion)
+       • 360° Executive Hub  : Full Bioluminescent VFX Design Always Active (Pandora Blue #1C3F6E / #2E67A0 / #109FDA / #5AACCF + #EFFC93 + #80C271)
+       ══════════════════════════════════════════════════════════════════════════ */
+    :root {
+      --pandora-earth: #0F2347;
+      --pandora-atlanta: #1C3F6E;
+      --pandora-forest: #2E67A0;
+      --pandora-mystic: #5AACCF;
+      --pandora-jonquil: #EFFC93;
+      --pandora-green: #80C271;
+    }
+
+    /* Bioluminescent Background & Interactive Click-Burst Canvases */
+    #vfx-global-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+    }
+
+    #vfx-burst-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 99999;
+    }
+
+    #omni-vfx-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 1;
+    }
+
+    /* Keyframe Animations: Pandora HUD Rings & Holographic Laser Scan */
+    @keyframes vfxHudSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes vfxLaserSweep {
+      0% { top: -10%; opacity: 0; }
+      15% { opacity: 0.92; }
+      85% { opacity: 0.92; }
+      100% { top: 108%; opacity: 0; }
+    }
+
+    /* ─── 360° EMPLOYEE EXECUTIVE HUB: PERMANENT FULL VFX DESIGN ─── */
+    #omni-hub-modal {
+      background: radial-gradient(circle at center, rgba(46, 103, 160, 0.26) 0%, rgba(15, 35, 71, 0.58) 100%);
+      backdrop-filter: blur(10px);
+    }
+
+    .omni-modal-sheet {
+      background: #F8FAFC;
+      border: 1.5px solid rgba(90, 172, 207, 0.65);
+      box-shadow: 0 28px 80px rgba(28, 63, 110, 0.34), 0 0 36px rgba(90, 172, 207, 0.24);
+    }
+
+    /* Vibrant Avatar / OTSi Company Blue + Pandora Sidebar (No Heavy Dark Navy!) */
+    .omni-sidebar {
+      background: linear-gradient(165deg, #1C3F6E 0%, #2E67A0 42%, #109FDA 80%, #5AACCF 100%);
+      border-right: 1px solid rgba(90, 172, 207, 0.4);
+      box-shadow: inset -6px 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .omni-side-profile {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      box-shadow: 0 8px 24px rgba(15, 35, 71, 0.2);
+    }
+
+    .omni-avatar {
+      background: linear-gradient(135deg, #2E67A0 0%, #109FDA 55%, #5AACCF 100%);
+      color: #FFFFFF;
+      border: 2px solid #EFFC93;
+      box-shadow: 0 0 18px rgba(90, 172, 207, 0.65), 0 0 8px rgba(239, 252, 147, 0.45);
+    }
+
+    .omni-tab-btn.active {
+      background: #FFFFFF;
+      color: #0F2347;
+      border: 1px solid #5AACCF;
+      box-shadow: 0 8px 20px rgba(15, 35, 71, 0.18), 0 0 12px rgba(90, 172, 207, 0.35);
+    }
+
+    .omni-tab-btn.active .omni-tab-icon {
+      background: linear-gradient(135deg, #1C3F6E, #2E67A0);
+      color: #EFFC93;
+      box-shadow: 0 4px 10px rgba(28, 63, 110, 0.3);
+    }
+
+    /* Soothing Pandora Bioluminescent Workspace Canvas inside 360° Hub */
+    .omni-main-workspace {
+      background:
+        radial-gradient(circle at 14% 15%, rgba(90, 172, 207, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 86% 20%, rgba(128, 194, 113, 0.14) 0%, transparent 45%),
+        radial-gradient(circle at 50% 88%, rgba(46, 103, 160, 0.14) 0%, transparent 50%),
+        linear-gradient(180deg, #F0F7FB 0%, #FFFFFF 52%, #F8FAFC 100%);
+      position: relative;
+    }
+
+    .omni-canvas-topbar {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1.5px solid rgba(90, 172, 207, 0.35);
+      box-shadow: 0 4px 18px rgba(15, 35, 71, 0.06);
+      position: relative;
+      z-index: 2;
+    }
+
+    .omni-canvas-badge {
+      background: linear-gradient(135deg, #1C3F6E, #2E67A0);
+      color: #EFFC93;
+      box-shadow: 0 4px 12px rgba(28, 63, 110, 0.28);
+    }
+
+    .omni-modal-body {
+      background: transparent;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Crisp Frosted Cards inside 360° Hub with Mystic Sea (#5AACCF) & Forest Blue (#2E67A0) Rim Illumination */
+    .omni-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid rgba(90, 172, 207, 0.38);
+      box-shadow: 0 10px 28px rgba(15, 35, 71, 0.07), inset 0 1px 0 #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .omni-card:hover {
+      border-color: #2E67A0;
+      box-shadow: 0 14px 34px rgba(28, 63, 110, 0.14), 0 0 16px rgba(90, 172, 207, 0.22);
+    }
+
+    .omni-bio-tile,
+    .omni-ring-card,
+    .omni-pulse-peer {
+      background: linear-gradient(145deg, #FFFFFF 0%, #F4F9FC 100%);
+      border: 1.5px solid rgba(90, 172, 207, 0.42);
+      box-shadow: 0 6px 16px rgba(15, 35, 71, 0.06);
+    }
+
+    .omni-bio-tile:hover,
+    .omni-ring-card:hover,
+    .omni-pulse-peer:hover {
+      background: linear-gradient(145deg, #FFFFFF 0%, #EBF5FA 100%);
+      border-color: #2E67A0;
+      box-shadow: 0 10px 24px rgba(28, 63, 110, 0.16), 0 0 14px rgba(90, 172, 207, 0.28);
+    }
+
+    /* Pandora Bioluminescent Laser Scan Beam on 3D Digital ID Card */
+    .omni-id-face::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 0%, #5AACCF 25%, #EFFC93 50%, #80C271 75%, transparent 100%);
+      box-shadow: 0 0 14px 2px #5AACCF;
+      pointer-events: none;
+      animation: vfxLaserSweep 3.6s ease-in-out infinite;
+    }
+
+    .omni-id-front {
+      background: linear-gradient(135deg, #1C3F6E 0%, #2E67A0 42%, #109FDA 78%, #5AACCF 100%);
+      border: 1.5px solid #5AACCF;
+      box-shadow: 0 14px 36px rgba(28, 63, 110, 0.32), 0 0 20px rgba(90, 172, 207, 0.32);
+    }
+
+    .omni-id-back {
+      background: linear-gradient(135deg, #0F2347 0%, #1C3F6E 62%, #2E67A0 100%);
+      border: 1.5px solid #5AACCF;
+    }
+
+    /* Rotating HUD Ring on Radial Gauges inside 360° Hub */
+    .omni-ring-svg-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1.5px dashed #5AACCF;
+      animation: vfxHudSpin 10s linear infinite;
+      pointer-events: none;
+    }
+
+    .omni-ring-val {
+      filter: drop-shadow(0 0 3px currentColor);
+    }
+
+    /* Jonquil (#EFFC93) Bioluminescent Highlight for Career Milestones inside 360° Hub */
+    #omni-hub-modal .year-spine.active,
+    #omni-hub-modal .year-spine:hover {
+      background: #EFFC93 !important;
+      color: #0F2347 !important;
+      border-color: #FFFFFF !important;
+      box-shadow: 0 6px 18px rgba(239, 252, 147, 0.4) !important;
+    }
+
   </style>
 </head>
 
 <body class="auth-mode">
+  <canvas id="vfx-global-canvas"></canvas>
+  <canvas id="vfx-burst-canvas"></canvas>
 
   <!-- ════════════════════ AUTH ════════════════════ -->
   <div id="auth-screen">
@@ -6727,28 +6936,28 @@
           </div>
         </div>
 
-        <!-- Integrated Quick-Action Launcher -->
+        <!-- Integrated Quick-Action Launcher (Pandora Blue Palette) -->
         <div class="omni-side-dock-wrap">
           <div class="omni-side-dock-lbl"><i class="fas fa-rocket"></i> Instant 1-Click Actions</div>
           <div class="omni-actions-dock">
             <button class="dock-btn" onclick="closeOmniHubModal(); showPage('att'); doCheckIn();">
-              <i class="fas fa-fingerprint" style="color:#4ADE80;"></i>
+              <i class="fas fa-fingerprint" style="color:#80C271;"></i>
               <span>Punch In/Out</span>
             </button>
             <button class="dock-btn" onclick="closeOmniHubModal(); showPage('leave'); openLeaveModal();">
-              <i class="fas fa-calendar-plus" style="color:#38BDF8;"></i>
+              <i class="fas fa-calendar-plus" style="color:#5AACCF;"></i>
               <span>Apply Leave</span>
             </button>
             <button class="dock-btn" onclick="quickRequestWfhTomorrow();">
-              <i class="fas fa-house-laptop" style="color:#2DD4BF;"></i>
+              <i class="fas fa-house-laptop" style="color:#EFFC93;"></i>
               <span>WFH Tomorrow</span>
             </button>
             <button class="dock-btn" onclick="closeOmniHubModal(); showPage('hd'); openTicketModal();">
-              <i class="fas fa-headset" style="color:#FB923C;"></i>
+              <i class="fas fa-headset" style="color:#5AACCF;"></i>
               <span>Raise Ticket</span>
             </button>
             <button class="dock-btn" style="grid-column: span 2; justify-content:center;" onclick="closeOmniHubModal(); showPage('ts');">
-              <i class="fas fa-business-time" style="color:#C084FC;"></i>
+              <i class="fas fa-business-time" style="color:#EFFC93;"></i>
               <span>Open Weekly Timesheet</span>
             </button>
           </div>
@@ -6757,6 +6966,7 @@
 
       <!-- Right Spacious Content Canvas -->
       <div class="omni-main-workspace">
+        <canvas id="omni-vfx-canvas"></canvas>
         <div class="omni-canvas-topbar">
           <div class="omni-canvas-heading">
             <div class="omni-canvas-badge" id="omni-canvas-icon"><i class="fas fa-id-badge"></i></div>
@@ -6767,7 +6977,7 @@
           </div>
           <div class="omni-header-actions">
             <button class="omni-hdr-pill" onclick="openCmdPalette()" title="Quick Search & Command Palette (Ctrl + K)">
-              <i class="fas fa-magnifying-glass"></i> <span>Search (Ctrl+K)</span>
+              <i class="fas fa-magnifying-glass"></i> <span>Ctrl+K</span>
             </button>
             <button class="omni-hdr-pill" id="omni-fullscreen-btn" onclick="toggleOmniFullScreen()" title="Toggle Full Screen View">
               <i class="fas fa-expand"></i> <span>Full View</span>
@@ -10750,76 +10960,76 @@
             </div>
             <div class="omni-bio-icon-grid">
               <div class="omni-bio-tile">
-                <div class="omni-bio-icon" style="background:#E0F2FE; color:#0284C7;"><i class="fas fa-id-card"></i></div>
+                <div class="omni-bio-icon" style="background:#EBF5FA; color:#0F2347;"><i class="fas fa-id-card"></i></div>
                 <div>
                   <div class="omni-bio-lbl">Employee ID</div>
                   <div class="omni-bio-val">${empid}</div>
                 </div>
               </div>
               <div class="omni-bio-tile">
-                <div class="omni-bio-icon" style="background:#EEF2FF; color:#4F46E5;"><i class="fas fa-user-tie"></i></div>
+                <div class="omni-bio-icon" style="background:#EBF5FA; color:#1C3F6E;"><i class="fas fa-user-tie"></i></div>
                 <div>
                   <div class="omni-bio-lbl">Designation</div>
                   <div class="omni-bio-val">${desig}</div>
                 </div>
               </div>
               <div class="omni-bio-tile">
-                <div class="omni-bio-icon" style="background:#CCFBF1; color:#0D9488;"><i class="fas fa-sitemap"></i></div>
+                <div class="omni-bio-icon" style="background:#EBF5FA; color:#2E67A0;"><i class="fas fa-sitemap"></i></div>
                 <div>
                   <div class="omni-bio-lbl">Department & CoE</div>
                   <div class="omni-bio-val">${dept}</div>
                 </div>
               </div>
               <div class="omni-bio-tile">
-                <div class="omni-bio-icon" style="background:#DCFCE7; color:#16A34A;"><i class="fas fa-user-shield"></i></div>
+                <div class="omni-bio-icon" style="background:#EAF6E8; color:#2E7D32;"><i class="fas fa-user-shield"></i></div>
                 <div>
                   <div class="omni-bio-lbl">Reporting Manager</div>
                   <div class="omni-bio-val">${manager}</div>
                 </div>
               </div>
               <div class="omni-bio-tile">
-                <div class="omni-bio-icon" style="background:#FFEDD5; color:#EA580C;"><i class="fas fa-location-dot"></i></div>
+                <div class="omni-bio-icon" style="background:#EBF5FA; color:#2E67A0;"><i class="fas fa-location-dot"></i></div>
                 <div>
                   <div class="omni-bio-lbl">Campus & Work Mode</div>
                   <div class="omni-bio-val">${location} (${workMode})</div>
                 </div>
               </div>
               <div class="omni-bio-tile">
-                <div class="omni-bio-icon" style="background:#F3E8FF; color:#7C3AED;"><i class="fas fa-calendar-check"></i></div>
+                <div class="omni-bio-icon" style="background:#EBF5FA; color:#1C3F6E;"><i class="fas fa-calendar-check"></i></div>
                 <div>
                   <div class="omni-bio-lbl">Date of Joining</div>
                   <div class="omni-bio-val">${dojFormatted}</div>
                 </div>
               </div>
               <div class="omni-bio-tile" style="cursor:pointer;" onclick="navigator.clipboard?.writeText('${email}'); toast('Copied ${email}!', 'success');" title="Click to copy corporate email">
-                <div class="omni-bio-icon" style="background:#E0F2FE; color:#0369A1;"><i class="fas fa-envelope-open-text"></i></div>
+                <div class="omni-bio-icon" style="background:#EBF5FA; color:#2E67A0;"><i class="fas fa-envelope-open-text"></i></div>
                 <div style="min-width:0;">
-                  <div class="omni-bio-lbl">Work Email <i class="fas fa-copy" style="margin-left:3px; color:#0284C7;"></i></div>
+                  <div class="omni-bio-lbl">Work Email <i class="fas fa-copy" style="margin-left:3px; color:#2E67A0;"></i></div>
                   <div class="omni-bio-val" style="font-size:12px;">${email}</div>
                 </div>
               </div>
               <div class="omni-bio-tile">
-                <div class="omni-bio-icon" style="background:#DCFCE7; color:#15803D;"><i class="fas fa-shield-halved"></i></div>
+                <div class="omni-bio-icon" style="background:#EAF6E8; color:#2E7D32;"><i class="fas fa-shield-halved"></i></div>
                 <div>
                   <div class="omni-bio-lbl">Compliance Status</div>
-                  <div class="omni-bio-val" style="color:#15803D;">Verified Active ✓</div>
+                  <div class="omni-bio-val" style="color:#2E7D32;">Verified Active ✓</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Spacious OTSi Career Journey & Milestones Banner -->
-          <div class="omni-card" style="background: linear-gradient(135deg, #032B44 0%, #04466C 50%, #109FDA 100%); color:#fff; border:none; padding:20px 22px; box-shadow:0 8px 24px rgba(4,70,108,0.18);">
+          <!-- Spacious OTSi Career Journey & Milestones Banner (Pandora Blue) -->
+          <div class="omni-card" style="background: linear-gradient(135deg, #1C3F6E 0%, #2E67A0 42%, #109FDA 78%, #5AACCF 100%); color:#fff; border:none; padding:20px 22px; box-shadow:0 8px 24px rgba(15,35,71,0.22);">
             <div class="journey-top-row" style="margin-bottom:10px;">
               <div class="journey-title" style="color:#fff; font-size:14.5px;">
-                <i class="fas fa-medal" style="color:#FBBF24; font-size:16px;"></i> OTSi Career Journey & Anniversary Timeline
+                <i class="fas fa-medal" style="color:#EFFC93; font-size:16px;"></i> OTSi Career Journey & Anniversary Timeline
               </div>
-              <div class="anniversary-badge" id="omni-journey-anniversary-badge">
-                <i class="fas fa-gift" style="color:#FDE68A;"></i> Anniversary in <span class="anniversary-days-count">--</span> days
+              <div class="anniversary-badge" id="omni-journey-anniversary-badge" style="background:rgba(128,194,113,0.22); border-color:rgba(239,252,147,0.45); color:#EFFC93;">
+                <i class="fas fa-gift" style="color:#80C271;"></i> Anniversary in <span class="anniversary-days-count">--</span> days
               </div>
             </div>
             <div class="journey-tenure-text" style="color:rgba(255,255,255,0.95); font-size:12.5px; margin-bottom:12px;">
-              <i class="fas fa-hourglass-half" style="margin-right:5px; color:#7DD3FC;"></i> Total Experience with OTSi: <strong>--</strong>
+              <i class="fas fa-hourglass-half" style="margin-right:5px; color:#5AACCF;"></i> Total Experience with OTSi: <strong>--</strong>
             </div>
             <div class="year-spine-container" style="padding-top:4px; gap:8px;">
               <!-- Dynamically populated year milestone tabs -->
@@ -10834,34 +11044,34 @@
             </div>
             <div class="omni-ring-grid">
               <div class="omni-ring-card">
-                ${buildRadialRingSvg(compliancePct, '#16A34A', '<i class="fas fa-user-check"></i>')}
+                ${buildRadialRingSvg(compliancePct, '#80C271', '<i class="fas fa-user-check"></i>')}
                 <div>
-                  <div style="font-size:17px; font-weight:800; color:#16A34A;" id="omni-kpi-compliance">${compliancePct}%</div>
-                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Attendance Rate</div>
+                  <div style="font-size:17px; font-weight:800; color:#2E7D32;" id="omni-kpi-compliance">${compliancePct}%</div>
+                  <div style="font-size:10.5px; font-weight:800; color:#0F2347; text-transform:uppercase; margin-top:1px;">Attendance Rate</div>
                   <div style="font-size:10px; color:var(--slate-light);">Excellent Standing</div>
                 </div>
               </div>
               <div class="omni-ring-card">
-                ${buildRadialRingSvg(Math.min(100, streakDays * 5), '#EA580C', '<i class="fas fa-fire-flame-curved"></i>')}
+                ${buildRadialRingSvg(Math.min(100, streakDays * 5), '#2E67A0', '<i class="fas fa-fire-flame-curved"></i>')}
                 <div>
-                  <div style="font-size:17px; font-weight:800; color:#EA580C;" id="omni-kpi-streak">${streakDays} Days</div>
-                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Active Streak</div>
+                  <div style="font-size:17px; font-weight:800; color:#1C3F6E;" id="omni-kpi-streak">${streakDays} Days</div>
+                  <div style="font-size:10.5px; font-weight:800; color:#0F2347; text-transform:uppercase; margin-top:1px;">Active Streak</div>
                   <div style="font-size:10px; color:var(--slate-light);">Zero Missed Shifts</div>
                 </div>
               </div>
               <div class="omni-ring-card">
-                ${buildRadialRingSvg(Math.min(100, (presDays + wfhDays) * 4.5), '#0284C7', '<i class="fas fa-building-user"></i>')}
+                ${buildRadialRingSvg(Math.min(100, (presDays + wfhDays) * 4.5), '#5AACCF', '<i class="fas fa-building-user"></i>')}
                 <div>
-                  <div style="font-size:17px; font-weight:800; color:var(--otsi-navy);">${presDays} <span style="font-size:12px; color:var(--slate);">Office</span> / ${wfhDays} <span style="font-size:12px; color:#0284C7;">WFH</span></div>
-                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Hybrid Balance</div>
+                  <div style="font-size:17px; font-weight:800; color:#0F2347;">${presDays} <span style="font-size:12px; color:var(--slate);">Office</span> / ${wfhDays} <span style="font-size:12px; color:#2E67A0;">WFH</span></div>
+                  <div style="font-size:10.5px; font-weight:800; color:#0F2347; text-transform:uppercase; margin-top:1px;">Hybrid Balance</div>
                   <div style="font-size:10px; color:var(--slate-light);">Logged This Month</div>
                 </div>
               </div>
               <div class="omni-ring-card">
-                ${buildRadialRingSvg(100, '#7C3AED', '<i class="fas fa-bolt"></i>')}
+                ${buildRadialRingSvg(100, '#1C3F6E', '<i class="fas fa-bolt"></i>')}
                 <div>
-                  <div style="font-size:17px; font-weight:800; color:#7C3AED;" id="omni-kpi-leaves">100% SLA</div>
-                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Timesheet & Leaves</div>
+                  <div style="font-size:17px; font-weight:800; color:#1C3F6E;" id="omni-kpi-leaves">100% SLA</div>
+                  <div style="font-size:10.5px; font-weight:800; color:#0F2347; text-transform:uppercase; margin-top:1px;">Timesheet & Leaves</div>
                   <div style="font-size:10px; color:var(--slate-light);">${leaveDays} Leave(s) Logged</div>
                 </div>
               </div>
@@ -10905,7 +11115,7 @@
                     <button onclick="navigator.clipboard?.writeText('${peerEmail}'); toast('Copied ${peerEmail}', 'success');" style="border:1px solid #CBD5E1; background:#F8FAFC; color:var(--otsi-navy); border-radius:6px; padding:3px 7px; font-size:10px; font-weight:700; cursor:pointer;" title="Copy Email">
                       <i class="fas fa-envelope"></i>
                     </button>
-                    ${!p.isMe ? `<button onclick="preselectedKudosTarget='${p.employee_id}'; switchOmniTab('achievements');" style="border:1px solid #FDE68A; background:#FFFBEB; color:#B45309; border-radius:6px; padding:3px 7px; font-size:10px; font-weight:700; cursor:pointer;" title="Send Kudos">👏 Kudos</button>` : ''}
+                    ${!p.isMe ? `<button onclick="preselectedKudosTarget='${p.employee_id}'; switchOmniTab('achievements');" style="border:1px solid #5AACCF; background:#F0F7FB; color:#1C3F6E; border-radius:6px; padding:3px 7px; font-size:10px; font-weight:700; cursor:pointer;" title="Send Kudos">👏 Kudos</button>` : ''}
                   </div>
                 </div>
               </div>
@@ -11141,11 +11351,11 @@
         `).join('');
 
         body.innerHTML = `
-          <!-- Interactive Peer Kudos & Spot Recognition Composer -->
-          <div class="omni-card" style="background:linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%); border-color:#FDE68A;">
+          <!-- Interactive Peer Kudos & Spot Recognition Composer (Pandora Blue) -->
+          <div class="omni-card" style="background:linear-gradient(180deg, #F0F7FB 0%, #FFFFFF 100%); border-color:rgba(90, 172, 207, 0.55);">
             <div class="omni-card-title">
-              <span class="omni-card-title-left"><i class="fas fa-hands-clapping" style="color:#D97706; font-size:15px;"></i> 👏 Send Peer Kudos & Spot Recognition</span>
-              <span style="font-size:11px; font-weight:700; color:#B45309; text-transform:none;">Celebrate a Colleague on the Live Wall</span>
+              <span class="omni-card-title-left"><i class="fas fa-hands-clapping" style="color:#2E67A0; font-size:15px;"></i> 👏 Send Peer Kudos & Spot Recognition</span>
+              <span style="font-size:11px; font-weight:700; color:#1C3F6E; text-transform:none;">Celebrate a Colleague on the Live Wall</span>
             </div>
             <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
               <button type="button" class="omni-kudos-badge-btn ${selectedKudosBadge.title === 'Star Performer' ? 'selected' : ''}" onclick="selectKudosBadge(this, '🌟', 'Star Performer')">🌟 Star Performer</button>
@@ -11159,7 +11369,7 @@
                 ${recipientPool.map(p => `<option value="${p.name} (${p.employee_id})" ${preselectedKudosTarget === p.employee_id ? 'selected' : ''}>${p.name} (${p.role})</option>`).join('')}
               </select>
               <input type="text" id="omni-kudos-message" placeholder="Write a short appreciation note (e.g. Great support on the production release!)..." style="padding:9px 12px; border:1px solid #CBD5E1; border-radius:9px; font-size:12px;" onkeydown="if(event.key==='Enter')sendOmniPeerKudos()" />
-              <button onclick="sendOmniPeerKudos()" style="background:linear-gradient(135deg, #D97706, #F59E0B); color:#fff; border:none; border-radius:9px; padding:9px 16px; font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap;">
+              <button onclick="sendOmniPeerKudos()" style="background:linear-gradient(135deg, #0F2347, #1C3F6E, #2E67A0); color:#EFFC93; border:none; border-radius:9px; padding:9px 16px; font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap;">
                 Send Kudos ✨
               </button>
             </div>
@@ -11169,7 +11379,7 @@
             <!-- Awards & Live Recognition Wall -->
             <div class="omni-card" style="margin-bottom:4px;">
               <div class="omni-card-title">
-                <span class="omni-card-title-left"><i class="fas fa-award" style="color:#F59E0B; font-size:15px;"></i> Honors & Recognition Wall</span>
+                <span class="omni-card-title-left"><i class="fas fa-award" style="color:#2E67A0; font-size:15px;"></i> Honors & Recognition Wall</span>
                 <span style="font-size:11px; color:var(--slate); text-transform:none;">${defaults.awards.length + savedKudos.length} Badges</span>
               </div>
               ${kudosFeedHtml}
@@ -11223,33 +11433,33 @@
         });
 
         body.innerHTML = `
-          <!-- Executive Team Availability & Mode Breakdown -->
-          <div class="omni-card" style="background:linear-gradient(135deg, #032B44 0%, #04466C 55%, #0284C7 100%); color:#fff; border:none; padding:20px 22px;">
+          <!-- Executive Team Availability & Mode Breakdown (Pandora Blue) -->
+          <div class="omni-card" style="background:linear-gradient(135deg, #1C3F6E 0%, #2E67A0 42%, #109FDA 78%, #5AACCF 100%); color:#fff; border:none; padding:20px 22px;">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
               <div>
-                <div style="font-size:10.5px; font-weight:800; color:#7DD3FC; text-transform:uppercase; letter-spacing:0.9px;">360° EXECUTIVE COMMAND CONSOLE</div>
+                <div style="font-size:10.5px; font-weight:800; color:#EFFC93; text-transform:uppercase; letter-spacing:0.9px;">360° EXECUTIVE COMMAND CONSOLE</div>
                 <div style="font-size:17px; font-weight:800; margin-top:2px;">${dept} — Live Team Operations</div>
               </div>
-              <button onclick="omniNudgeTeamDefaulters()" style="background:#F59E0B; color:#fff; border:none; border-radius:10px; padding:9px 15px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:7px; box-shadow:0 4px 14px rgba(0,0,0,0.22);">
+              <button onclick="omniNudgeTeamDefaulters()" style="background:#EFFC93; color:#0F2347; border:1px solid #80C271; border-radius:10px; padding:9px 15px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:7px; box-shadow:0 4px 14px rgba(15,35,71,0.28);">
                 <i class="fas fa-bell"></i> Smart Nudge Pending Checkouts & Timesheets
               </button>
             </div>
             <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; text-align:center;">
-              <div style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.18); border-radius:12px; padding:12px;">
+              <div style="background:rgba(255,255,255,0.12); border:1px solid rgba(90,172,207,0.38); border-radius:12px; padding:12px;">
                 <div style="font-size:22px; font-weight:800;">${teamPeers.length}</div>
-                <div style="font-size:10.5px; color:rgba(255,255,255,0.85); text-transform:uppercase; font-weight:700; margin-top:2px;"><i class="fas fa-users"></i> Team Strength</div>
+                <div style="font-size:10.5px; color:rgba(255,255,255,0.88); text-transform:uppercase; font-weight:700; margin-top:2px;"><i class="fas fa-users"></i> Team Strength</div>
               </div>
-              <div style="background:rgba(34,197,94,0.22); border:1px solid rgba(134,239,172,0.35); border-radius:12px; padding:12px;">
-                <div style="font-size:22px; font-weight:800; color:#BBF7D0;">${officeCnt}</div>
-                <div style="font-size:10.5px; color:#DCFCE7; text-transform:uppercase; font-weight:700; margin-top:2px;">🏢 In Office</div>
+              <div style="background:rgba(128,194,113,0.22); border:1px solid rgba(128,194,113,0.5); border-radius:12px; padding:12px;">
+                <div style="font-size:22px; font-weight:800; color:#EFFC93;">${officeCnt}</div>
+                <div style="font-size:10.5px; color:#FFFFFF; text-transform:uppercase; font-weight:700; margin-top:2px;">🏢 In Office</div>
               </div>
-              <div style="background:rgba(56,189,248,0.22); border:1px solid rgba(125,211,252,0.35); border-radius:12px; padding:12px;">
-                <div style="font-size:22px; font-weight:800; color:#BAE6FD;">${wfhCnt}</div>
-                <div style="font-size:10.5px; color:#E0F2FE; text-transform:uppercase; font-weight:700; margin-top:2px;">🏠 Remote WFH</div>
+              <div style="background:rgba(90,172,207,0.24); border:1px solid rgba(90,172,207,0.5); border-radius:12px; padding:12px;">
+                <div style="font-size:22px; font-weight:800; color:#FFFFFF;">${wfhCnt}</div>
+                <div style="font-size:10.5px; color:#EBF5FA; text-transform:uppercase; font-weight:700; margin-top:2px;">🏠 Remote WFH</div>
               </div>
-              <div style="background:rgba(245,158,11,0.25); border:1px solid rgba(253,230,138,0.35); border-radius:12px; padding:12px;">
-                <div style="font-size:22px; font-weight:800; color:#FDE68A;">${leaveCnt}</div>
-                <div style="font-size:10.5px; color:#FEF3C7; text-transform:uppercase; font-weight:700; margin-top:2px;">🌴 Planned Leave</div>
+              <div style="background:rgba(239,252,147,0.16); border:1px solid rgba(239,252,147,0.42); border-radius:12px; padding:12px;">
+                <div style="font-size:22px; font-weight:800; color:#EFFC93;">${leaveCnt}</div>
+                <div style="font-size:10.5px; color:#EFFC93; text-transform:uppercase; font-weight:700; margin-top:2px;">🌴 Planned Leave</div>
               </div>
             </div>
           </div>
@@ -11620,6 +11830,186 @@
         closeColleagueQuickCard();
       }
     });
+
+    // ─── 🌌 OTSi UNIFIED VFX ENGINE (360° HUB FULL VFX + INTERACTIVE PARTICLE EXPLOSION) ───
+    let vfxMouseX = -1000, vfxMouseY = -1000;
+    let vfxOmniParticles = [];
+    let vfxBurstParticles = [];
+    let vfxAnimBound = false;
+
+    function spawnVfxBurst(x, y) {
+      const colors = ['#5AACCF', '#109FDA', '#2E67A0', '#EFFC93', '#80C271', '#1C3F6E'];
+      for (let i = 0; i < 30; i++) {
+        const angle = (Math.PI * 2 * i) / 30 + (Math.random() - 0.5) * 0.35;
+        const speed = 2.0 + Math.random() * 5.8;
+        vfxBurstParticles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.1,
+          r: 2.0 + Math.random() * 3.2,
+          alpha: 1,
+          color: colors[i % colors.length]
+        });
+      }
+      startVfxParticleEngine();
+    }
+
+    function createSpores(count, w, h) {
+      const palette = ['#5AACCF', '#2E67A0', '#80C271', '#EFFC93', '#109FDA'];
+      const arr = [];
+      for (let i = 0; i < count; i++) {
+        arr.push({
+          x: Math.random() * (w || 1200),
+          y: Math.random() * (h || 800),
+          vx: (Math.random() - 0.5) * 0.65,
+          vy: (Math.random() - 0.5) * 0.65 - 0.15,
+          r: 1.5 + Math.random() * 2.4,
+          color: palette[i % palette.length],
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+      return arr;
+    }
+
+    function renderSporeField(ctx, w, h, particles) {
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.phase += 0.03;
+        if (p.x < 0) p.x = w;
+        if (p.x > w) p.x = 0;
+        if (p.y < 0) p.y = h;
+        if (p.y > h) p.y = 0;
+
+        const glow = 0.45 + 0.45 * Math.sin(p.phase);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = glow;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+
+        // Neural constellation threads between nearby bioluminescent spores
+        for (let j = i + 1; j < particles.length; j++) {
+          const q = particles[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 115) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = '#5AACCF';
+            ctx.globalAlpha = (1 - dist / 115) * 0.22;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+    }
+
+    function startVfxParticleEngine() {
+      if (vfxAnimBound) return;
+      vfxAnimBound = true;
+
+      const omniCanvas = document.getElementById('omni-vfx-canvas');
+      const burstCanvas = document.getElementById('vfx-burst-canvas');
+
+      function resizeCanvases() {
+        if (burstCanvas) {
+          burstCanvas.width = window.innerWidth;
+          burstCanvas.height = window.innerHeight;
+        }
+        if (omniCanvas && omniCanvas.parentElement) {
+          omniCanvas.width = omniCanvas.parentElement.clientWidth || 840;
+          omniCanvas.height = omniCanvas.parentElement.clientHeight || 680;
+        }
+      }
+      resizeCanvases();
+      window.addEventListener('resize', resizeCanvases);
+
+      vfxOmniParticles = createSpores(42, 860, 700);
+
+      // 3D Holographic Card Tilt Physics inside 360° Hub
+      document.addEventListener('mousemove', (e) => {
+        vfxMouseX = e.clientX;
+        vfxMouseY = e.clientY;
+        const card = e.target.closest('.omni-bio-tile, .omni-ring-card, .omni-pulse-peer');
+        if (card) {
+          const r = card.getBoundingClientRect();
+          const cx = (e.clientX - r.left) / r.width - 0.5;
+          const cy = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = `perspective(700px) rotateX(${(-cy * 7).toFixed(2)}deg) rotateY(${(cx * 7).toFixed(2)}deg) translateY(-2px)`;
+        }
+      });
+
+      document.addEventListener('mouseout', (e) => {
+        const card = e.target.closest('.omni-bio-tile, .omni-ring-card, .omni-pulse-peer');
+        if (card) card.style.transform = '';
+      });
+
+      // Interactive Bioluminescent Particle Burst Explosion on Clicking Interactive Elements
+      document.addEventListener('click', (e) => {
+        const interactive = e.target.closest(
+          'button, .bnav-item, .bnav-main-circle, .omni-tab-btn, .dock-btn, .omni-bio-tile, .omni-ring-card, .omni-pulse-peer, .omni-id-card-inner, .year-spine, .stat-card, .leave-stat-card, .extra-nav-btn, .quick-nav-btn, .org-tree-node, .cmd-palette-item, .spot'
+        );
+        if (interactive && e.clientX && e.clientY) {
+          spawnVfxBurst(e.clientX, e.clientY);
+        }
+      });
+
+      function tick() {
+        const omniModal = document.getElementById('omni-hub-modal');
+        if (omniCanvas && omniModal && omniModal.classList.contains('open')) {
+          if (omniCanvas.width !== omniCanvas.parentElement.clientWidth) {
+            omniCanvas.width = omniCanvas.parentElement.clientWidth || 840;
+            omniCanvas.height = omniCanvas.parentElement.clientHeight || 680;
+          }
+          const octx = omniCanvas.getContext('2d');
+          renderSporeField(octx, omniCanvas.width, omniCanvas.height, vfxOmniParticles);
+        }
+        if (burstCanvas) {
+          const bctx = burstCanvas.getContext('2d');
+          bctx.clearRect(0, 0, burstCanvas.width, burstCanvas.height);
+          for (let i = vfxBurstParticles.length - 1; i >= 0; i--) {
+            const b = vfxBurstParticles[i];
+            b.x += b.vx;
+            b.y += b.vy;
+            b.vy += 0.14;
+            b.alpha -= 0.024;
+            if (b.alpha <= 0) {
+              vfxBurstParticles.splice(i, 1);
+              continue;
+            }
+            bctx.beginPath();
+            bctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+            bctx.fillStyle = b.color;
+            bctx.globalAlpha = b.alpha;
+            bctx.shadowBlur = 10;
+            bctx.shadowColor = b.color;
+            bctx.fill();
+          }
+          bctx.globalAlpha = 1;
+          bctx.shadowBlur = 0;
+        }
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // Start Unified VFX Engine on load (Main Page = 360 VFX Design; 360° Hub = Full VFX Design)
+    (function initUnifiedVfxEngine() {
+      document.body.classList.remove('vfx-mode-full');
+      document.body.classList.add('vfx-mode-hub');
+      localStorage.removeItem('otsi_vfx_cinema_mode');
+      setTimeout(() => startVfxParticleEngine(), 60);
+    })();
 
     // ─── HELP DESK DYNAMIC BINDINGS ───
     async function loadTickets() {
