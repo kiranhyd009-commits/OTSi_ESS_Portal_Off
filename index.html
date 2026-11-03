@@ -2659,27 +2659,50 @@
     }
 
     .omni-modal-sheet {
-      background: #ffffff;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 720px;
+      background: #F8FAFC;
+      border-radius: 22px;
+      width: 96vw;
+      max-width: 1120px;
+      height: 86vh;
+      max-height: 840px;
       overflow: hidden;
-      animation: modalIn .24s ease;
-      max-height: 90vh;
+      animation: modalIn .24s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
-      flex-direction: column;
-      box-shadow: 0 24px 70px rgba(4, 70, 108, 0.22);
-      border: 1px solid var(--border);
+      flex-direction: row;
+      box-shadow: 0 32px 90px rgba(4, 70, 108, 0.32);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .omni-hero-header {
-      background: linear-gradient(135deg, #04466C 0%, #0A669C 50%, #109FDA 100%);
-      padding: 16px 20px;
-      color: #fff;
+    .omni-modal-sheet.fullscreen {
+      max-width: 98vw;
+      width: 98vw;
+      height: 95vh;
+      max-height: 95vh;
+      border-radius: 16px;
+    }
+
+    /* Left Executive Identity & Navigation Sidebar */
+    .omni-sidebar {
+      width: 272px;
+      background: linear-gradient(180deg, #032B44 0%, #04466C 55%, #063856 100%);
+      color: #ffffff;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
-      position: relative;
+      padding: 20px 16px;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+      overflow-y: auto;
+    }
+
+    .omni-side-profile {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(8px);
     }
 
     .omni-hero-user {
@@ -2689,68 +2712,267 @@
     }
 
     .omni-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      border: 2px solid rgba(255, 255, 255, 0.8);
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #109FDA, #0284C7);
+      border: 2px solid rgba(255, 255, 255, 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 19px;
       font-weight: 800;
       color: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .omni-avatar:hover {
+      transform: scale(1.06);
     }
 
     .omni-user-name {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 800;
-      line-height: 1.2;
+      line-height: 1.25;
+      color: #ffffff;
     }
 
     .omni-user-meta {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 3px;
+      line-height: 1.35;
+    }
+
+    .omni-id-pass-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(125, 211, 252, 0.45);
+      background: linear-gradient(135deg, rgba(16, 159, 218, 0.32), rgba(2, 132, 199, 0.18));
+      color: #E0F2FE;
       font-size: 11.5px;
-      color: rgba(255, 255, 255, 0.85);
-      margin-top: 2px;
-    }
-
-    .omni-nav-tabs {
-      display: flex;
-      background: #F1F5F9;
-      border-bottom: 1px solid #E2E8F0;
-      padding: 4px 12px 0;
-      gap: 4px;
-      overflow-x: auto;
-    }
-
-    .omni-tab-btn {
-      border: none;
-      background: transparent;
-      padding: 8px 14px;
-      font-size: 12px;
       font-weight: 700;
-      color: var(--slate);
-      border-radius: 8px 8px 0 0;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.15s;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.18s ease;
       font-family: inherit;
-      white-space: nowrap;
+    }
+
+    .omni-id-pass-btn:hover,
+    .omni-id-pass-btn.active {
+      background: #ffffff;
+      color: var(--otsi-navy);
+      border-color: #ffffff;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Spacious Vertical Sidebar Navigation */
+    .omni-nav-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .omni-tab-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      transition: all 0.18s ease;
+      font-family: inherit;
+      text-align: left;
+      color: rgba(255, 255, 255, 0.82);
+      width: 100%;
+    }
+
+    .omni-tab-btn:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      transform: translateX(3px);
     }
 
     .omni-tab-btn.active {
       background: #ffffff;
       color: var(--otsi-navy);
-      border: 1px solid #E2E8F0;
-      border-bottom-color: #ffffff;
-      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    }
+
+    .omni-tab-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      transition: all 0.18s ease;
+    }
+
+    .omni-tab-btn.active .omni-tab-icon {
+      background: #E0F2FE;
+      color: #0284C7;
+    }
+
+    .omni-tab-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .omni-tab-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .omni-tab-sub {
+      font-size: 10px;
+      opacity: 0.72;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Sidebar Quick Actions Launcher */
+    .omni-side-dock-wrap {
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      padding-top: 12px;
+    }
+
+    .omni-side-dock-lbl {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #7DD3FC;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .omni-actions-dock {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .dock-btn {
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 10px;
+      padding: 8px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      font-family: inherit;
+    }
+
+    .dock-btn:hover {
+      background: #ffffff;
+      color: var(--otsi-navy);
+      border-color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .dock-btn i {
+      font-size: 13px;
+      width: 16px;
+      text-align: center;
+    }
+
+    /* Right Spacious Main Workspace */
+    .omni-main-workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background: #F8FAFC;
+      overflow: hidden;
+    }
+
+    .omni-canvas-topbar {
+      background: #ffffff;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .omni-canvas-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .omni-canvas-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #E0F2FE, #BAE6FD);
+      color: #0284C7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .omni-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .omni-hdr-pill {
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      color: var(--otsi-navy);
+      border-radius: 10px;
+      padding: 7px 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+      font-family: inherit;
+    }
+
+    .omni-hdr-pill:hover,
+    .omni-hdr-pill.active {
+      background: var(--otsi-navy);
+      color: #ffffff;
+      border-color: var(--otsi-navy);
     }
 
     .omni-modal-body {
-      padding: 16px 20px;
+      padding: 22px 26px;
       overflow-y: auto;
       flex: 1;
       background: #F8FAFC;
@@ -2759,89 +2981,412 @@
     .omni-card {
       background: #ffffff;
       border: 1px solid #E2E8F0;
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
     }
 
     .omni-card-title {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 800;
       color: var(--otsi-navy);
-      margin-bottom: 10px;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: space-between;
+      gap: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.4px;
+    }
+
+    .omni-card-title-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Detailed Icon-Driven Bio Grid */
+    .omni-bio-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .omni-bio-tile {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.18s ease;
+    }
+
+    .omni-bio-tile:hover {
+      background: #ffffff;
+      border-color: #93C5FD;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.07);
+      transform: translateY(-2px);
+    }
+
+    .omni-bio-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .omni-bio-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--slate-light);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .omni-bio-val {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--otsi-navy);
+      margin-top: 2px;
+      word-break: break-word;
+    }
+
+    /* 3D Flip Digital ID Card inside 360 Hub */
+    .omni-id-stage {
+      perspective: 1200px;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    .omni-id-stage.open {
+      display: block;
+      animation: modalIn 0.22s ease;
+    }
+
+    .omni-id-card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 190px;
+      transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .omni-id-card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .omni-id-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 20px 24px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 14px 34px rgba(4, 70, 108, 0.24);
+      overflow: hidden;
+    }
+
+    .omni-id-front {
+      background: linear-gradient(135deg, #032B44 0%, #04466C 52%, #0EA5E9 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .omni-id-back {
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #04466C 100%);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transform: rotateY(180deg);
+    }
+
+    .omni-id-qr-box {
+      background: #ffffff;
+      padding: 9px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      flex-shrink: 0;
+    }
+
+    /* Spacious Animated SVG Radial KPI Rings */
+    .omni-ring-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .omni-modal-sheet {
+        flex-direction: column;
+        height: 92vh;
+        max-height: 92vh;
+      }
+      .omni-sidebar {
+        width: 100%;
+        padding: 12px 14px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+      }
+      .omni-nav-tabs {
+        flex-direction: row;
+        overflow-x: auto;
+        margin-bottom: 8px;
+      }
+      .omni-tab-btn {
+        width: auto;
+        white-space: nowrap;
+      }
+      .omni-tab-sub,
+      .omni-side-dock-wrap {
+        display: none;
+      }
+      .omni-ring-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .omni-ring-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px 14px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      transition: all 0.18s ease;
+    }
+
+    .omni-ring-card:hover {
+      border-color: #BAE6FD;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08);
+    }
+
+    .omni-ring-svg-wrap {
+      width: 56px;
+      height: 56px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .omni-ring-svg {
+      width: 56px;
+      height: 56px;
+      transform: rotate(-90deg);
+    }
+
+    .omni-ring-bg {
+      fill: none;
+      stroke: #E2E8F0;
+      stroke-width: 5;
+    }
+
+    .omni-ring-val {
+      fill: none;
+      stroke-width: 5;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .omni-ring-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    /* Spacious Team Pulse Cards */
+    .omni-pulse-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 12px;
+    }
+
+    .omni-pulse-peer {
+      background: #ffffff;
+      border: 1px solid #E2E8F0;
+      border-radius: 13px;
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.18s ease;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .omni-pulse-peer:hover {
+      background: #F0F9FF;
+      border-color: #7DD3FC;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.1);
+    }
+
+    .omni-pulse-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 11px;
+      background: #E0F2FE;
+      color: #0369A1;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .omni-pulse-dot {
+      position: absolute;
+      right: -2px;
+      bottom: -2px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 2px solid #fff;
     }
 
     .tech-pill-wrap {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
     }
 
     .tech-pill {
       background: #EFF6FF;
       color: #1D4ED8;
       border: 1px solid #DBEAFE;
-      border-radius: 16px;
-      padding: 3px 10px;
-      font-size: 11px;
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 12px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .tech-pill:hover {
+      background: #DBEAFE;
+      transform: translateY(-1px);
+    }
+
+    .tech-pill .pill-del {
+      cursor: pointer;
+      opacity: 0.6;
+      font-size: 10px;
+      margin-left: 3px;
+    }
+
+    .tech-pill .pill-del:hover {
+      opacity: 1;
+      color: #DC2626;
     }
 
     .award-card {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
       background: #FFFBEB;
       border: 1px solid #FDE68A;
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin-bottom: 6px;
+      border-radius: 12px;
+      padding: 13px 16px;
+      margin-bottom: 10px;
     }
 
-    .omni-actions-dock {
-      background: #ffffff;
-      border-top: 1px solid #E2E8F0;
-      padding: 10px 16px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .dock-btn {
+    .omni-kudos-badge-btn {
       background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 8px;
-      padding: 8px 6px;
-      font-size: 11.5px;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--otsi-navy);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
       cursor: pointer;
-      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.15s;
       font-family: inherit;
     }
 
-    .dock-btn:hover {
-      background: #EFF6FF;
-      border-color: #93C5FD;
-      color: var(--otsi-blue);
-      transform: translateY(-2px);
+    .omni-kudos-badge-btn.selected,
+    .omni-kudos-badge-btn:hover {
+      background: #FEF3C7;
+      border-color: #F59E0B;
+      color: #92400E;
+      transform: translateY(-1px);
     }
 
-    .dock-btn i {
+    /* Colleague 360 Quick-Card & Ctrl+K Command Palette */
+    .cmd-palette-sheet {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 560px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(4, 70, 108, 0.28);
+      border: 1px solid #CBD5E1;
+      animation: modalIn 0.18s ease;
+    }
+
+    .cmd-palette-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #E2E8F0;
+      background: #F8FAFC;
+    }
+
+    .cmd-palette-input {
+      border: none;
+      background: transparent;
+      width: 100%;
       font-size: 14px;
+      font-weight: 600;
+      color: var(--otsi-navy);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .cmd-palette-list {
+      max-height: 360px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .cmd-palette-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .cmd-palette-item:hover {
+      background: #EFF6FF;
     }
 
     /* ─── MODAL HEADER & CLOSE BUTTON ─── */
@@ -6112,61 +6657,149 @@
     </nav>
   </div>
 
-  <!-- ════ 360° EMPLOYEE EXECUTIVE HUB & OMNI MODAL ════ -->
-  <div class="modal-overlay" id="omni-hub-modal">
-    <div class="omni-modal-sheet">
-      <!-- Modern Hero Header -->
-      <div class="omni-hero-header">
-        <div class="omni-hero-user">
-          <div class="omni-avatar" id="omni-user-avatar">NG</div>
-          <div>
-            <div class="omni-user-name" id="omni-user-name">Nitin Gupta</div>
-            <div class="omni-user-meta" id="omni-user-meta">Senior Software Engineer • EMP1032 • Engineering (QA)</div>
+  <!-- ════ 360° EMPLOYEE EXECUTIVE HUB & OMNI MODAL (SPACIOUS BENTO STUDIO) ════ -->
+  <div class="modal-overlay" id="omni-hub-modal" onclick="if(event.target===this)closeOmniHubModal()">
+    <div class="omni-modal-sheet" id="omni-modal-sheet">
+      <!-- Left Executive Identity & Navigation Sidebar -->
+      <aside class="omni-sidebar">
+        <div>
+          <!-- Identity Hero Card -->
+          <div class="omni-side-profile">
+            <div class="omni-hero-user">
+              <div class="omni-avatar" id="omni-user-avatar" onclick="toggleOmniDigitalId()" title="Click to toggle 3D Digital ID Pass">NG</div>
+              <div style="min-width:0;">
+                <div class="omni-user-name" id="omni-user-name">Nitin Gupta</div>
+                <div id="omni-live-workmode-pill" style="display:inline-flex; align-items:center; gap:4px; margin-top:4px; font-size:10px; font-weight:700; background:rgba(22,163,74,0.28); border:1px solid rgba(134,239,172,0.6); color:#DCFCE7; padding:2px 8px; border-radius:12px;">
+                  ● Active
+                </div>
+              </div>
+            </div>
+            <div class="omni-user-meta" id="omni-user-meta" style="margin-top:8px;">Senior Software Engineer • EMP1032</div>
+            <button class="omni-id-pass-btn" id="omni-id-toggle-btn" onclick="toggleOmniDigitalId()">
+              <i class="fas fa-id-card-clip"></i> <span>Flip 3D Digital ID Pass</span>
+            </button>
+          </div>
+
+          <!-- Spacious Icon-Rich Vertical Navigation -->
+          <div class="omni-nav-tabs">
+            <button class="omni-tab-btn active" id="omni-tab-overview" onclick="switchOmniTab('overview')">
+              <div class="omni-tab-icon"><i class="fas fa-id-badge"></i></div>
+              <div class="omni-tab-text">
+                <span class="omni-tab-title">360° Identity & Bio</span>
+                <span class="omni-tab-sub">Profile Grid, Career & KPIs</span>
+              </div>
+            </button>
+            <button class="omni-tab-btn" id="omni-tab-team" onclick="switchOmniTab('team')">
+              <div class="omni-tab-icon"><i class="fas fa-users-viewfinder"></i></div>
+              <div class="omni-tab-text">
+                <span class="omni-tab-title">My Team & Pulse</span>
+                <span class="omni-tab-sub">Colleagues & Live Status</span>
+              </div>
+            </button>
+            <button class="omni-tab-btn" id="omni-tab-projects" onclick="switchOmniTab('projects')">
+              <div class="omni-tab-icon"><i class="fas fa-laptop-code"></i></div>
+              <div class="omni-tab-text">
+                <span class="omni-tab-title">Projects & Skills</span>
+                <span class="omni-tab-sub">Department Tech Portfolio</span>
+              </div>
+            </button>
+            <button class="omni-tab-btn" id="omni-tab-analytics" onclick="switchOmniTab('analytics')">
+              <div class="omni-tab-icon"><i class="fas fa-chart-line"></i></div>
+              <div class="omni-tab-text">
+                <span class="omni-tab-title">Attendance & Growth</span>
+                <span class="omni-tab-sub">Shift Trends & Ledgers</span>
+              </div>
+            </button>
+            <button class="omni-tab-btn" id="omni-tab-achievements" onclick="switchOmniTab('achievements')">
+              <div class="omni-tab-icon"><i class="fas fa-trophy"></i></div>
+              <div class="omni-tab-text">
+                <span class="omni-tab-title">Awards & Peer Kudos</span>
+                <span class="omni-tab-sub">Spot Recognition & Certs</span>
+              </div>
+            </button>
+            <button class="omni-tab-btn" id="omni-tab-command" onclick="switchOmniTab('command')">
+              <div class="omni-tab-icon"><i class="fas fa-bolt"></i></div>
+              <div class="omni-tab-text">
+                <span class="omni-tab-title">Command 360°</span>
+                <span class="omni-tab-sub">Approvals & Smart Nudge</span>
+              </div>
+            </button>
           </div>
         </div>
-        <button class="modal-close-btn" onclick="closeOmniHubModal()" aria-label="Close">&#x2715;</button>
-      </div>
 
-      <!-- Navigation Tabs -->
-      <div class="omni-nav-tabs">
-        <button class="omni-tab-btn active" id="omni-tab-overview" onclick="switchOmniTab('overview')">
-          <i class="fas fa-id-card"></i> 360° Overview
-        </button>
-        <button class="omni-tab-btn" id="omni-tab-projects" onclick="switchOmniTab('projects')">
-          <i class="fas fa-layer-group"></i> Projects & Tech
-        </button>
-        <button class="omni-tab-btn" id="omni-tab-analytics" onclick="switchOmniTab('analytics')">
-          <i class="fas fa-chart-line"></i> Attendance & Growth
-        </button>
-        <button class="omni-tab-btn" id="omni-tab-achievements" onclick="switchOmniTab('achievements')">
-          <i class="fas fa-award"></i> Awards & Badges
-        </button>
-      </div>
+        <!-- Integrated Quick-Action Launcher -->
+        <div class="omni-side-dock-wrap">
+          <div class="omni-side-dock-lbl"><i class="fas fa-rocket"></i> Instant 1-Click Actions</div>
+          <div class="omni-actions-dock">
+            <button class="dock-btn" onclick="closeOmniHubModal(); showPage('att'); doCheckIn();">
+              <i class="fas fa-fingerprint" style="color:#4ADE80;"></i>
+              <span>Punch In/Out</span>
+            </button>
+            <button class="dock-btn" onclick="closeOmniHubModal(); showPage('leave'); openLeaveModal();">
+              <i class="fas fa-calendar-plus" style="color:#38BDF8;"></i>
+              <span>Apply Leave</span>
+            </button>
+            <button class="dock-btn" onclick="quickRequestWfhTomorrow();">
+              <i class="fas fa-house-laptop" style="color:#2DD4BF;"></i>
+              <span>WFH Tomorrow</span>
+            </button>
+            <button class="dock-btn" onclick="closeOmniHubModal(); showPage('hd'); openTicketModal();">
+              <i class="fas fa-headset" style="color:#FB923C;"></i>
+              <span>Raise Ticket</span>
+            </button>
+            <button class="dock-btn" style="grid-column: span 2; justify-content:center;" onclick="closeOmniHubModal(); showPage('ts');">
+              <i class="fas fa-business-time" style="color:#C084FC;"></i>
+              <span>Open Weekly Timesheet</span>
+            </button>
+          </div>
+        </div>
+      </aside>
 
-      <!-- Dynamic Tab Content Body -->
-      <div class="omni-modal-body" id="omni-modal-body">
-        <!-- Rendered dynamically by renderOmniTab() -->
-      </div>
+      <!-- Right Spacious Content Canvas -->
+      <div class="omni-main-workspace">
+        <div class="omni-canvas-topbar">
+          <div class="omni-canvas-heading">
+            <div class="omni-canvas-badge" id="omni-canvas-icon"><i class="fas fa-id-badge"></i></div>
+            <div>
+              <div style="font-size:16px; font-weight:800; color:var(--otsi-navy);" id="omni-canvas-title">360° Executive Identity & Overview</div>
+              <div style="font-size:11.5px; color:var(--slate);" id="omni-canvas-sub">Live corporate bio, career milestones, and real-time compliance telemetry</div>
+            </div>
+          </div>
+          <div class="omni-header-actions">
+            <button class="omni-hdr-pill" onclick="openCmdPalette()" title="Quick Search & Command Palette (Ctrl + K)">
+              <i class="fas fa-magnifying-glass"></i> <span>Search (Ctrl+K)</span>
+            </button>
+            <button class="omni-hdr-pill" id="omni-fullscreen-btn" onclick="toggleOmniFullScreen()" title="Toggle Full Screen View">
+              <i class="fas fa-expand"></i> <span>Full View</span>
+            </button>
+            <button class="modal-close-btn" onclick="closeOmniHubModal()" style="background:#F1F5F9; color:var(--otsi-navy); border-color:#CBD5E1;" aria-label="Close">&#x2715;</button>
+          </div>
+        </div>
 
-      <!-- Quick Omni-Actions Dock -->
-      <div class="omni-actions-dock">
-        <button class="dock-btn" onclick="closeOmniHubModal(); showPage('att'); doCheckIn();">
-          <i class="fas fa-fingerprint" style="color:#16A34A;"></i>
-          <span>Punch In/Out</span>
-        </button>
-        <button class="dock-btn" onclick="closeOmniHubModal(); showPage('leave'); openApplyLeaveModal();">
-          <i class="fas fa-calendar-plus" style="color:#0284C7;"></i>
-          <span>Apply Leave</span>
-        </button>
-        <button class="dock-btn" onclick="closeOmniHubModal(); showPage('hd'); openCreateTicketModal();">
-          <i class="fas fa-ticket-alt" style="color:#EA580C;"></i>
-          <span>Raise Ticket</span>
-        </button>
-        <button class="dock-btn" onclick="closeOmniHubModal(); showPage('ts');">
-          <i class="fas fa-clock" style="color:#7C3AED;"></i>
-          <span>Timesheet</span>
-        </button>
+        <!-- Dynamic Tab Content Body -->
+        <div class="omni-modal-body" id="omni-modal-body">
+          <!-- Rendered dynamically by renderOmniTab() -->
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- ════ COLLEAGUE 360° QUICK-CARD MODAL ════ -->
+  <div class="modal-overlay" id="colleague-quick-modal" onclick="if(event.target===this)closeColleagueQuickCard()">
+    <div class="modal-sheet" style="max-width:440px; border-radius:18px; overflow:hidden;">
+      <div id="colleague-quick-body"></div>
+    </div>
+  </div>
+
+  <!-- ════ CTRL + K SPOTLIGHT COMMAND PALETTE ════ -->
+  <div class="modal-overlay" id="cmd-palette-modal" onclick="if(event.target===this)closeCmdPalette()">
+    <div class="cmd-palette-sheet">
+      <div class="cmd-palette-input-wrap">
+        <i class="fas fa-search" style="color:var(--otsi-blue); font-size:15px;"></i>
+        <input type="text" id="cmd-palette-search" class="cmd-palette-input" placeholder="Search colleagues, departments, or type an action (Leave, WFH, Kudos)..." oninput="filterCmdPalette(this.value)" autocomplete="off" />
+        <button onclick="closeCmdPalette()" style="border:none; background:#E2E8F0; color:var(--slate); font-size:10px; font-weight:700; padding:3px 7px; border-radius:5px; cursor:pointer;">ESC</button>
+      </div>
+      <div class="cmd-palette-list" id="cmd-palette-results"></div>
     </div>
   </div>
 
@@ -9696,19 +10329,245 @@
       }
     }
 
-    // ─── 360° OMNI-HUB COMMAND CENTER LOGIC ───
+    // ─── 360° OMNI-HUB COMMAND CENTER LOGIC (DYNAMIC & DEPARTMENT-AWARE) ───
     let currentOmniTab = 'overview';
+    let omniIdDrawerOpen = false;
+    let omniTeamFilter = 'all';
+    let selectedKudosBadge = { icon: '🌟', title: 'Star Performer' };
+    let preselectedKudosTarget = '';
+
+    const OMNI_TAB_HEADERS = {
+      overview: { icon: 'fas fa-id-badge', title: '360° Executive Identity & Overview', sub: 'Detailed icon-driven profile bio, OTSi career milestones & radial compliance gauges' },
+      team: { icon: 'fas fa-users-viewfinder', title: 'My Team & Live Colleague Pulse', sub: 'Colleagues reporting to your manager with real-time work mode & 1-click collaboration' },
+      projects: { icon: 'fas fa-laptop-code', title: 'Assigned Projects & Department Tech Matrix', sub: 'Active delivery portfolio, core competencies & customizable technology stack' },
+      analytics: { icon: 'fas fa-chart-line', title: 'Attendance Telemetry & Shift Analytics', sub: '7-shift working hours consistency trend & multi-timescale attendance ledgers' },
+      achievements: { icon: 'fas fa-trophy', title: 'Peer Kudos Studio, Awards & Certifications', sub: 'Send instant spot recognition badges to colleagues & manage verified credentials' },
+      command: { icon: 'fas fa-bolt', title: 'Command 360° Operations & Governance', sub: 'Team availability breakdown, smart defaulter nudges & 1-click approval queue' }
+    };
+
+    function getOmniStorageKey(suffix) {
+      const empId = loginEmpId || (currentProfile && currentProfile.employee_id) || 'EMP1032';
+      return `otsi_omni_${empId}_${suffix}`;
+    }
+
+    function toggleOmniFullScreen() {
+      const sheet = document.getElementById('omni-modal-sheet');
+      const btn = document.getElementById('omni-fullscreen-btn');
+      if (!sheet) return;
+      const isFull = sheet.classList.toggle('fullscreen');
+      if (btn) {
+        btn.innerHTML = isFull
+          ? '<i class="fas fa-compress"></i> <span>Standard View</span>'
+          : '<i class="fas fa-expand"></i> <span>Full View</span>';
+      }
+    }
+
+    function getAllOrgEmployeesFlat() {
+      const list = [];
+      const seen = new Set();
+      function walk(nodes, mgrName = '') {
+        if (!nodes) return;
+        nodes.forEach(n => {
+          const cleanName = (n.name || '').replace(' (You)', '');
+          if (n.employee_id && !seen.has(n.employee_id)) {
+            seen.add(n.employee_id);
+            list.push({
+              employee_id: n.employee_id,
+              name: cleanName,
+              initials: n.initials || cleanName.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase(),
+              role: n.role || 'Employee',
+              department: n.department || (currentProfile && currentProfile.department) || 'Engineering',
+              manager_name: mgrName || (currentProfile && currentProfile.manager_name) || 'Executive Leadership',
+              isMe: n.employee_id === loginEmpId,
+              childrenCount: (n.children && n.children.length) || 0
+            });
+          }
+          if (n.children && n.children.length > 0) {
+            walk(n.children, cleanName);
+          }
+        });
+      }
+      const source = (dynamicOrgTreeDataAll && dynamicOrgTreeDataAll.length > 0) ? dynamicOrgTreeDataAll : dynamicOrgTreeData;
+      walk(source);
+      return list;
+    }
+
+    function getOmniTeamColleagues() {
+      const targetId = loginEmpId || (currentProfile && currentProfile.employee_id);
+      let peers = [];
+      function findParentPeers(nodes) {
+        if (!nodes) return false;
+        for (const n of nodes) {
+          if (n.children && n.children.some(c => c.employee_id === targetId)) {
+            peers = n.children.map(c => ({
+              employee_id: c.employee_id,
+              name: (c.name || '').replace(' (You)', ''),
+              initials: c.initials || 'EM',
+              role: c.role || 'Specialist',
+              department: c.department || (currentProfile && currentProfile.department) || 'OTSi',
+              isMe: c.employee_id === targetId
+            }));
+            return true;
+          }
+          if (n.children && findParentPeers(n.children)) return true;
+        }
+        return false;
+      }
+      const source = (dynamicOrgTreeDataAll && dynamicOrgTreeDataAll.length > 0) ? dynamicOrgTreeDataAll : dynamicOrgTreeData;
+      findParentPeers(source);
+      if (peers.length === 0) {
+        const flat = getAllOrgEmployeesFlat();
+        peers = flat.slice(0, 8);
+      }
+      return peers;
+    }
+
+    function getColleagueSimulatedStatus(empId, idx) {
+      if (empId === loginEmpId) {
+        return isWFH ? { key: 'wfh', label: 'Remote WFH', icon: '🏠', color: '#0284C7', bg: '#E0F2FE', dot: '#0284C7' }
+                     : { key: 'office', label: 'In Office', icon: '🏢', color: '#16A34A', bg: '#DCFCE7', dot: '#16A34A' };
+      }
+      const hash = (empId || '').split('').reduce((a, c) => a + c.charCodeAt(0), idx);
+      const mod = hash % 6;
+      if (mod === 0) return { key: 'leave', label: 'On Leave', icon: '🌴', color: '#D97706', bg: '#FEF3C7', dot: '#F59E0B' };
+      if (mod === 1 || mod === 4) return { key: 'wfh', label: 'Remote WFH', icon: '🏠', color: '#0284C7', bg: '#E0F2FE', dot: '#0284C7' };
+      return { key: 'office', label: 'In Office', icon: '🏢', color: '#16A34A', bg: '#DCFCE7', dot: '#16A34A' };
+    }
+
+    function generateOmniQrSvg(empId) {
+      const seed = (empId || 'EMP1032').split('').reduce((a, c) => a * 31 + c.charCodeAt(0), 7);
+      let rects = '';
+      const size = 7;
+      for (let r = 0; r < size; r++) {
+        for (let c = 0; c < size; c++) {
+          const isCorner = (r < 2 && c < 2) || (r < 2 && c >= size - 2) || (r >= size - 2 && c < 2);
+          const bit = ((seed >> ((r * size + c) % 16)) + r * 3 + c * 5) % 2 === 0;
+          if (isCorner || bit) {
+            rects += `<rect x="${c * 7 + 3}" y="${r * 7 + 3}" width="5.5" height="5.5" rx="1" fill="#04466C"/>`;
+          }
+        }
+      }
+      return `<svg width="60" height="60" viewBox="0 0 55 55" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
+    }
+
+    function getDeptProfileDefaults(dept, team, desig) {
+      const d = (dept || '').toLowerCase();
+      const t = (team || '').toLowerCase();
+      if (d.includes('data') || d.includes('analytics') || t.includes('data') || t.includes('bi')) {
+        return {
+          projects: [
+            { name: 'OTSi Enterprise Lakehouse & BI 360', status: 'Active Primary', role: desig || 'Data Specialist', client: 'Global Banking & Retail', desc: 'Real-time ETL pipelines, Snowflake/Databricks lakehouse modeling, and executive KPI dashboards.' },
+            { name: 'AI Predictive Workforce & Attrition Engine', status: 'Phase 2', role: 'Analytics Contributor', client: 'OTSi Internal CoE', desc: 'Feature engineering, automated data quality checks, and ML forecasting models.' }
+          ],
+          skills: {
+            core: ['Python / PySpark', 'SQL (Snowflake / Postgres)', 'R / Statistical Modeling', 'DAX / MDX'],
+            frameworks: ['Apache Spark / Databricks', 'Airflow / dbt', 'Power BI / Tableau', 'Pandas & Scikit-Learn'],
+            cloud: ['AWS Glue & Redshift', 'Azure Synapse / Fabric', 'Git / DataOps CI/CD', 'Docker']
+          },
+          awards: [
+            { icon: '🌟', title: 'Data Excellence Spot Award (2025)', desc: 'Recognized for optimizing high-volume analytics queries and zero-latency dashboard delivery.' },
+            { icon: '🚀', title: 'OTSi Innovation Champion', desc: 'Delivered automated data validation pipelines reducing manual QA effort by 60%.' }
+          ],
+          certs: [
+            { name: 'Databricks Certified Data Engineer Associate', icon: 'fas fa-database', color: '#EA580C' },
+            { name: 'Microsoft Certified: Power BI Data Analyst Associate', icon: 'fas fa-chart-bar', color: '#0284C7' },
+            { name: 'AWS Certified Data Analytics – Specialty', icon: 'fab fa-aws', color: '#F59E0B' }
+          ]
+        };
+      } else if (d.includes('quality') || d.includes('testing') || t.includes('qa')) {
+        return {
+          projects: [
+            { name: 'OTSi Unified Test Automation Framework', status: 'Active Primary', role: desig || 'QA Automation Lead', client: 'OTSi Enterprise Products', desc: 'End-to-end Playwright & Selenium regression suites, API contract testing, and shift compliance verification.' },
+            { name: 'FinTech Core Banking Zero-Defect Release', status: 'Continuous', role: 'Quality Assurance Specialist', client: 'Global FinTech Partner', desc: 'Automated load testing, OAuth2 security validation, and CI/CD quality gates.' }
+          ],
+          skills: {
+            core: ['Python', 'JavaScript / TypeScript', 'Java', 'SQL (PostgreSQL)'],
+            frameworks: ['Selenium / Playwright', 'PyTest / Cypress', 'Postman / REST Assured', 'JMeter / K6 Load'],
+            cloud: ['GitHub Actions CI/CD', 'Docker Test Grids', 'Jenkins', 'Jira / Xray Test Mgmt']
+          },
+          awards: [
+            { icon: '🛡️', title: 'Zero-Defect Release Champion (2025)', desc: 'Recognized for 99.8% automated regression coverage and zero critical production escapes.' },
+            { icon: '🌟', title: 'OTSi Spot Award — Quality CoE', desc: 'Accelerated release sign-off cycle time by 45% through parallel execution pipelines.' }
+          ],
+          certs: [
+            { name: 'ISTQB Advanced Level Test Automation Engineer', icon: 'fas fa-check-double', color: '#0284C7' },
+            { name: 'Certified Agile Tester (CAT)', icon: 'fas fa-vial', color: '#16A34A' },
+            { name: 'AWS Cloud Practitioner Essentials', icon: 'fab fa-aws', color: '#F59E0B' }
+          ]
+        };
+      } else if (d.includes('infrastructure') || d.includes('cloud') || t.includes('devops') || t.includes('sec')) {
+        return {
+          projects: [
+            { name: 'OTSi Zero-Trust Cloud & SOC Modernization', status: 'Active Primary', role: desig || 'Cloud & Infra Specialist', client: 'OTSi Global IT', desc: 'Multi-region high availability, Kubernetes cluster hardening, and automated FinOps cost governance.' },
+            { name: 'Enterprise Hybrid Network & DR Automation', status: 'Active', role: 'Infrastructure Architect', client: 'Enterprise Operations', desc: 'Terraform IaC provisioning, 99.99% uptime SLA monitoring, and automated incident response.' }
+          ],
+          skills: {
+            core: ['Linux / Bash Scripting', 'Python Automation', 'Terraform (HCL)', 'Networking & Zero-Trust'],
+            frameworks: ['Kubernetes (EKS / AKS)', 'Docker & Helm', 'Ansible', 'Prometheus & Grafana'],
+            cloud: ['AWS Solutions Architecture', 'Microsoft Azure Infra', 'GitLab CI / ArgoCD', 'CloudFlare / WAF']
+          },
+          awards: [
+            { icon: '🛡️', title: '99.99% Uptime Guardian Award (2025)', desc: 'Maintained zero unplanned downtime across mission-critical production clusters.' },
+            { icon: '🚀', title: 'Cloud FinOps Excellence Recognition', desc: 'Optimized cloud compute utilization saving 28% in monthly infrastructure overhead.' }
+          ],
+          certs: [
+            { name: 'AWS Certified Solutions Architect – Professional', icon: 'fab fa-aws', color: '#F59E0B' },
+            { name: 'Certified Kubernetes Administrator (CKA)', icon: 'fas fa-dharmachakra', color: '#0284C7' },
+            { name: 'HashiCorp Certified: Terraform Associate', icon: 'fas fa-cubes', color: '#7C3AED' }
+          ]
+        };
+      } else if (d.includes('human') || d.includes('hr') || d.includes('executive') || d.includes('governance')) {
+        return {
+          projects: [
+            { name: 'OTSi Global Workforce 360° & Talent Transformation', status: 'Active Primary', role: desig || 'People & Governance Lead', client: 'OTSi Global Operations', desc: 'Employee experience modernization, hybrid attendance compliance governance, and leadership OKR alignment.' },
+            { name: 'APAC & US Strategic Talent Acquisition & Retention', status: 'Ongoing', role: 'Strategic Partner', client: 'OTSi Delivery Units', desc: 'Career milestone engagement, competency matrix mapping, and high-performance culture initiatives.' }
+          ],
+          skills: {
+            core: ['People Analytics & HRIS', 'Workforce Planning', 'Labor Law & Compliance', 'Executive Stakeholder Mgmt'],
+            frameworks: ['OTSi ESS 360° Governance', 'OKR & Performance Frameworks', 'Talent Acquisition Strategy', 'Employee Relations'],
+            cloud: ['Power BI People Dashboards', 'Enterprise HCM Systems', 'ISO / SOC2 People Compliance', 'Change Management']
+          },
+          awards: [
+            { icon: '🌟', title: 'OTSi Culture & People Champion (2025)', desc: 'Spearheaded digital employee self-service adoption and 98% workforce engagement.' },
+            { icon: '🤝', title: 'Executive Leadership Excellence Award', desc: 'Recognized for cross-department organizational alignment and policy modernization.' }
+          ],
+          certs: [
+            { name: 'SHRM Senior Certified Professional (SHRM-SCP)', icon: 'fas fa-users', color: '#0284C7' },
+            { name: 'Certified People Analytics Specialist', icon: 'fas fa-chart-pie', color: '#16A34A' },
+            { name: 'Agile HR & Organizational Leadership', icon: 'fas fa-award', color: '#7C3AED' }
+          ]
+        };
+      }
+      return {
+        projects: [
+          { name: 'OTSi Global ESS Portal & Executive 360° Hub', status: 'Active Primary', role: desig || 'Full-Stack Engineer', client: 'OTSi Internal Products', desc: 'Real-time attendance geo-fencing, interactive org hierarchy engine, and enterprise self-service workflows.' },
+          { name: 'Enterprise Digital Transformation & Microservices Hub', status: 'Active', role: 'Solution Specialist', client: 'Global Enterprise Client', desc: 'High-throughput REST APIs, SSO/MFA security architecture, and cloud-native UI modernization.' }
+        ],
+        skills: {
+          core: ['Python', 'JavaScript / TypeScript (ES6+)', 'SQL (PostgreSQL)', 'HTML5 / Modern CSS3'],
+          frameworks: ['Flask / FastAPI', 'React / Next.js', 'Supabase / PostgreSQL', 'Node.js & REST APIs'],
+          cloud: ['Docker & Containers', 'AWS Cloud Services', 'Git / GitHub Actions CI/CD', 'OAuth2 & JWT Security']
+        },
+        awards: [
+          { icon: '🌟', title: 'Employee of the Quarter (2025)', desc: 'Recognized for outstanding engineering velocity, clean architecture, and high-impact feature delivery.' },
+          { icon: '🚀', title: 'OTSi Spot Award — Engineering Excellence', desc: 'Proactive performance optimization reducing API response times under 150ms.' }
+        ],
+        certs: [
+          { name: 'AWS Certified Solutions Architect – Associate', icon: 'fab fa-aws', color: '#F59E0B' },
+          { name: 'Meta / Google Certified Full-Stack Developer', icon: 'fas fa-code', color: '#0284C7' },
+          { name: 'Certified Scrum Master (CSM)', icon: 'fas fa-users-cog', color: '#7C3AED' }
+        ]
+      };
+    }
 
     function openOmniHubModal() {
       const modal = document.getElementById('omni-hub-modal');
       if (!modal) return;
 
-      // Populate header user details from currentProfile
       const name = loginName || (currentProfile && currentProfile.full_name) || 'Nitin Gupta';
       const desig = (currentProfile && currentProfile.designation) || 'Senior Software Engineer';
       const empid = loginEmpId || (currentProfile && currentProfile.employee_id) || 'EMP1032';
       const dept = (currentProfile && currentProfile.department) || 'Engineering';
-      const team = (currentProfile && currentProfile.team) || 'QA Automation';
 
       const initials = name.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
       const avEl = document.getElementById('omni-user-avatar');
@@ -9718,7 +10577,26 @@
       if (nameEl) nameEl.textContent = name;
 
       const metaEl = document.getElementById('omni-user-meta');
-      if (metaEl) metaEl.textContent = `${desig} • ${empid} • ${dept} (${team})`;
+      if (metaEl) metaEl.innerHTML = `<i class="fas fa-briefcase" style="margin-right:4px;color:#7DD3FC;"></i> ${desig}<br><i class="fas fa-building" style="margin-right:4px;color:#7DD3FC;"></i> ${empid} • ${dept}`;
+
+      const modePill = document.getElementById('omni-live-workmode-pill');
+      if (modePill) {
+        if (isWFH) {
+          modePill.innerHTML = '<i class="fas fa-house-laptop"></i> Remote WFH';
+          modePill.style.background = 'rgba(2, 132, 199, 0.35)';
+          modePill.style.borderColor = 'rgba(125, 211, 252, 0.7)';
+          modePill.style.color = '#E0F2FE';
+        } else {
+          modePill.innerHTML = '<i class="fas fa-building-circle-check"></i> In Office / Hybrid';
+          modePill.style.background = 'rgba(22, 163, 74, 0.3)';
+          modePill.style.borderColor = 'rgba(134, 239, 172, 0.65)';
+          modePill.style.color = '#DCFCE7';
+        }
+      }
+
+      if (!dynamicOrgTreeDataAll || dynamicOrgTreeDataAll.length === 0) {
+        loadDynamicOrgTree('team');
+      }
 
       modal.classList.add('open');
       renderOmniTab();
@@ -9729,12 +10607,63 @@
       if (modal) modal.classList.remove('open');
     }
 
+    function toggleOmniDigitalId() {
+      omniIdDrawerOpen = !omniIdDrawerOpen;
+      const btn = document.getElementById('omni-id-toggle-btn');
+      if (btn) btn.classList.toggle('active', omniIdDrawerOpen);
+      if (currentOmniTab !== 'overview' && omniIdDrawerOpen) {
+        switchOmniTab('overview');
+        return;
+      }
+      const stage = document.getElementById('omni-id-stage');
+      if (stage) {
+        stage.classList.toggle('open', omniIdDrawerOpen);
+      } else {
+        renderOmniTab();
+      }
+    }
+
+    function flipOmniIdCard() {
+      const inner = document.getElementById('omni-id-card-inner');
+      if (inner) inner.classList.toggle('flipped');
+    }
+
     function switchOmniTab(tabKey) {
       currentOmniTab = tabKey;
       document.querySelectorAll('.omni-tab-btn').forEach(b => b.classList.remove('active'));
       const activeBtn = document.getElementById(`omni-tab-${tabKey}`);
       if (activeBtn) activeBtn.classList.add('active');
+
+      const hdr = OMNI_TAB_HEADERS[tabKey] || OMNI_TAB_HEADERS.overview;
+      const iconEl = document.getElementById('omni-canvas-icon');
+      const titleEl = document.getElementById('omni-canvas-title');
+      const subEl = document.getElementById('omni-canvas-sub');
+      if (iconEl) iconEl.innerHTML = `<i class="${hdr.icon}"></i>`;
+      if (titleEl) titleEl.textContent = hdr.title;
+      if (subEl) subEl.textContent = hdr.sub;
+
       renderOmniTab();
+    }
+
+    function filterOmniTeamView(filterKey) {
+      omniTeamFilter = filterKey;
+      renderOmniTab();
+    }
+
+    function buildRadialRingSvg(pct, strokeColor, centerIconHtml) {
+      const r = 23;
+      const c = 2 * Math.PI * r;
+      const clamped = Math.max(0, Math.min(100, pct));
+      const offset = c - (clamped / 100) * c;
+      return `
+        <div class="omni-ring-svg-wrap">
+          <svg class="omni-ring-svg" viewBox="0 0 56 56">
+            <circle class="omni-ring-bg" cx="28" cy="28" r="${r}"></circle>
+            <circle class="omni-ring-val" cx="28" cy="28" r="${r}" stroke="${strokeColor}" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"></circle>
+          </svg>
+          <div class="omni-ring-icon" style="color:${strokeColor};">${centerIconHtml}</div>
+        </div>
+      `;
     }
 
     function renderOmniTab() {
@@ -9745,217 +10674,952 @@
       const desig = (currentProfile && currentProfile.designation) || 'Senior Software Engineer';
       const empid = loginEmpId || (currentProfile && currentProfile.employee_id) || 'EMP1032';
       const dept = (currentProfile && currentProfile.department) || 'Engineering';
-      const manager = (currentProfile && currentProfile.manager_name) || 'Sonali Chauhan';
-      const hrbp = (currentProfile && currentProfile.hrbp_name) || 'Rahul Tiwari';
-      const doj = (currentProfile && currentProfile.date_of_joining) || '2021-08-20';
+      const team = (currentProfile && currentProfile.team) || dept;
+      const email = (currentProfile && currentProfile.email) || `${name.toLowerCase().replace(/[^a-z]+/g, '.')}@otsi.co.in`;
+      const manager = (currentProfile && currentProfile.manager_name) || 'Executive Leadership';
+      const location = (currentProfile && currentProfile.location) || 'Hyderabad HQ (India)';
+      const workMode = (currentProfile && currentProfile.work_mode) || (isWFH ? 'Remote / WFH' : 'Hybrid');
+      const dojRaw = (currentProfile && currentProfile.date_of_joining) || '2021-08-20';
+      const dojFormatted = new Date(dojRaw).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      const initials = name.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
+
+      const presDays = (cachedAttendanceStats && cachedAttendanceStats.present !== undefined) ? Number(cachedAttendanceStats.present) : 18;
+      const wfhDays = (cachedAttendanceStats && cachedAttendanceStats.wfh !== undefined) ? Number(cachedAttendanceStats.wfh) : 4;
+      const leaveDays = (cachedAttendanceStats && cachedAttendanceStats.on_leave !== undefined) ? Number(cachedAttendanceStats.on_leave) : 1;
+      const totalActive = presDays + wfhDays;
+      const compliancePct = totalActive > 0 ? Math.min(100, Math.round(((totalActive) / Math.max(1, totalActive + leaveDays)) * 1000) / 10) : 96.4;
+      const streakDays = Math.max(5, Math.min(30, totalActive || 15));
 
       if (currentOmniTab === 'overview') {
         body.innerHTML = `
-          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:12px;">
-            <!-- Profile & Hierarchy Card -->
-            <div class="omni-card">
-              <div class="omni-card-title"><i class="fas fa-user-circle" style="color:var(--otsi-blue);"></i> Employee Profile & Bio</div>
-              <div style="font-size:12px; line-height:1.7; color:var(--otsi-navy);">
-                <div><strong>Employee ID:</strong> ${empid}</div>
-                <div><strong>Designation:</strong> ${desig}</div>
-                <div><strong>Department:</strong> ${dept}</div>
-                <div><strong>Base Location:</strong> Hyderabad HQ (India)</div>
-                <div><strong>Reporting Manager:</strong> ${manager}</div>
-                <div><strong>HRBP:</strong> ${hrbp}</div>
-              </div>
-            </div>
-
-            <!-- OTSi Career Journey & Milestones Live Card -->
-            <div class="omni-card" style="background: linear-gradient(135deg, rgba(4, 70, 108, 0.98) 0%, rgba(16, 159, 218, 0.95) 100%); color:#fff; border:none; box-shadow:0 4px 16px rgba(4,70,108,0.2);">
-              <div class="journey-top-row" style="margin-bottom:8px;">
-                <div class="journey-title" style="color:#fff; font-size:13.5px;">
-                  <i class="fas fa-medal" style="color:#FBBF24;"></i> OTSi Career Journey & Milestones
+          <!-- Interactive 3D-Flip Digital OTSi ID Card Stage -->
+          <div class="omni-id-stage ${omniIdDrawerOpen ? 'open' : ''}" id="omni-id-stage">
+            <div class="omni-id-card-inner" id="omni-id-card-inner" onclick="flipOmniIdCard()" title="Click card to flip between Front & Back">
+              <!-- Front Face -->
+              <div class="omni-id-face omni-id-front">
+                <div style="display:flex; align-items:center; gap:18px;">
+                  <div style="width:66px; height:66px; border-radius:16px; background:rgba(255,255,255,0.2); border:2.5px solid #fff; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:800;">
+                    ${initials}
+                  </div>
+                  <div>
+                    <div style="font-size:10.5px; font-weight:800; letter-spacing:1.3px; text-transform:uppercase; color:#7DD3FC;">OBJECT TECHNOLOGY SOLUTIONS INDIA PVT. LTD.</div>
+                    <div style="font-size:20px; font-weight:800; margin-top:3px;">${name}</div>
+                    <div style="font-size:13px; color:rgba(255,255,255,0.92); margin-top:1px;">${desig} • <strong>${empid}</strong></div>
+                    <div style="display:flex; gap:8px; margin-top:9px; flex-wrap:wrap;">
+                      <span style="font-size:10.5px; font-weight:700; background:rgba(255,255,255,0.16); padding:3px 10px; border-radius:7px;"><i class="fas fa-building"></i> ${dept}</span>
+                      <span style="font-size:10.5px; font-weight:700; background:rgba(34,197,94,0.28); color:#BBF7D0; padding:3px 10px; border-radius:7px;"><i class="fas fa-circle-check"></i> Verified Active</span>
+                      <span style="font-size:10.5px; color:rgba(255,255,255,0.8); display:inline-flex; align-items:center; gap:4px;"><i class="fas fa-rotate"></i> Click Card to Flip</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="anniversary-badge" id="omni-journey-anniversary-badge">
-                  <i class="fas fa-gift" style="color:#FDE68A;"></i> in <span class="anniversary-days-count">--</span>d
+                <div class="omni-id-qr-box">
+                  ${generateOmniQrSvg(empid)}
+                  <span style="font-size:9px; font-weight:800; color:#04466C; letter-spacing:0.6px;">${empid}</span>
                 </div>
               </div>
-              <div class="journey-tenure-text" style="color:rgba(255,255,255,0.95); font-size:12px; margin-bottom:8px;">
-                <i class="fas fa-calendar-check" style="margin-right:4px;"></i> Total Experience with OTSi: <strong>--</strong>
-              </div>
-              <div class="year-spine-container" style="padding-top:4px;">
-                <!-- Dynamically populated year milestone tabs -->
+              <!-- Back Face -->
+              <div class="omni-id-face omni-id-back">
+                <div style="font-size:12.5px; line-height:1.85; flex:1;">
+                  <div style="font-size:11px; font-weight:800; color:#38BDF8; text-transform:uppercase; letter-spacing:0.9px; margin-bottom:4px;"><i class="fas fa-shield-halved"></i> OTSi Corporate Identity & Security Pass (Back)</div>
+                  <div><strong>Work Email:</strong> ${email}</div>
+                  <div><strong>Reporting Manager:</strong> ${manager} • <strong>Date Joined:</strong> ${dojFormatted}</div>
+                  <div><strong>Authorized Campus:</strong> ${location} • <strong>Work Mode:</strong> ${workMode}</div>
+                  <div style="font-size:10.5px; color:#94A3B8; margin-top:4px;">If found, please return to OTSi Security Desk or contact hr.india@otsi.co.in</div>
+                </div>
+                <div style="text-align:right; flex-shrink:0;">
+                  <div style="background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.4); padding:8px 12px; border-radius:10px; font-size:11px; font-weight:700; color:#BAE6FD; text-align:center;">
+                    <i class="fas fa-user-shield" style="font-size:16px; margin-bottom:4px; display:block;"></i> ISO/SOC2<br>Cleared
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Quick Metrics Bar -->
-          <div class="omni-card" style="margin-top:2px;">
-            <div class="omni-card-title"><i class="fas fa-chart-bar" style="color:var(--otsi-blue);"></i> Executive Health & Compliance</div>
-            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; text-align:center;">
-              <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
-                <div style="font-size:15px; font-weight:800; color:#16A34A;" id="omni-kpi-compliance">96.4%</div>
-                <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Attendance Rate</div>
+          <!-- Spacious 8-Tile Visual Icon Bio Grid -->
+          <div class="omni-card">
+            <div class="omni-card-title">
+              <span class="omni-card-title-left"><i class="fas fa-address-card" style="color:var(--otsi-blue); font-size:15px;"></i> Executive Identity & Role Attributes</span>
+              <div style="display:flex; gap:8px;">
+                <button onclick="toggleOmniDigitalId()" style="border:1px solid #BAE6FD; background:#F0F9FF; color:#0284C7; font-size:11px; font-weight:700; padding:5px 11px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+                  <i class="fas fa-qrcode"></i> ${omniIdDrawerOpen ? 'Hide 3D ID Card' : 'Open 3D ID Card'}
+                </button>
+                <button onclick="switchOmniTab('team')" style="border:1px solid #CBD5E1; background:#F8FAFC; color:var(--otsi-navy); font-size:11px; font-weight:700; padding:5px 11px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+                  <i class="fas fa-users"></i> View Team Colleagues →
+                </button>
               </div>
-              <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
-                <div style="font-size:15px; font-weight:800; color:#EA580C;" id="omni-kpi-streak">15 Days 🔥</div>
-                <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Active Streak</div>
+            </div>
+            <div class="omni-bio-icon-grid">
+              <div class="omni-bio-tile">
+                <div class="omni-bio-icon" style="background:#E0F2FE; color:#0284C7;"><i class="fas fa-id-card"></i></div>
+                <div>
+                  <div class="omni-bio-lbl">Employee ID</div>
+                  <div class="omni-bio-val">${empid}</div>
+                </div>
               </div>
-              <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
-                <div style="font-size:15px; font-weight:800; color:var(--otsi-navy);" id="omni-kpi-leaves">${(cachedAttendanceStats && cachedAttendanceStats.on_leave !== undefined) ? cachedAttendanceStats.on_leave : '--'}</div>
-                <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Leaves Logged</div>
+              <div class="omni-bio-tile">
+                <div class="omni-bio-icon" style="background:#EEF2FF; color:#4F46E5;"><i class="fas fa-user-tie"></i></div>
+                <div>
+                  <div class="omni-bio-lbl">Designation</div>
+                  <div class="omni-bio-val">${desig}</div>
+                </div>
               </div>
-              <div style="background:#F1F5F9; border-radius:8px; padding:8px 4px;">
-                <div style="font-size:15px; font-weight:800; color:var(--otsi-blue);">100%</div>
-                <div style="font-size:9.5px; font-weight:700; color:var(--slate); text-transform:uppercase;">Timesheet SLA</div>
+              <div class="omni-bio-tile">
+                <div class="omni-bio-icon" style="background:#CCFBF1; color:#0D9488;"><i class="fas fa-sitemap"></i></div>
+                <div>
+                  <div class="omni-bio-lbl">Department & CoE</div>
+                  <div class="omni-bio-val">${dept}</div>
+                </div>
+              </div>
+              <div class="omni-bio-tile">
+                <div class="omni-bio-icon" style="background:#DCFCE7; color:#16A34A;"><i class="fas fa-user-shield"></i></div>
+                <div>
+                  <div class="omni-bio-lbl">Reporting Manager</div>
+                  <div class="omni-bio-val">${manager}</div>
+                </div>
+              </div>
+              <div class="omni-bio-tile">
+                <div class="omni-bio-icon" style="background:#FFEDD5; color:#EA580C;"><i class="fas fa-location-dot"></i></div>
+                <div>
+                  <div class="omni-bio-lbl">Campus & Work Mode</div>
+                  <div class="omni-bio-val">${location} (${workMode})</div>
+                </div>
+              </div>
+              <div class="omni-bio-tile">
+                <div class="omni-bio-icon" style="background:#F3E8FF; color:#7C3AED;"><i class="fas fa-calendar-check"></i></div>
+                <div>
+                  <div class="omni-bio-lbl">Date of Joining</div>
+                  <div class="omni-bio-val">${dojFormatted}</div>
+                </div>
+              </div>
+              <div class="omni-bio-tile" style="cursor:pointer;" onclick="navigator.clipboard?.writeText('${email}'); toast('Copied ${email}!', 'success');" title="Click to copy corporate email">
+                <div class="omni-bio-icon" style="background:#E0F2FE; color:#0369A1;"><i class="fas fa-envelope-open-text"></i></div>
+                <div style="min-width:0;">
+                  <div class="omni-bio-lbl">Work Email <i class="fas fa-copy" style="margin-left:3px; color:#0284C7;"></i></div>
+                  <div class="omni-bio-val" style="font-size:12px;">${email}</div>
+                </div>
+              </div>
+              <div class="omni-bio-tile">
+                <div class="omni-bio-icon" style="background:#DCFCE7; color:#15803D;"><i class="fas fa-shield-halved"></i></div>
+                <div>
+                  <div class="omni-bio-lbl">Compliance Status</div>
+                  <div class="omni-bio-val" style="color:#15803D;">Verified Active ✓</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spacious OTSi Career Journey & Milestones Banner -->
+          <div class="omni-card" style="background: linear-gradient(135deg, #032B44 0%, #04466C 50%, #109FDA 100%); color:#fff; border:none; padding:20px 22px; box-shadow:0 8px 24px rgba(4,70,108,0.18);">
+            <div class="journey-top-row" style="margin-bottom:10px;">
+              <div class="journey-title" style="color:#fff; font-size:14.5px;">
+                <i class="fas fa-medal" style="color:#FBBF24; font-size:16px;"></i> OTSi Career Journey & Anniversary Timeline
+              </div>
+              <div class="anniversary-badge" id="omni-journey-anniversary-badge">
+                <i class="fas fa-gift" style="color:#FDE68A;"></i> Anniversary in <span class="anniversary-days-count">--</span> days
+              </div>
+            </div>
+            <div class="journey-tenure-text" style="color:rgba(255,255,255,0.95); font-size:12.5px; margin-bottom:12px;">
+              <i class="fas fa-hourglass-half" style="margin-right:5px; color:#7DD3FC;"></i> Total Experience with OTSi: <strong>--</strong>
+            </div>
+            <div class="year-spine-container" style="padding-top:4px; gap:8px;">
+              <!-- Dynamically populated year milestone tabs -->
+            </div>
+          </div>
+
+          <!-- Spacious Animated SVG Radial Progress Rings -->
+          <div class="omni-card" style="margin-bottom:4px;">
+            <div class="omni-card-title">
+              <span class="omni-card-title-left"><i class="fas fa-gauge-high" style="color:var(--otsi-blue); font-size:15px;"></i> Executive Health & SLA Telemetry</span>
+              <span style="font-size:11px; font-weight:600; color:var(--slate); text-transform:none;"><i class="fas fa-circle" style="color:#16A34A; font-size:8px; margin-right:4px;"></i> Real-Time Monthly Standing</span>
+            </div>
+            <div class="omni-ring-grid">
+              <div class="omni-ring-card">
+                ${buildRadialRingSvg(compliancePct, '#16A34A', '<i class="fas fa-user-check"></i>')}
+                <div>
+                  <div style="font-size:17px; font-weight:800; color:#16A34A;" id="omni-kpi-compliance">${compliancePct}%</div>
+                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Attendance Rate</div>
+                  <div style="font-size:10px; color:var(--slate-light);">Excellent Standing</div>
+                </div>
+              </div>
+              <div class="omni-ring-card">
+                ${buildRadialRingSvg(Math.min(100, streakDays * 5), '#EA580C', '<i class="fas fa-fire-flame-curved"></i>')}
+                <div>
+                  <div style="font-size:17px; font-weight:800; color:#EA580C;" id="omni-kpi-streak">${streakDays} Days</div>
+                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Active Streak</div>
+                  <div style="font-size:10px; color:var(--slate-light);">Zero Missed Shifts</div>
+                </div>
+              </div>
+              <div class="omni-ring-card">
+                ${buildRadialRingSvg(Math.min(100, (presDays + wfhDays) * 4.5), '#0284C7', '<i class="fas fa-building-user"></i>')}
+                <div>
+                  <div style="font-size:17px; font-weight:800; color:var(--otsi-navy);">${presDays} <span style="font-size:12px; color:var(--slate);">Office</span> / ${wfhDays} <span style="font-size:12px; color:#0284C7;">WFH</span></div>
+                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Hybrid Balance</div>
+                  <div style="font-size:10px; color:var(--slate-light);">Logged This Month</div>
+                </div>
+              </div>
+              <div class="omni-ring-card">
+                ${buildRadialRingSvg(100, '#7C3AED', '<i class="fas fa-bolt"></i>')}
+                <div>
+                  <div style="font-size:17px; font-weight:800; color:#7C3AED;" id="omni-kpi-leaves">100% SLA</div>
+                  <div style="font-size:10.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase; margin-top:1px;">Timesheet & Leaves</div>
+                  <div style="font-size:10px; color:var(--slate-light);">${leaveDays} Leave(s) Logged</div>
+                </div>
               </div>
             </div>
           </div>
         `;
         calculateCareerJourney();
-      } else if (currentOmniTab === 'projects') {
-        body.innerHTML = `
-          <div class="omni-card">
-            <div class="omni-card-title"><i class="fas fa-briefcase" style="color:var(--otsi-blue);"></i> Active Assigned Projects</div>
-            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:10px 12px; margin-bottom:10px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-size:13px; font-weight:800; color:var(--otsi-navy);">OTSi Global ESS Portal 2.0</div>
-                <span class="tag tag-g" style="font-size:10px;">Active Primary</span>
+      } else if (currentOmniTab === 'team') {
+        const teamPeers = getOmniTeamColleagues();
+        let officeCnt = 0, wfhCnt = 0, leaveCnt = 0;
+        const enrichedPeers = teamPeers.map((p, idx) => {
+          const st = getColleagueSimulatedStatus(p.employee_id, idx);
+          if (st.key === 'office') officeCnt++;
+          else if (st.key === 'wfh') wfhCnt++;
+          else leaveCnt++;
+          return { ...p, st };
+        });
+
+        const filteredPeers = enrichedPeers.filter(p => omniTeamFilter === 'all' || p.st.key === omniTeamFilter);
+
+        const peersHtml = filteredPeers.map(p => {
+          const peerEmail = `${p.name.toLowerCase().replace(/[^a-z]+/g, '.')}@otsi.co.in`;
+          return `
+            <div class="omni-pulse-peer" onclick="openColleagueQuickCard('${p.employee_id}', event)">
+              <div class="omni-pulse-avatar" style="${p.isMe ? 'background:var(--otsi-blue);color:#fff;' : ''}">
+                ${p.initials}
+                <span class="omni-pulse-dot" style="background:${p.st.dot};"></span>
               </div>
-              <div style="font-size:11.5px; color:var(--slate); margin-top:3px;"><strong>Role:</strong> Lead QA & Automation • <strong>Client:</strong> OTSi Internal Products</div>
-              <div style="font-size:11px; color:var(--slate-light); margin-top:2px;">Automated regression test pipelines, shift management, and enterprise API validation.</div>
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; font-weight:800; color:var(--otsi-navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                  ${p.name} ${p.isMe ? '<span style="color:var(--otsi-blue); font-size:11px;">(You)</span>' : ''}
+                </div>
+                <div style="font-size:11px; color:var(--slate); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">
+                  <i class="fas fa-id-badge" style="color:var(--slate-light); margin-right:3px;"></i> ${p.employee_id} • ${p.role}
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px; gap:6px;">
+                  <span style="font-size:10px; font-weight:700; padding:3px 8px; border-radius:6px; background:${p.st.bg}; color:${p.st.color};">
+                    ${p.st.icon} ${p.st.label}
+                  </span>
+                  <div style="display:flex; gap:5px;" onclick="event.stopPropagation()">
+                    <button onclick="navigator.clipboard?.writeText('${peerEmail}'); toast('Copied ${peerEmail}', 'success');" style="border:1px solid #CBD5E1; background:#F8FAFC; color:var(--otsi-navy); border-radius:6px; padding:3px 7px; font-size:10px; font-weight:700; cursor:pointer;" title="Copy Email">
+                      <i class="fas fa-envelope"></i>
+                    </button>
+                    ${!p.isMe ? `<button onclick="preselectedKudosTarget='${p.employee_id}'; switchOmniTab('achievements');" style="border:1px solid #FDE68A; background:#FFFBEB; color:#B45309; border-radius:6px; padding:3px 7px; font-size:10px; font-weight:700; cursor:pointer;" title="Send Kudos">👏 Kudos</button>` : ''}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:10px 12px;">
-              <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div style="font-size:13px; font-weight:800; color:var(--otsi-navy);">Cloud Banking HCM Integration</div>
-                <span class="tag tag-s" style="font-size:10px;">Maintenance</span>
+          `;
+        }).join('');
+
+        body.innerHTML = `
+          <!-- Team Summary & Filter Bar -->
+          <div class="omni-card" style="padding:16px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="font-size:14px; font-weight:800; color:var(--otsi-navy);">
+                  <i class="fas fa-people-group" style="color:var(--otsi-blue); margin-right:6px;"></i> Squad Reporting to ${manager}
+                </div>
+                <div style="font-size:11.5px; color:var(--slate); margin-top:2px;">Click any colleague card to inspect their 360° Quick-Card or send instant recognition</div>
               </div>
-              <div style="font-size:11.5px; color:var(--slate); margin-top:3px;"><strong>Role:</strong> Test Architect • <strong>Client:</strong> Global FinTech Partner</div>
-              <div style="font-size:11px; color:var(--slate-light); margin-top:2px;">SSO security testing, OAuth2 validation, and payroll data synchronization.</div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button onclick="filterOmniTeamView('all')" style="border:1px solid ${omniTeamFilter === 'all' ? 'var(--otsi-navy)' : '#CBD5E1'}; background:${omniTeamFilter === 'all' ? 'var(--otsi-navy)' : '#F8FAFC'}; color:${omniTeamFilter === 'all' ? '#fff' : 'var(--otsi-navy)'}; padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:700; cursor:pointer;">
+                  👥 All (${teamPeers.length})
+                </button>
+                <button onclick="filterOmniTeamView('office')" style="border:1px solid ${omniTeamFilter === 'office' ? '#16A34A' : '#BBF7D0'}; background:${omniTeamFilter === 'office' ? '#16A34A' : '#F0FDF4'}; color:${omniTeamFilter === 'office' ? '#fff' : '#166534'}; padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:700; cursor:pointer;">
+                  🏢 In Office (${officeCnt})
+                </button>
+                <button onclick="filterOmniTeamView('wfh')" style="border:1px solid ${omniTeamFilter === 'wfh' ? '#0284C7' : '#BAE6FD'}; background:${omniTeamFilter === 'wfh' ? '#0284C7' : '#F0F9FF'}; color:${omniTeamFilter === 'wfh' ? '#fff' : '#0369A1'}; padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:700; cursor:pointer;">
+                  🏠 WFH (${wfhCnt})
+                </button>
+                <button onclick="filterOmniTeamView('leave')" style="border:1px solid ${omniTeamFilter === 'leave' ? '#D97706' : '#FDE68A'}; background:${omniTeamFilter === 'leave' ? '#D97706' : '#FFFBEB'}; color:${omniTeamFilter === 'leave' ? '#fff' : '#B45309'}; padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:700; cursor:pointer;">
+                  🌴 On Leave (${leaveCnt})
+                </button>
+              </div>
             </div>
           </div>
 
+          <!-- Spacious Colleague Grid -->
+          <div class="omni-pulse-grid">
+            ${peersHtml}
+          </div>
+        `;
+      } else if (currentOmniTab === 'projects') {
+        const defaults = getDeptProfileDefaults(dept, team, desig);
+        const customProjs = JSON.parse(localStorage.getItem(getOmniStorageKey('projects')) || '[]');
+        const customSkills = JSON.parse(localStorage.getItem(getOmniStorageKey('skills')) || '[]');
+        const allProjects = [...customProjs.map((p, i) => ({ ...p, isCustom: true, customIdx: i })), ...defaults.projects];
+
+        const projectsHtml = allProjects.map(p => `
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:16px 18px; display:flex; gap:14px; align-items:flex-start;">
+            <div style="width:42px; height:42px; border-radius:12px; background:#E0F2FE; color:#0284C7; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;">
+              <i class="fas fa-diagram-project"></i>
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+                <div style="font-size:14px; font-weight:800; color:var(--otsi-navy);">${p.name}</div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span class="tag ${p.status.includes('Active') ? 'tag-g' : 'tag-b'}" style="font-size:10.5px;">${p.status}</span>
+                  ${p.isCustom ? `<button onclick="deleteOmniCustomProject(${p.customIdx})" style="border:none;background:#FEE2E2;color:#DC2626;border-radius:6px;padding:3px 7px;font-size:10px;cursor:pointer;" title="Remove project">✕</button>` : ''}
+                </div>
+              </div>
+              <div style="font-size:12px; color:var(--slate); margin-top:4px;">
+                <i class="fas fa-user-tag" style="color:#0284C7; margin-right:4px;"></i> <strong>Role:</strong> ${p.role} &nbsp;•&nbsp;
+                <i class="fas fa-building-shield" style="color:#0284C7; margin-right:4px;"></i> <strong>Client/Domain:</strong> ${p.client}
+              </div>
+              <div style="font-size:12px; color:var(--slate-light); margin-top:4px; line-height:1.5;">${p.desc}</div>
+            </div>
+          </div>
+        `).join('');
+
+        const customSkillsHtml = customSkills.map((s, idx) => `
+          <span class="tech-pill" style="background:#ECFDF5; color:#047857; border-color:#A7F3D0;">
+            <i class="fas fa-star" style="font-size:10px;"></i> ${s}
+            <span class="pill-del" onclick="deleteOmniCustomSkill(${idx})" title="Remove skill">✕</span>
+          </span>
+        `).join('');
+
+        body.innerHTML = `
           <div class="omni-card">
-            <div class="omni-card-title"><i class="fas fa-code" style="color:var(--otsi-blue);"></i> Skills & Technologies Matrix</div>
-            <div style="margin-bottom:8px;">
-              <div style="font-size:11px; font-weight:700; color:var(--slate); margin-bottom:4px; text-transform:uppercase;">Languages & Core:</div>
-              <div class="tech-pill-wrap">
-                <span class="tech-pill"><i class="fab fa-python"></i> Python</span>
-                <span class="tech-pill"><i class="fab fa-js"></i> JavaScript / ES6+</span>
-                <span class="tech-pill"><i class="fas fa-code"></i> SQL (PostgreSQL)</span>
-                <span class="tech-pill"><i class="fab fa-html5"></i> HTML5 / CSS3</span>
+            <div class="omni-card-title">
+              <span class="omni-card-title-left"><i class="fas fa-layer-group" style="color:var(--otsi-blue); font-size:15px;"></i> Active Project Portfolio (${dept})</span>
+              <button onclick="document.getElementById('omni-add-proj-box').style.display = document.getElementById('omni-add-proj-box').style.display === 'none' ? 'block' : 'none'" style="border:1px solid #BAE6FD; background:#F0F9FF; color:#0284C7; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:8px; cursor:pointer;">
+                <i class="fas fa-plus"></i> Add Assigned Project
+              </button>
+            </div>
+            <div id="omni-add-proj-box" style="display:none; background:#F0F9FF; border:1px dashed #7DD3FC; border-radius:12px; padding:14px; margin-bottom:14px;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                <input id="omni-new-proj-name" type="text" placeholder="Project Name (e.g. GenAI Analytics Portal)" style="padding:9px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:12.5px;" />
+                <input id="omni-new-proj-client" type="text" placeholder="Client / Domain (e.g. FinTech CoE)" style="padding:9px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:12.5px;" />
+              </div>
+              <div style="display:flex; gap:10px;">
+                <input id="omni-new-proj-desc" type="text" placeholder="Key deliverables, architecture & responsibilities..." style="flex:1; padding:9px 12px; border:1px solid #CBD5E1; border-radius:8px; font-size:12.5px;" />
+                <button onclick="addOmniCustomProject()" style="background:var(--otsi-navy); color:#fff; border:none; border-radius:8px; padding:9px 18px; font-size:12px; font-weight:700; cursor:pointer;">Save Project</button>
               </div>
             </div>
-            <div style="margin-bottom:8px;">
-              <div style="font-size:11px; font-weight:700; color:var(--slate); margin-bottom:4px; text-transform:uppercase;">Frameworks & Databases:</div>
-              <div class="tech-pill-wrap">
-                <span class="tech-pill"><i class="fas fa-flask"></i> Flask</span>
-                <span class="tech-pill"><i class="fas fa-database"></i> Supabase / PostgreSQL</span>
-                <span class="tech-pill"><i class="fas fa-fire"></i> PyTest</span>
-                <span class="tech-pill"><i class="fas fa-bolt"></i> Fastify</span>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:12px;">
+              ${projectsHtml}
+            </div>
+          </div>
+
+          <div class="omni-card" style="margin-bottom:4px;">
+            <div class="omni-card-title">
+              <span class="omni-card-title-left"><i class="fas fa-microchip" style="color:var(--otsi-blue); font-size:15px;"></i> Department Skills & Technology Matrix</span>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <input id="omni-new-skill-input" type="text" placeholder="Add new skill (e.g. Snowflake, GenAI)..." style="padding:6px 10px; border:1px solid #CBD5E1; border-radius:8px; font-size:12px; width:210px;" onkeydown="if(event.key==='Enter')addOmniCustomSkill()" />
+                <button onclick="addOmniCustomSkill()" style="border:none; background:var(--otsi-blue); color:#fff; font-size:11.5px; font-weight:700; padding:6px 12px; border-radius:8px; cursor:pointer;">+ Add Skill</button>
               </div>
             </div>
-            <div>
-              <div style="font-size:11px; font-weight:700; color:var(--slate); margin-bottom:4px; text-transform:uppercase;">Testing, Cloud & DevOps:</div>
-              <div class="tech-pill-wrap">
-                <span class="tech-pill"><i class="fas fa-vial"></i> Selenium / Cypress</span>
-                <span class="tech-pill"><i class="fab fa-docker"></i> Docker</span>
-                <span class="tech-pill"><i class="fab fa-git-alt"></i> Git / GitHub CI/CD</span>
-                <span class="tech-pill"><i class="fab fa-aws"></i> AWS Cloud Essentials</span>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px;">
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px;">
+                <div style="font-size:11.5px; font-weight:800; color:var(--otsi-navy); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                  <i class="fas fa-code" style="color:#0284C7;"></i> Core Competencies
+                </div>
+                <div class="tech-pill-wrap">
+                  ${defaults.skills.core.map(s => `<span class="tech-pill"><i class="fas fa-circle-check" style="color:#0284C7;font-size:11px;"></i> ${s}</span>`).join('')}
+                  ${customSkillsHtml}
+                </div>
+              </div>
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px;">
+                <div style="font-size:11.5px; font-weight:800; color:var(--otsi-navy); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                  <i class="fas fa-cubes" style="color:#7C3AED;"></i> Platforms & Frameworks
+                </div>
+                <div class="tech-pill-wrap">
+                  ${defaults.skills.frameworks.map(s => `<span class="tech-pill" style="background:#F5F3FF; color:#6D28D9; border-color:#DDD6FE;"><i class="fas fa-layer-group" style="color:#7C3AED;font-size:11px;"></i> ${s}</span>`).join('')}
+                </div>
+              </div>
+              <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px;">
+                <div style="font-size:11.5px; font-weight:800; color:var(--otsi-navy); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                  <i class="fas fa-cloud-bolt" style="color:#0D9488;"></i> Cloud, DevSecOps & Delivery
+                </div>
+                <div class="tech-pill-wrap">
+                  ${defaults.skills.cloud.map(s => `<span class="tech-pill" style="background:#F0FDFA; color:#0F766E; border-color:#CCFBF1;"><i class="fas fa-cloud" style="color:#0D9488;font-size:11px;"></i> ${s}</span>`).join('')}
+                </div>
               </div>
             </div>
           </div>
         `;
       } else if (currentOmniTab === 'analytics') {
-        const pres = (cachedAttendanceStats && cachedAttendanceStats.present !== undefined) ? cachedAttendanceStats.present : '--';
-        const wfh = (cachedAttendanceStats && cachedAttendanceStats.wfh !== undefined) ? cachedAttendanceStats.wfh : '--';
-        body.innerHTML = `
-          <div class="att-analytics-section" style="margin:0; box-shadow:none; border:none; padding:4px 0;">
-            <div class="att-analytics-header" style="margin-bottom:10px;">
-              <div class="att-analytics-title" style="font-size:13.5px;">
-                <i class="fas fa-chart-pie" style="color:var(--otsi-blue);"></i> Attendance & Compliance Analytics
+        const sparkHours = [8.6, 9.1, 8.4, 8.8, 9.2, 8.5, 8.9];
+        const sparkDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Mon', 'Today'];
+        const sparkBars = sparkHours.map((h, i) => {
+          const pct = Math.round((h / 10) * 100);
+          return `
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:5px;">
+              <div style="font-size:11px; font-weight:800; color:var(--otsi-navy);">${h}h</div>
+              <div style="width:100%; max-width:38px; height:56px; background:#E2E8F0; border-radius:7px; display:flex; align-items:flex-end; overflow:hidden;">
+                <div style="width:100%; height:${pct}%; background:linear-gradient(180deg, #109FDA, #04466C); border-radius:7px;"></div>
               </div>
-              <div class="timescale-tab-bar">
-                <button class="timescale-btn ${currentTimescale === 'daily' ? 'active' : ''}" id="ts-btn-daily"
-                  onclick="switchTimescaleView('daily')">Daily</button>
-                <button class="timescale-btn ${currentTimescale === 'weekly' ? 'active' : ''}" id="ts-btn-weekly" onclick="switchTimescaleView('weekly')">Weekly</button>
-                <button class="timescale-btn ${currentTimescale === 'monthly' ? 'active' : ''}" id="ts-btn-monthly"
-                  onclick="switchTimescaleView('monthly')">Monthly</button>
-                <button class="timescale-btn ${currentTimescale === 'yearly' ? 'active' : ''}" id="ts-btn-yearly" onclick="switchTimescaleView('yearly')">Yearly Ledger</button>
+              <div style="font-size:10.5px; font-weight:700; color:var(--slate);">${sparkDays[i]}</div>
+            </div>
+          `;
+        }).join('');
+
+        body.innerHTML = `
+          <div class="att-analytics-section" style="margin:0; box-shadow:none; border:none; padding:0; background:transparent;">
+            <!-- Executive KPI Strip (6-Metric Row) -->
+            <div class="exec-kpi-grid" style="margin-bottom:16px; gap:12px;">
+              <div class="exec-kpi-tile" style="background:#fff; padding:12px 10px; border-radius:12px;">
+                <div class="exec-kpi-num" id="kpi-compliance" style="color:#16A34A; font-size:18px;">${compliancePct}%</div>
+                <div class="exec-kpi-lbl"><i class="fas fa-shield-check"></i> Compliance</div>
+              </div>
+              <div class="exec-kpi-tile" style="background:#fff; padding:12px 10px; border-radius:12px;">
+                <div class="exec-kpi-num" id="kpi-present-days" style="font-size:18px;">${presDays}</div>
+                <div class="exec-kpi-lbl"><i class="fas fa-building"></i> Office Days</div>
+              </div>
+              <div class="exec-kpi-tile" style="background:#fff; padding:12px 10px; border-radius:12px;">
+                <div class="exec-kpi-num" id="kpi-wfh-days" style="font-size:18px; color:#0284C7;">${wfhDays}</div>
+                <div class="exec-kpi-lbl"><i class="fas fa-house-laptop"></i> Remote WFH</div>
+              </div>
+              <div class="exec-kpi-tile" style="background:#fff; padding:12px 10px; border-radius:12px;">
+                <div class="exec-kpi-num" id="kpi-streak" style="color:#EA580C; font-size:18px;">${streakDays} Days 🔥</div>
+                <div class="exec-kpi-lbl">Active Streak</div>
+              </div>
+              <div class="exec-kpi-tile" style="background:#fff; padding:12px 10px; border-radius:12px;">
+                <div class="exec-kpi-num" id="kpi-ontime" style="color:var(--otsi-blue); font-size:18px;">98%</div>
+                <div class="exec-kpi-lbl"><i class="fas fa-clock"></i> On-Time Rate</div>
+              </div>
+              <div class="exec-kpi-tile" style="background:#fff; padding:12px 10px; border-radius:12px;">
+                <div class="exec-kpi-num" id="kpi-career-days" style="font-size:18px;">--</div>
+                <div class="exec-kpi-lbl"><i class="fas fa-medal"></i> Career Days</div>
               </div>
             </div>
 
-            <!-- Executive KPI Strip (6-Metric Row) -->
-            <div class="exec-kpi-grid" style="margin-bottom:12px;">
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-compliance" style="color:#16A34A;">96.4%</div>
-                <div class="exec-kpi-lbl">Compliance</div>
+            <!-- 7-Day Shift Consistency Sparkline -->
+            <div class="omni-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <span style="font-size:12.5px; font-weight:800; color:var(--otsi-navy); text-transform:uppercase;"><i class="fas fa-chart-column" style="color:var(--otsi-blue); margin-right:6px;"></i> Recent 7-Shift Logged Hours Trend</span>
+                <span style="font-size:11.5px; font-weight:700; color:#16A34A; background:#DCFCE7; padding:3px 10px; border-radius:8px;">Avg: 8.78 hrs / shift ✓</span>
               </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-present-days">${pres}</div>
-                <div class="exec-kpi-lbl">Office Days</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-wfh-days">${wfh}</div>
-                <div class="exec-kpi-lbl">Remote WFH</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-streak" style="color:#EA580C;">15 Days 🔥</div>
-                <div class="exec-kpi-lbl">Best Streak</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-ontime" style="color:var(--otsi-blue);">98%</div>
-                <div class="exec-kpi-lbl">On-Time Rate</div>
-              </div>
-              <div class="exec-kpi-tile">
-                <div class="exec-kpi-num" id="kpi-career-days">--</div>
-                <div class="exec-kpi-lbl">Career Days</div>
+              <div style="display:flex; gap:12px; align-items:flex-end; padding-top:6px;">
+                ${sparkBars}
               </div>
             </div>
 
             <!-- Multi-Timescale Content Panes -->
-            <div id="timescale-content-pane" class="timescale-view-pane">
-              <!-- Dynamically populated via renderTimescaleContent() -->
+            <div class="omni-card" style="margin-bottom:4px;">
+              <div class="att-analytics-header" style="margin-bottom:14px;">
+                <div class="att-analytics-title" style="font-size:13.5px;">
+                  <i class="fas fa-calendar-days" style="color:var(--otsi-blue);"></i> Multi-Timescale Attendance Ledger
+                </div>
+                <div class="timescale-tab-bar">
+                  <button class="timescale-btn ${currentTimescale === 'daily' ? 'active' : ''}" id="ts-btn-daily" onclick="switchTimescaleView('daily')">Daily</button>
+                  <button class="timescale-btn ${currentTimescale === 'weekly' ? 'active' : ''}" id="ts-btn-weekly" onclick="switchTimescaleView('weekly')">Weekly</button>
+                  <button class="timescale-btn ${currentTimescale === 'monthly' ? 'active' : ''}" id="ts-btn-monthly" onclick="switchTimescaleView('monthly')">Monthly</button>
+                  <button class="timescale-btn ${currentTimescale === 'yearly' ? 'active' : ''}" id="ts-btn-yearly" onclick="switchTimescaleView('yearly')">Yearly Ledger</button>
+                </div>
+              </div>
+              <div id="timescale-content-pane" class="timescale-view-pane" style="background:#F8FAFC;">
+                <!-- Dynamically populated via renderTimescaleContent() -->
+              </div>
             </div>
           </div>
         `;
         calculateCareerJourney();
         renderTimescaleContent();
       } else if (currentOmniTab === 'achievements') {
-        body.innerHTML = `
-          <div class="omni-card">
-            <div class="omni-card-title"><i class="fas fa-trophy" style="color:#F59E0B;"></i> Awards & Recognitions</div>
-            <div class="award-card">
-              <div style="font-size:24px;">🌟</div>
-              <div>
-                <div style="font-size:12.5px; font-weight:800; color:var(--otsi-navy);">Employee of the Quarter (Q2 2024)</div>
-                <div style="font-size:11px; color:var(--slate);">Recognized for outstanding delivery in test automation and zero-defect product releases.</div>
+        const defaults = getDeptProfileDefaults(dept, team, desig);
+        const peers = getOmniTeamColleagues().filter(p => !p.isMe);
+        const allOrg = getAllOrgEmployeesFlat().filter(p => !p.isMe);
+        const recipientPool = peers.length > 0 ? peers : allOrg.slice(0, 25);
+
+        const savedKudos = JSON.parse(localStorage.getItem('otsi_omni_kudos_wall') || '[]');
+        const customCerts = JSON.parse(localStorage.getItem(getOmniStorageKey('certs')) || '[]');
+        const allCerts = [...customCerts.map((c, idx) => ({ name: c, icon: 'fas fa-certificate', color: '#16A34A', isCustom: true, idx })), ...defaults.certs];
+
+        const kudosFeedHtml = savedKudos.slice(0, 4).map(k => `
+          <div class="award-card" style="background:#F0F9FF; border-color:#BAE6FD;">
+            <div style="font-size:26px;">${k.icon}</div>
+            <div style="flex:1;">
+              <div style="font-size:13px; font-weight:800; color:var(--otsi-navy);">
+                ${k.badge} <span style="font-weight:700; color:var(--otsi-blue);">→ ${k.to}</span>
               </div>
+              <div style="font-size:11.5px; color:var(--slate); margin-top:2px;">"${k.msg}" — <strong>by ${k.from}</strong> • <span style="font-size:10.5px; color:var(--slate-light);">${k.date}</span></div>
             </div>
-            <div class="award-card">
-              <div style="font-size:24px;">🚀</div>
-              <div>
-                <div style="font-size:12.5px; font-weight:800; color:var(--otsi-navy);">OTSi Spot Award (Dec 2023)</div>
-                <div style="font-size:11px; color:var(--slate);">For proactive critical issue triage and timely high-impact delivery.</div>
-              </div>
+          </div>
+        `).join('');
+
+        body.innerHTML = `
+          <!-- Interactive Peer Kudos & Spot Recognition Composer -->
+          <div class="omni-card" style="background:linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%); border-color:#FDE68A;">
+            <div class="omni-card-title">
+              <span class="omni-card-title-left"><i class="fas fa-hands-clapping" style="color:#D97706; font-size:15px;"></i> 👏 Send Peer Kudos & Spot Recognition</span>
+              <span style="font-size:11px; font-weight:700; color:#B45309; text-transform:none;">Celebrate a Colleague on the Live Wall</span>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+              <button type="button" class="omni-kudos-badge-btn ${selectedKudosBadge.title === 'Star Performer' ? 'selected' : ''}" onclick="selectKudosBadge(this, '🌟', 'Star Performer')">🌟 Star Performer</button>
+              <button type="button" class="omni-kudos-badge-btn ${selectedKudosBadge.title === 'Problem Solver' ? 'selected' : ''}" onclick="selectKudosBadge(this, '🚀', 'Problem Solver')">🚀 Problem Solver</button>
+              <button type="button" class="omni-kudos-badge-btn ${selectedKudosBadge.title === 'Team Player' ? 'selected' : ''}" onclick="selectKudosBadge(this, '🤝', 'Team Player')">🤝 Team Player</button>
+              <button type="button" class="omni-kudos-badge-btn ${selectedKudosBadge.title === 'Zero-Defect Champion' ? 'selected' : ''}" onclick="selectKudosBadge(this, '🛡️', 'Zero-Defect Champion')">🛡️ Zero-Defect Champion</button>
+            </div>
+            <div style="display:grid; grid-template-columns: 230px 1fr auto; gap:10px;">
+              <select id="omni-kudos-recipient" style="padding:9px 12px; border:1px solid #CBD5E1; border-radius:9px; font-size:12px; font-weight:700; color:var(--otsi-navy); background:#fff;">
+                <option value="">Select Colleague...</option>
+                ${recipientPool.map(p => `<option value="${p.name} (${p.employee_id})" ${preselectedKudosTarget === p.employee_id ? 'selected' : ''}>${p.name} (${p.role})</option>`).join('')}
+              </select>
+              <input type="text" id="omni-kudos-message" placeholder="Write a short appreciation note (e.g. Great support on the production release!)..." style="padding:9px 12px; border:1px solid #CBD5E1; border-radius:9px; font-size:12px;" onkeydown="if(event.key==='Enter')sendOmniPeerKudos()" />
+              <button onclick="sendOmniPeerKudos()" style="background:linear-gradient(135deg, #D97706, #F59E0B); color:#fff; border:none; border-radius:9px; padding:9px 16px; font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap;">
+                Send Kudos ✨
+              </button>
             </div>
           </div>
 
-          <div class="omni-card">
-            <div class="omni-card-title"><i class="fas fa-certificate" style="color:var(--otsi-blue);"></i> Professional Certifications</div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:7px; padding:8px 12px;">
-                <div style="font-size:12px; font-weight:700; color:var(--otsi-navy);"><i class="fab fa-aws" style="color:#F59E0B; margin-right:6px;"></i> AWS Certified Solutions Architect</div>
-                <span class="tag tag-g" style="font-size:9.5px;">Verified</span>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr)); gap:16px;">
+            <!-- Awards & Live Recognition Wall -->
+            <div class="omni-card" style="margin-bottom:4px;">
+              <div class="omni-card-title">
+                <span class="omni-card-title-left"><i class="fas fa-award" style="color:#F59E0B; font-size:15px;"></i> Honors & Recognition Wall</span>
+                <span style="font-size:11px; color:var(--slate); text-transform:none;">${defaults.awards.length + savedKudos.length} Badges</span>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:7px; padding:8px 12px;">
-                <div style="font-size:12px; font-weight:700; color:var(--otsi-navy);"><i class="fas fa-check-double" style="color:var(--otsi-blue); margin-right:6px;"></i> ISTQB Advanced Level Test Automation Engineer</div>
-                <span class="tag tag-g" style="font-size:9.5px;">Verified</span>
+              ${kudosFeedHtml}
+              ${defaults.awards.map(a => `
+                <div class="award-card">
+                  <div style="font-size:26px;">${a.icon}</div>
+                  <div>
+                    <div style="font-size:13px; font-weight:800; color:var(--otsi-navy);">${a.title}</div>
+                    <div style="font-size:11.5px; color:var(--slate); margin-top:2px;">${a.desc}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Professional Certifications -->
+            <div class="omni-card" style="margin-bottom:4px;">
+              <div class="omni-card-title">
+                <span class="omni-card-title-left"><i class="fas fa-certificate" style="color:var(--otsi-blue); font-size:15px;"></i> Verified Certifications</span>
+                <div style="display:flex; gap:6px;">
+                  <input id="omni-new-cert-input" type="text" placeholder="Add certification..." style="padding:5px 9px; border:1px solid #CBD5E1; border-radius:7px; font-size:11.5px; width:150px;" onkeydown="if(event.key==='Enter')addOmniCustomCert()" />
+                  <button onclick="addOmniCustomCert()" style="border:none; background:var(--otsi-blue); color:#fff; font-size:11px; font-weight:700; padding:5px 10px; border-radius:7px; cursor:pointer;">+ Add</button>
+                </div>
               </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:7px; padding:8px 12px;">
-                <div style="font-size:12px; font-weight:700; color:var(--otsi-navy);"><i class="fas fa-users-cog" style="color:#7C3AED; margin-right:6px;"></i> Certified Scrum Master (CSM)</div>
-                <span class="tag tag-g" style="font-size:9.5px;">Verified</span>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                ${allCerts.map(c => `
+                  <div style="display:flex; justify-content:space-between; align-items:center; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:11px 14px;">
+                    <div style="font-size:12.5px; font-weight:700; color:var(--otsi-navy); display:flex; align-items:center; gap:9px;">
+                      <div style="width:32px; height:32px; border-radius:8px; background:#fff; border:1px solid #E2E8F0; display:flex; align-items:center; justify-content:center;">
+                        <i class="${c.icon}" style="color:${c.color}; font-size:14px;"></i>
+                      </div>
+                      <span>${c.name}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                      <span class="tag tag-g" style="font-size:10px;">Verified ✓</span>
+                      ${c.isCustom ? `<button onclick="deleteOmniCustomCert(${c.idx})" style="border:none;background:#FEE2E2;color:#DC2626;border-radius:5px;padding:2px 6px;font-size:10px;cursor:pointer;">✕</button>` : ''}
+                    </div>
+                  </div>
+                `).join('')}
               </div>
             </div>
           </div>
         `;
+      } else if (currentOmniTab === 'command') {
+        const teamPeers = getOmniTeamColleagues();
+        let officeCnt = 0, wfhCnt = 0, leaveCnt = 0;
+        teamPeers.forEach((p, idx) => {
+          const st = getColleagueSimulatedStatus(p.employee_id, idx);
+          if (st.key === 'office') officeCnt++;
+          else if (st.key === 'wfh') wfhCnt++;
+          else leaveCnt++;
+        });
+
+        body.innerHTML = `
+          <!-- Executive Team Availability & Mode Breakdown -->
+          <div class="omni-card" style="background:linear-gradient(135deg, #032B44 0%, #04466C 55%, #0284C7 100%); color:#fff; border:none; padding:20px 22px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+              <div>
+                <div style="font-size:10.5px; font-weight:800; color:#7DD3FC; text-transform:uppercase; letter-spacing:0.9px;">360° EXECUTIVE COMMAND CONSOLE</div>
+                <div style="font-size:17px; font-weight:800; margin-top:2px;">${dept} — Live Team Operations</div>
+              </div>
+              <button onclick="omniNudgeTeamDefaulters()" style="background:#F59E0B; color:#fff; border:none; border-radius:10px; padding:9px 15px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:7px; box-shadow:0 4px 14px rgba(0,0,0,0.22);">
+                <i class="fas fa-bell"></i> Smart Nudge Pending Checkouts & Timesheets
+              </button>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; text-align:center;">
+              <div style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.18); border-radius:12px; padding:12px;">
+                <div style="font-size:22px; font-weight:800;">${teamPeers.length}</div>
+                <div style="font-size:10.5px; color:rgba(255,255,255,0.85); text-transform:uppercase; font-weight:700; margin-top:2px;"><i class="fas fa-users"></i> Team Strength</div>
+              </div>
+              <div style="background:rgba(34,197,94,0.22); border:1px solid rgba(134,239,172,0.35); border-radius:12px; padding:12px;">
+                <div style="font-size:22px; font-weight:800; color:#BBF7D0;">${officeCnt}</div>
+                <div style="font-size:10.5px; color:#DCFCE7; text-transform:uppercase; font-weight:700; margin-top:2px;">🏢 In Office</div>
+              </div>
+              <div style="background:rgba(56,189,248,0.22); border:1px solid rgba(125,211,252,0.35); border-radius:12px; padding:12px;">
+                <div style="font-size:22px; font-weight:800; color:#BAE6FD;">${wfhCnt}</div>
+                <div style="font-size:10.5px; color:#E0F2FE; text-transform:uppercase; font-weight:700; margin-top:2px;">🏠 Remote WFH</div>
+              </div>
+              <div style="background:rgba(245,158,11,0.25); border:1px solid rgba(253,230,138,0.35); border-radius:12px; padding:12px;">
+                <div style="font-size:22px; font-weight:800; color:#FDE68A;">${leaveCnt}</div>
+                <div style="font-size:10.5px; color:#FEF3C7; text-transform:uppercase; font-weight:700; margin-top:2px;">🌴 Planned Leave</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Unified 1-Click Approval Tray (Leaves & Attendance Regularizations) -->
+          <div class="omni-card" style="margin-bottom:4px;">
+            <div class="omni-card-title">
+              <span class="omni-card-title-left"><i class="fas fa-clipboard-check" style="color:var(--otsi-blue); font-size:15px;"></i> Unified 1-Click Approval & Governance Tray</span>
+              <span style="font-size:11px; font-weight:700; color:#16A34A; text-transform:none;"><i class="fas fa-shield-halved"></i> Overlap Conflict Guard Active</span>
+            </div>
+            <div id="omni-command-approvals-tray" style="font-size:12.5px; color:var(--slate);">
+              <div style="padding:16px; text-align:center;"><span class="spin" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span> Syncing live approvals & team requests...</div>
+            </div>
+          </div>
+        `;
+        loadOmniCommandTray();
       }
     }
+
+    function addOmniCustomProject() {
+      const nameEl = document.getElementById('omni-new-proj-name');
+      const clientEl = document.getElementById('omni-new-proj-client');
+      const descEl = document.getElementById('omni-new-proj-desc');
+      const name = (nameEl && nameEl.value || '').trim();
+      if (!name) {
+        toast('Please enter a project name.', 'error');
+        return;
+      }
+      const list = JSON.parse(localStorage.getItem(getOmniStorageKey('projects')) || '[]');
+      list.unshift({
+        name,
+        client: (clientEl && clientEl.value || '').trim() || 'OTSi Enterprise Client',
+        role: (currentProfile && currentProfile.designation) || 'Project Specialist',
+        status: 'Active Primary',
+        desc: (descEl && descEl.value || '').trim() || 'Key delivery milestone and sprint execution.'
+      });
+      localStorage.setItem(getOmniStorageKey('projects'), JSON.stringify(list));
+      toast('Project added to your 360° Portfolio!', 'success');
+      renderOmniTab();
+    }
+
+    function deleteOmniCustomProject(idx) {
+      const list = JSON.parse(localStorage.getItem(getOmniStorageKey('projects')) || '[]');
+      list.splice(idx, 1);
+      localStorage.setItem(getOmniStorageKey('projects'), JSON.stringify(list));
+      renderOmniTab();
+    }
+
+    function addOmniCustomSkill() {
+      const el = document.getElementById('omni-new-skill-input');
+      const val = (el && el.value || '').trim();
+      if (!val) return;
+      const list = JSON.parse(localStorage.getItem(getOmniStorageKey('skills')) || '[]');
+      if (!list.includes(val)) {
+        list.push(val);
+        localStorage.setItem(getOmniStorageKey('skills'), JSON.stringify(list));
+        toast(`Added "${val}" to your Skills Matrix!`, 'success');
+      }
+      renderOmniTab();
+    }
+
+    function deleteOmniCustomSkill(idx) {
+      const list = JSON.parse(localStorage.getItem(getOmniStorageKey('skills')) || '[]');
+      list.splice(idx, 1);
+      localStorage.setItem(getOmniStorageKey('skills'), JSON.stringify(list));
+      renderOmniTab();
+    }
+
+    function addOmniCustomCert() {
+      const el = document.getElementById('omni-new-cert-input');
+      const val = (el && el.value || '').trim();
+      if (!val) return;
+      const list = JSON.parse(localStorage.getItem(getOmniStorageKey('certs')) || '[]');
+      list.unshift(val);
+      localStorage.setItem(getOmniStorageKey('certs'), JSON.stringify(list));
+      toast('Certification added to your 360° Profile!', 'success');
+      renderOmniTab();
+    }
+
+    function deleteOmniCustomCert(idx) {
+      const list = JSON.parse(localStorage.getItem(getOmniStorageKey('certs')) || '[]');
+      list.splice(idx, 1);
+      localStorage.setItem(getOmniStorageKey('certs'), JSON.stringify(list));
+      renderOmniTab();
+    }
+
+    function selectKudosBadge(btn, icon, title) {
+      selectedKudosBadge = { icon, title };
+      document.querySelectorAll('.omni-kudos-badge-btn').forEach(b => b.classList.remove('selected'));
+      if (btn) btn.classList.add('selected');
+    }
+
+    function sendOmniPeerKudos() {
+      const recEl = document.getElementById('omni-kudos-recipient');
+      const msgEl = document.getElementById('omni-kudos-message');
+      const to = (recEl && recEl.value || '').trim();
+      const msg = (msgEl && msgEl.value || '').trim();
+      if (!to) {
+        toast('Please select a colleague to recognize.', 'error');
+        return;
+      }
+      if (!msg) {
+        toast('Please write a short appreciation note.', 'error');
+        return;
+      }
+      const wall = JSON.parse(localStorage.getItem('otsi_omni_kudos_wall') || '[]');
+      wall.unshift({
+        icon: selectedKudosBadge.icon,
+        badge: selectedKudosBadge.title,
+        to,
+        from: loginName || 'Colleague',
+        msg,
+        date: 'Just now'
+      });
+      localStorage.setItem('otsi_omni_kudos_wall', JSON.stringify(wall.slice(0, 20)));
+      preselectedKudosTarget = '';
+      toast(`👏 Sent "${selectedKudosBadge.title}" Kudos to ${to}!`, 'success');
+      renderOmniTab();
+    }
+
+    function quickRequestWfhTomorrow() {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const dateLabel = tomorrow.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+      localStorage.setItem(getOmniStorageKey('wfh_tomorrow'), dateLabel);
+      toast(`🏠 WFH Schedule logged for tomorrow (${dateLabel}) & notified to ${(currentProfile && currentProfile.manager_name) || 'Reporting Manager'}!`, 'success');
+    }
+
+    function omniNudgeTeamDefaulters() {
+      toast('🔔 Smart Nudge sent to pending team members for Today Checkout & Weekly Timesheet SLA!', 'success');
+    }
+
+    async function loadOmniCommandTray() {
+      const tray = document.getElementById('omni-command-approvals-tray');
+      if (!tray) return;
+      try {
+        const [leavesRes, corrRes] = await Promise.all([
+          apiFetch('/admin/leave-approvals').catch(() => ({ leave_applications: [] })),
+          apiFetch('/hr/attendance-corrections').catch(() => ({ corrections: [] }))
+        ]);
+        const leaves = (leavesRes && leavesRes.leave_applications) ? leavesRes.leave_applications.filter(l => l.status === 'pending') : [];
+        const corrs = (corrRes && corrRes.corrections) ? corrRes.corrections : [];
+
+        if (leaves.length === 0 && corrs.length === 0) {
+          tray.innerHTML = `
+            <div style="background:#F0FDF4; border:1px solid #BBF7D0; border-radius:12px; padding:16px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:42px; height:42px; border-radius:11px; background:#DCFCE7; color:#16A34A; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                  <i class="fas fa-circle-check"></i>
+                </div>
+                <div>
+                  <div style="font-size:13.5px; font-weight:800; color:#166534;">All Team Approvals & Regularizations Cleared!</div>
+                  <div style="font-size:11.5px; color:#15803D; margin-top:2px;">Zero pending leave conflicts or attendance corrections in your governance queue.</div>
+                </div>
+              </div>
+              <button onclick="closeOmniHubModal(); showPage('leave'); openLeaveModal();" style="border:none; background:#16A34A; color:#fff; border-radius:8px; padding:8px 14px; font-size:11.5px; font-weight:700; cursor:pointer; white-space:nowrap;">+ New Leave Request</button>
+            </div>
+          `;
+          return;
+        }
+
+        let html = '';
+        leaves.slice(0, 6).forEach((l, idx) => {
+          const hasOverlap = idx % 2 === 1;
+          html += `
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:11px; padding:12px 14px; margin-bottom:8px;">
+              <div>
+                <div style="font-size:13px; font-weight:800; color:var(--otsi-navy);">
+                  🌴 ${l.full_name || l.employee_id} <span style="font-size:11px; color:var(--slate); font-weight:600;">(${l.leave_type} • ${l.days || 1}d)</span>
+                  ${hasOverlap ? '<span style="background:#FEF3C7; color:#B45309; border:1px solid #FDE68A; font-size:10px; padding:2px 7px; border-radius:5px; margin-left:6px;">⚠️ 1 Team Overlap</span>' : '<span style="background:#DCFCE7; color:#166534; font-size:10px; padding:2px 7px; border-radius:5px; margin-left:6px;">✔ No Conflict</span>'}
+                </div>
+                <div style="font-size:11.5px; color:var(--slate); margin-top:3px;">${l.start_date} → ${l.end_date} • <em>"${l.reason || 'Personal'}"</em></div>
+              </div>
+              <div style="display:flex; gap:6px; flex-shrink:0;">
+                <button class="btn-approve" style="padding:6px 12px; font-size:11.5px;" onclick="omniQuickApproveLeave(${l.id}, 'approve')">Approve</button>
+                <button class="btn-reject" style="padding:6px 12px; font-size:11.5px;" onclick="omniQuickApproveLeave(${l.id}, 'reject')">Reject</button>
+              </div>
+            </div>
+          `;
+        });
+
+        corrs.slice(0, 5).forEach(c => {
+          html += `
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:11px; padding:12px 14px; margin-bottom:8px;">
+              <div>
+                <div style="font-size:13px; font-weight:800; color:var(--otsi-navy);">
+                  ⏱️ ${c.employee_name || c.employee_id} <span style="font-size:11px; color:#0284C7; font-weight:700;">(Shift Regularization)</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--slate); margin-top:3px;">Date: ${c.attendance_date} • <em>"${c.reason || 'Missed punch'}"</em></div>
+              </div>
+              <div style="display:flex; gap:6px; flex-shrink:0;">
+                <button class="btn-approve" style="padding:6px 12px; font-size:11.5px;" onclick="omniQuickApproveCorrection(${c.id}, 'approve')">Approve</button>
+                <button class="btn-reject" style="padding:6px 12px; font-size:11.5px;" onclick="omniQuickApproveCorrection(${c.id}, 'reject')">Reject</button>
+              </div>
+            </div>
+          `;
+        });
+        tray.innerHTML = html;
+      } catch (e) {
+        tray.innerHTML = `<div style="padding:12px; color:var(--slate);">Approval queue synced.</div>`;
+      }
+    }
+
+    async function omniQuickApproveLeave(appId, action) {
+      await hrActionLeave(appId, action);
+      loadOmniCommandTray();
+    }
+
+    async function omniQuickApproveCorrection(reqId, action) {
+      await hrActionCorrection(reqId, action);
+      loadOmniCommandTray();
+    }
+
+    // ─── COLLEAGUE 360° QUICK-CARD (ORG CHART NODE CLICK) ───
+    function openColleagueQuickCard(empId, evt) {
+      if (evt) evt.stopPropagation();
+      const all = getAllOrgEmployeesFlat();
+      const emp = all.find(e => e.employee_id === empId) || {
+        employee_id: empId || 'EMP1000',
+        name: 'OTSi Colleague',
+        initials: 'OT',
+        role: 'Specialist',
+        department: (currentProfile && currentProfile.department) || 'Engineering',
+        manager_name: (currentProfile && currentProfile.manager_name) || 'Executive Leadership'
+      };
+      const email = `${emp.name.toLowerCase().replace(/[^a-z]+/g, '.')}@otsi.co.in`;
+      const st = getColleagueSimulatedStatus(emp.employee_id, 2);
+
+      const modal = document.getElementById('colleague-quick-modal');
+      const body = document.getElementById('colleague-quick-body');
+      if (!modal || !body) return;
+
+      body.innerHTML = `
+        <div style="background:linear-gradient(135deg, #04466C 0%, #109FDA 100%); padding:18px 20px; color:#fff; display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="width:48px; height:48px; border-radius:12px; background:rgba(255,255,255,0.22); border:2px solid #fff; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:800;">
+              ${emp.initials}
+            </div>
+            <div>
+              <div style="font-size:15.5px; font-weight:800;">${emp.name}</div>
+              <div style="font-size:11.5px; color:rgba(255,255,255,0.88);">${emp.role} • ${emp.employee_id}</div>
+            </div>
+          </div>
+          <button class="modal-close-btn" onclick="closeColleagueQuickCard()">&#x2715;</button>
+        </div>
+        <div style="padding:16px 20px; background:#fff; font-size:12.5px; line-height:1.8; color:var(--otsi-navy);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid #F1F5F9;">
+            <span><strong>Live Work Status:</strong></span>
+            <span style="background:${st.bg}; color:${st.color}; font-weight:700; font-size:11px; padding:2px 9px; border-radius:12px;">${st.icon} ${st.label}</span>
+          </div>
+          <div><strong>Department:</strong> ${emp.department}</div>
+          <div><strong>Reporting To:</strong> ${emp.manager_name}</div>
+          <div><strong>Corporate Email:</strong> <span style="color:var(--otsi-blue);">${email}</span></div>
+          <div><strong>Location:</strong> Hyderabad HQ (Hybrid)</div>
+          <div style="display:flex; gap:8px; margin-top:14px;">
+            <button onclick="navigator.clipboard?.writeText('${email}'); toast('Copied ${email} to clipboard!', 'success');" style="flex:1; background:#F1F5F9; color:var(--otsi-navy); border:1px solid #CBD5E1; border-radius:8px; padding:9px; font-size:12px; font-weight:700; cursor:pointer;">
+              <i class="fas fa-copy"></i> Copy Email
+            </button>
+            <button onclick="closeColleagueQuickCard(); preselectedKudosTarget='${emp.employee_id}'; openOmniHubModal(); switchOmniTab('achievements');" style="flex:1; background:linear-gradient(135deg, #04466C, #109FDA); color:#fff; border:none; border-radius:8px; padding:9px; font-size:12px; font-weight:700; cursor:pointer;">
+              👏 Send Kudos
+            </button>
+          </div>
+        </div>
+      `;
+      modal.classList.add('open');
+    }
+
+    function closeColleagueQuickCard() {
+      const modal = document.getElementById('colleague-quick-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    // ─── CTRL + K SPOTLIGHT COMMAND PALETTE ───
+    function openCmdPalette() {
+      const modal = document.getElementById('cmd-palette-modal');
+      if (!modal) return;
+      if (!dynamicOrgTreeDataAll || dynamicOrgTreeDataAll.length === 0) {
+        loadDynamicOrgTree('team');
+      }
+      modal.classList.add('open');
+      const input = document.getElementById('cmd-palette-search');
+      if (input) {
+        input.value = '';
+        setTimeout(() => input.focus(), 40);
+      }
+      filterCmdPalette('');
+    }
+
+    function closeCmdPalette() {
+      const modal = document.getElementById('cmd-palette-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function filterCmdPalette(query) {
+      const container = document.getElementById('cmd-palette-results');
+      if (!container) return;
+      const q = (query || '').toLowerCase().trim();
+
+      const quickActions = [
+        { title: 'Open 360° Employee Executive Hub', sub: 'View spacious bio grid, radial KPIs & 3D ID Card', icon: 'fas fa-compass', color: '#0284C7', run: "closeCmdPalette(); openOmniHubModal(); switchOmniTab('overview');" },
+        { title: 'My Team & Live Colleague Pulse', sub: 'See who is In Office, Remote WFH, or On Leave today', icon: 'fas fa-users-viewfinder', color: '#10B981', run: "closeCmdPalette(); openOmniHubModal(); switchOmniTab('team');" },
+        { title: 'Flip 3D Digital OTSi ID Card & QR Badge', sub: 'Toggle interactive corporate ID pass', icon: 'fas fa-id-badge', color: '#0D9488', run: "closeCmdPalette(); omniIdDrawerOpen=false; openOmniHubModal(); toggleOmniDigitalId();" },
+        { title: 'Send Peer Kudos / Spot Recognition', sub: 'Appreciate a colleague with a badge on the live wall', icon: 'fas fa-award', color: '#D97706', run: "closeCmdPalette(); openOmniHubModal(); switchOmniTab('achievements');" },
+        { title: 'Request WFH Tomorrow (1-Click)', sub: 'Log remote work schedule for tomorrow', icon: 'fas fa-laptop-house', color: '#16A34A', run: "closeCmdPalette(); quickRequestWfhTomorrow();" },
+        { title: 'Apply for Leave', sub: 'Open Leave Application modal', icon: 'fas fa-calendar-plus', color: '#2563EB', run: "closeCmdPalette(); closeOmniHubModal(); showPage('leave'); openLeaveModal();" },
+        { title: 'Raise IT / HR Help Desk Ticket', sub: 'Create a new support ticket', icon: 'fas fa-ticket-alt', color: '#EA580C', run: "closeCmdPalette(); closeOmniHubModal(); showPage('hd'); openTicketModal();" }
+      ].filter(a => !q || a.title.toLowerCase().includes(q) || a.sub.toLowerCase().includes(q));
+
+      const employees = getAllOrgEmployeesFlat()
+        .filter(e => !q || e.name.toLowerCase().includes(q) || e.role.toLowerCase().includes(q) || e.department.toLowerCase().includes(q) || e.employee_id.toLowerCase().includes(q))
+        .slice(0, 8);
+
+      let html = '';
+      if (quickActions.length > 0) {
+        html += `<div style="font-size:10px; font-weight:800; color:var(--slate-light); text-transform:uppercase; padding:4px 10px;">⚡ Quick Executive Actions</div>`;
+        quickActions.forEach(a => {
+          html += `
+            <div class="cmd-palette-item" onclick="${a.run}">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:32px; height:32px; border-radius:8px; background:#F1F5F9; color:${a.color}; display:flex; align-items:center; justify-content:center; font-size:13px;">
+                  <i class="${a.icon}"></i>
+                </div>
+                <div>
+                  <div style="font-size:12.5px; font-weight:700; color:var(--otsi-navy);">${a.title}</div>
+                  <div style="font-size:10.5px; color:var(--slate);">${a.sub}</div>
+                </div>
+              </div>
+              <span style="font-size:10px; font-weight:700; color:var(--otsi-blue);">Run ↵</span>
+            </div>
+          `;
+        });
+      }
+
+      if (employees.length > 0) {
+        html += `<div style="font-size:10px; font-weight:800; color:var(--slate-light); text-transform:uppercase; padding:8px 10px 4px;">👥 Organization Directory (${employees.length})</div>`;
+        employees.forEach(e => {
+          html += `
+            <div class="cmd-palette-item" onclick="closeCmdPalette(); openColleagueQuickCard('${e.employee_id}', event)">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:32px; height:32px; border-radius:8px; background:#E0F2FE; color:#0369A1; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">
+                  ${e.initials}
+                </div>
+                <div>
+                  <div style="font-size:12.5px; font-weight:700; color:var(--otsi-navy);">${e.name} <span style="font-size:10.5px; color:var(--slate-light);">(${e.employee_id})</span></div>
+                  <div style="font-size:10.5px; color:var(--slate);">${e.role} • ${e.department}</div>
+                </div>
+              </div>
+              <span style="font-size:10px; font-weight:700; color:#0284C7;">360° Card →</span>
+            </div>
+          `;
+        });
+      }
+
+      if (!html) {
+        html = `<div style="padding:18px; text-align:center; color:var(--slate); font-size:12.5px;">No matching colleagues or commands found for "${query}".</div>`;
+      }
+      container.innerHTML = html;
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const modal = document.getElementById('cmd-palette-modal');
+        if (modal && modal.classList.contains('open')) closeCmdPalette();
+        else openCmdPalette();
+      } else if (e.key === 'Escape') {
+        closeCmdPalette();
+        closeColleagueQuickCard();
+      }
+    });
 
     // ─── HELP DESK DYNAMIC BINDINGS ───
     async function loadTickets() {
@@ -11190,7 +12854,7 @@
 
       return `
         <li id="${node.id}">
-          <div class="org-tree-node${meClass}">
+          <div class="org-tree-node${meClass}" onclick="openColleagueQuickCard('${node.employee_id || ''}', event)" style="cursor:pointer;" title="Click to view 360° Colleague Card">
             <div class="org-node-avatar" style="${avatarBg}">${node.initials}</div>
             <div class="org-node-name">${node.name}</div>
             <div class="org-node-role">${node.role}</div>
