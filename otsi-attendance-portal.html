@@ -4290,23 +4290,37 @@
       width: 100%;
     }
 
-    /* Full-Width Modern Table Card (First Image Proportions & Second Image Colors) */
+    /* Full-Width Modern Table Card (Exact Mirror of Quick Navigation Signature OTSi Blue Architecture) */
     .modern-table-card {
-      border-radius: 10px;
+      position: relative;
+      border-radius: 12px;
       border: 1.5px solid transparent;
       background: linear-gradient(#ffffff, #ffffff) padding-box,
-        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.35) 45%, rgba(4, 70, 108, 0.45) 75%, var(--otsi-blue, #109FDA) 100%) border-box;
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.5) 50%, var(--otsi-navy, #04466C) 100%) border-box;
       overflow: hidden;
-      box-shadow: 0 4px 16px rgba(16, 159, 218, 0.10), 0 1px 4px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 4px 16px rgba(16, 159, 218, 0.14), 0 1px 4px rgba(0, 0, 0, 0.04);
       margin-bottom: 16px;
       width: 100%;
       transition: all 0.22s ease;
     }
 
+    .modern-table-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 2.5px;
+      background: linear-gradient(90deg, transparent, var(--otsi-blue, #109FDA), var(--otsi-teal, #00A389), transparent);
+      border-radius: 0 0 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
     .modern-table-card:hover {
-      box-shadow: 0 6px 20px rgba(16, 159, 218, 0.14), 0 1px 4px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 6px 22px rgba(16, 159, 218, 0.20), 0 2px 6px rgba(0, 0, 0, 0.05);
       background: linear-gradient(#ffffff, #ffffff) padding-box,
-        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.5) 50%, var(--otsi-navy, #04466C) 100%) border-box;
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.65) 50%, var(--otsi-navy, #04466C) 100%) border-box;
     }
 
     .modern-table-header {
