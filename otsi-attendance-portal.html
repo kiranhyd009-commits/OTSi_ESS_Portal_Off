@@ -1832,6 +1832,51 @@
       border-color: #BAE6FD;
     }
 
+    /* Today's Recent Day Attendance Log Item — Signature OTSi Aurora Frame */
+    .log-item.today,
+    .log-item.otsi-aurora-card {
+      position: relative;
+      border-radius: 11px;
+      border: 1.5px solid transparent !important;
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.55) 50%, var(--otsi-navy, #04466C) 100%) border-box !important;
+      box-shadow: 0 4px 16px rgba(16, 159, 218, 0.14), 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+      transition: all 0.22s ease;
+    }
+
+    .log-item.today::before,
+    .log-item.otsi-aurora-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 14px;
+      right: 14px;
+      height: 2.5px;
+      background: linear-gradient(90deg, transparent, var(--otsi-blue, #109FDA), var(--otsi-teal, #00A389), transparent);
+      border-radius: 0 0 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .log-item.today:hover,
+    .log-item.otsi-aurora-card:hover {
+      box-shadow: 0 6px 20px rgba(16, 159, 218, 0.22), 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.70) 50%, var(--otsi-navy, #04466C) 100%) border-box !important;
+    }
+
+    .log-item.today .log-date-box,
+    .log-item.otsi-aurora-card .log-date-box {
+      background: linear-gradient(135deg, rgba(16, 159, 218, 0.14), rgba(2, 132, 199, 0.07));
+      border: 1px solid rgba(16, 159, 218, 0.25);
+    }
+
+    .log-item.today .log-date-d,
+    .log-item.otsi-aurora-card .log-date-d {
+      color: var(--otsi-blue, #109FDA);
+      font-weight: 800;
+    }
+
     .log-date-box {
       width: 36px;
       text-align: center;
@@ -8447,10 +8492,16 @@
           container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--slate-light)">No recent attendance found.</div>';
           return;
         }
-        logs.slice(0, 5).forEach(log => {
+        const todayObj = new Date();
+        const todayD = todayObj.getDate();
+        const todayM = todayObj.getMonth();
+        const todayY = todayObj.getFullYear();
+
+        logs.slice(0, 5).forEach((log, index) => {
           const d = log.attendance_date ? new Date(log.attendance_date) : new Date();
           const day = d.toLocaleDateString('en-IN', { day: 'numeric' });
           const month = d.toLocaleDateString('en-IN', { month: 'short' });
+          const isToday = (d.getDate() === todayD && d.getMonth() === todayM && d.getFullYear() === todayY) || (index === 0 && d.toDateString() === todayObj.toDateString());
 
           let timesStr = '—';
           if (log.check_in_time) {
@@ -8474,7 +8525,7 @@
           }
 
           const item = document.createElement('div');
-          item.className = 'log-item';
+          item.className = isToday ? 'log-item today otsi-aurora-card' : 'log-item';
           item.innerHTML = `
         <div class="log-date-box"><div class="log-date-d">${day}</div><div class="log-date-m">${month}</div></div>
         <div class="log-details">
@@ -9241,10 +9292,16 @@
           return;
         }
 
-        logs.forEach(log => {
+        const histToday = new Date();
+        const histD = histToday.getDate();
+        const histM = histToday.getMonth();
+        const histY = histToday.getFullYear();
+
+        logs.forEach((log, index) => {
           const d = new Date(log.attendance_date);
           const day = d.toLocaleDateString('en-IN', { day: 'numeric' });
           const monthStr = d.toLocaleDateString('en-IN', { month: 'short' });
+          const isToday = (d.getDate() === histD && d.getMonth() === histM && d.getFullYear() === histY) || (index === 0 && d.toDateString() === histToday.toDateString());
 
           let timesStr = '—';
           if (log.check_in_time) {
@@ -9263,7 +9320,7 @@
           else if (log.status === 'half_day') { tagClass = 'tag-a'; statusStr = 'Half Day'; }
 
           const item = document.createElement('div');
-          item.className = 'log-item';
+          item.className = isToday ? 'log-item today otsi-aurora-card' : 'log-item';
           item.innerHTML = `
             <div class="log-date-box"><div class="log-date-d">${day}</div><div class="log-date-m">${monthStr}</div></div>
             <div class="log-details">
