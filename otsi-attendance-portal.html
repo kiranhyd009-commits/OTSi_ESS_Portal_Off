@@ -319,6 +319,8 @@
     input[type=email],
     input[type=date],
     input[type=password],
+    input[type=tel],
+    input[type=number],
     select,
     textarea {
       width: 100%;
@@ -2589,11 +2591,9 @@
     }
 
     .modal-sheet {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 14px;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
       width: 100%;
       max-width: 560px;
       overflow: hidden;
@@ -3129,6 +3129,65 @@
       gap: 14px;
     }
 
+    @media (max-width: 640px) {
+      .omni-modal-sheet {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        border: none !important;
+      }
+      .omni-topbar {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+      }
+      .omni-title {
+        font-size: 13.5px !important;
+      }
+      .omni-action-pill.kbd-hint {
+        display: none !important;
+      }
+      .omni-id-face {
+        padding: 14px 14px !important;
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+      }
+      .omni-id-card-inner {
+        min-height: 220px !important;
+      }
+      .omni-id-qr-box {
+        padding: 6px !important;
+      }
+      .omni-id-qr-box svg {
+        width: 68px !important;
+        height: 68px !important;
+      }
+      .omni-bio-icon-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+      .omni-pulse-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+      }
+      .omni-ring-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .stats-strip {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        margin: 6px 8px 0 !important;
+      }
+      .stat-card.pink {
+        grid-column: span 2;
+      }
+    }
+
     @media (max-width: 900px) {
       .omni-modal-sheet {
         flex-direction: column;
@@ -3444,6 +3503,33 @@
 
     .modal-body {
       padding: 22px 22px 10px;
+    }
+
+    
+    #edit-profile-modal .inp-wrap input,
+    #edit-profile-modal .lt-select-wrap select,
+    #admin-edit-emp-modal .inp-wrap input,
+    #admin-edit-emp-modal .lt-select-wrap select {
+      width: 100% !important;
+      height: 42px !important;
+      padding: 9px 12px 9px 38px !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid #E2E8F0 !important;
+      border-radius: 10px !important;
+      font-size: 13.5px !important;
+      font-family: inherit !important;
+      color: var(--otsi-navy) !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+    }
+
+    #edit-profile-modal .inp-wrap input:focus,
+    #edit-profile-modal .lt-select-wrap select:focus,
+    #admin-edit-emp-modal .inp-wrap input:focus,
+    #admin-edit-emp-modal .lt-select-wrap select:focus {
+      border-color: var(--otsi-blue) !important;
+      box-shadow: 0 0 0 3px rgba(16, 159, 218, 0.15) !important;
+      background: #FFFFFF !important;
     }
 
     /* Field labels in modal — uppercase small caps style like reference */
@@ -5014,11 +5100,43 @@
         font-size: 11.5px;
       }
 
-      /* Modals on Mobile: Full-screen Sheet Comfort */
+      /* Adaptive Attendance Stats Strip for Mobile */
+      .stats-strip {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        margin: 8px 10px 0 !important;
+      }
+
+      .stat-card.pink {
+        grid-column: span 2;
+      }
+
+      .stat-card {
+        padding: 8px 4px !important;
+      }
+
+      .stat-val {
+        font-size: 18px !important;
+      }
+
+      .stat-label {
+        font-size: 9px !important;
+      }
+
+      /* Modals on Mobile: Full-screen Sheet Comfort & Safe Areas */
       .modal-overlay {
-        padding: 8px !important;
+        padding: 0 !important;
         align-items: flex-end;
         /* Bottom sheet style on mobile */
+      }
+
+      .modal-sheet {
+        padding-bottom: max(20px, calc(14px + env(safe-area-inset-bottom, 0px))) !important;
+        border-radius: 16px 16px 0 0 !important;
+      }
+
+      .modal-footer {
+        padding-bottom: max(6px, env(safe-area-inset-bottom, 0px)) !important;
       }
 
       .modal-sheet {
@@ -7575,7 +7693,16 @@
             <input type="text" id="edit-full-name" placeholder="Your full name">
           </div>
         </div>
-        <div class="fgroup" style="margin-bottom:4px;">
+        <div class="fgroup" style="margin-bottom:14px;">
+          <label class="modal-field-label">Phone Number</label>
+          <div class="inp-wrap">
+            <svg class="inp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <input type="text" id="edit-phone" placeholder="+91 98765 43210">
+          </div>
+        </div>
+        <div class="fgroup" style="margin-bottom:6px;">
           <label class="modal-field-label">Work Mode</label>
           <div class="lt-select-wrap">
             <svg class="lt-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -7594,6 +7721,100 @@
         <button class="modal-btn secondary"
           onclick="document.getElementById('edit-profile-modal').classList.remove('open')">Cancel</button>
         <button class="modal-btn primary" onclick="saveProfileEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HR / Admin Direct Edit Employee Master Record Modal -->
+  <div class="modal-overlay" id="admin-edit-emp-modal">
+    <div class="modal-sheet" style="max-width:540px;">
+      <div class="modal-header">
+        <div class="modal-header-title">Edit Employee Master Record</div>
+        <button class="modal-close-btn" onclick="closeAdminEditEmpModal()" aria-label="Close">&#x2715;</button>
+      </div>
+      <div class="modal-body" style="max-height:calc(85vh - 130px);overflow-y:auto;-webkit-overflow-scrolling:touch;">
+        <input type="hidden" id="admin-edit-emp-id">
+        <div style="background:var(--slate-50, #f1f5f9);padding:10px 14px;border-radius:8px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);">
+          <span style="font-size:12px;font-weight:700;color:var(--slate);">Employee ID:</span>
+          <span id="admin-edit-emp-id-badge" class="tag tag-s" style="font-weight:800;font-size:12px;">EMP1105</span>
+        </div>
+        <div class="fgroup" style="margin-bottom:12px;">
+          <label class="modal-field-label">Full Name</label>
+          <div class="inp-wrap">
+            <svg class="inp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+            </svg>
+            <input type="text" id="admin-edit-full-name" placeholder="Employee Full Name">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div class="fgroup">
+            <label class="modal-field-label">Designation</label>
+            <div class="inp-wrap">
+              <input type="text" id="admin-edit-designation" placeholder="e.g. Senior Software Engineer">
+            </div>
+          </div>
+          <div class="fgroup">
+            <label class="modal-field-label">Department</label>
+            <div class="inp-wrap">
+              <input type="text" id="admin-edit-department" placeholder="e.g. Engineering">
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div class="fgroup">
+            <label class="modal-field-label">Team</label>
+            <div class="inp-wrap">
+              <input type="text" id="admin-edit-team" placeholder="e.g. Platform Core">
+            </div>
+          </div>
+          <div class="fgroup">
+            <label class="modal-field-label">Reporting Manager ID</label>
+            <div class="inp-wrap">
+              <input type="text" id="admin-edit-mgr-id" placeholder="e.g. EMP1001">
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div class="fgroup">
+            <label class="modal-field-label">Phone Number</label>
+            <div class="inp-wrap">
+              <input type="tel" id="admin-edit-phone" placeholder="+91 9876543210">
+            </div>
+          </div>
+          <div class="fgroup">
+            <label class="modal-field-label">Date of Joining</label>
+            <div class="inp-wrap">
+              <input type="date" id="admin-edit-doj">
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;">
+          <div class="fgroup">
+            <label class="modal-field-label">System Role</label>
+            <div class="lt-select-wrap">
+              <select id="admin-edit-role">
+                <option value="employee">Employee</option>
+                <option value="hr">HR</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+          <div class="fgroup">
+            <label class="modal-field-label">Employment Status</label>
+            <div class="lt-select-wrap">
+              <select id="admin-edit-status">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="on_leave">On Leave</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn secondary" onclick="closeAdminEditEmpModal()">Cancel</button>
+        <button class="modal-btn primary" onclick="saveAdminEditEmp()">Save Employee Changes</button>
       </div>
     </div>
   </div>
@@ -9772,16 +9993,22 @@
       }
     }
     function openEditProfileModal() {
-      // Pre-fill current values
+      // Pre-fill current dynamic profile values
       const nameEl = document.getElementById('edit-full-name');
       if (nameEl) nameEl.value = loginName;
+      const phoneEl = document.getElementById('edit-phone');
+      if (phoneEl && currentProfile) phoneEl.value = currentProfile.phone || '';
       const wm = document.getElementById('edit-work-mode');
       if (wm && currentProfile && currentProfile.work_mode) wm.value = currentProfile.work_mode;
+
       // Reset photo preview
-      document.getElementById('edit-avatar-img').style.display = 'none';
-      document.getElementById('edit-avatar-initials').style.display = 'flex';
+      const previewImg = document.getElementById('edit-avatar-img');
+      if (previewImg) previewImg.style.display = 'none';
+      const previewInit = document.getElementById('edit-avatar-initials');
+      if (previewInit) previewInit.style.display = 'flex';
       document.getElementById('edit-profile-modal').classList.add('open');
     }
+
     function previewProfilePhoto(input) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -9790,7 +10017,6 @@
           img.src = e.target.result;
           img.style.display = 'block';
           document.getElementById('edit-avatar-initials').style.display = 'none';
-          // Also update the main profile avatar and header avatar with the image
           const lgAvatar = document.getElementById('profile-avatar-lg');
           if (lgAvatar) {
             lgAvatar.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="Profile">`;
@@ -9803,13 +10029,16 @@
         reader.readAsDataURL(input.files[0]);
       }
     }
+
     async function saveProfileEdit() {
       const newName = document.getElementById('edit-full-name').value.trim();
+      const newPhone = document.getElementById('edit-phone').value.trim();
       const wm = document.getElementById('edit-work-mode').value;
 
       const payload = {};
       if (newName) payload.full_name = newName;
-      if (wm) payload.work_mode = wm; // In backend, work_mode is not currently in columns, but we pass it anyway.
+      if (newPhone) payload.phone = newPhone;
+      if (wm) payload.work_mode = wm;
 
       try {
         const res = await apiFetch('/profile/update-requests', {
@@ -9817,30 +10046,60 @@
           body: JSON.stringify(payload)
         });
 
-        // Update local UI
+        // Dynamically update local memory state
+        if (!currentProfile) currentProfile = {};
+        if (newName) currentProfile.full_name = newName;
+        if (newPhone) currentProfile.phone = newPhone;
+        if (wm) currentProfile.work_mode = wm;
+
+        // Reactive UI updates across main dashboard, header, profile & 360 Hub
         if (newName) {
           loginName = newName;
-          document.getElementById('profile-full-name').textContent = newName;
-          document.getElementById('att-emp-name').textContent = newName;
-          document.getElementById('dd-emp-name').textContent = newName;
+          const initials = newName.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
+          const pNameEl = document.getElementById('profile-full-name');
+          if (pNameEl) pNameEl.textContent = newName;
+          const attNameEl = document.getElementById('att-emp-name');
+          if (attNameEl) attNameEl.textContent = newName;
+          const ddNameEl = document.getElementById('dd-emp-name');
+          if (ddNameEl) ddNameEl.textContent = newName;
           const helloEl = document.getElementById('leave-hello-name');
           if (helloEl) helloEl.textContent = newName;
-          const initials = newName.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
+
           const img = document.getElementById('edit-avatar-img');
           if (!img || img.style.display === 'none') {
-            document.getElementById('header-avatar').textContent = initials;
-            document.getElementById('profile-avatar-lg').textContent = initials;
+            const hAv = document.getElementById('header-avatar');
+            if (hAv) hAv.textContent = initials;
+            const pAv = document.getElementById('profile-avatar-lg');
+            if (pAv) pAv.textContent = initials;
+            const omniAv = document.getElementById('omni-user-avatar');
+            if (omniAv) omniAv.textContent = initials;
           }
+
+          const omniName = document.getElementById('omni-user-name');
+          if (omniName) omniName.textContent = newName;
+          const idFrontName = document.getElementById('omni-id-front-name');
+          if (idFrontName) idFrontName.textContent = newName;
         }
+
+        if (newPhone) {
+          const pPhoneEl = document.getElementById('p-phone');
+          if (pPhoneEl) pPhoneEl.textContent = newPhone;
+        }
+
         if (wm) {
-          document.getElementById('p-workmode').textContent = wm;
-          if (currentProfile) currentProfile.work_mode = wm;
+          const pWmEl = document.getElementById('p-workmode');
+          if (pWmEl) pWmEl.textContent = wm;
+        }
+
+        // Re-render 360 Hub overview tiles dynamically with the updated profile
+        if (typeof renderOmniTab === 'function') {
+          renderOmniTab('overview');
         }
 
         document.getElementById('edit-profile-modal').classList.remove('open');
 
         if (res.direct) {
-          toast('Profile updated successfully.', 'success');
+          toast('Profile updated and synchronized successfully.', 'success');
         } else {
           toast('Profile update request sent to HR.', 'success');
         }
@@ -12189,27 +12448,43 @@
           // Check if this is a pending registration (status is inactive and has no designaton/manager_id)
           const isPending = emp.status === 'inactive' && !emp.designation && !emp.manager_id;
 
+          // Cache employee data globally for reactive editing
+          if (!window.allHrEmployeesMap) window.allHrEmployeesMap = {};
+          window.allHrEmployeesMap[emp.employee_id] = emp;
+
           // Check if current user is HR or Admin to render action buttons
           const isHrAdmin = currentRole === 'hr' || currentRole === 'admin';
           let actionBtnHtml = '';
-          if (isHrAdmin && emp.employee_id !== loginEmpId) {
-            if (isPending) {
-              actionBtnHtml = `
-                <div style="display:flex;gap:4px;margin-left:12px;">
-                  <button class="btn-approve" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'active')">Approve</button>
-                  <button class="btn-reject" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'inactive')">Reject</button>
-                </div>
-              `;
-            } else if (emp.status === 'active') {
-              actionBtnHtml = `
-                <div style="margin-left:12px;">
-                  <button class="btn-reject" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'inactive')">Deactivate</button>
-                </div>
-              `;
+          if (isHrAdmin) {
+            const editBtn = `<button class="btn-sub" style="font-size:11px;padding:4px 9px;width:auto;margin:0;cursor:pointer;border-radius:6px;border:1px solid var(--border);" onclick="openAdminEditEmpModal('${emp.employee_id}')">Edit</button>`;
+            if (emp.employee_id !== loginEmpId) {
+              if (isPending) {
+                actionBtnHtml = `
+                  <div style="display:flex;gap:4px;margin-left:12px;align-items:center;">
+                    ${editBtn}
+                    <button class="btn-approve" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'active')">Approve</button>
+                    <button class="btn-reject" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'inactive')">Reject</button>
+                  </div>
+                `;
+              } else if (emp.status === 'active') {
+                actionBtnHtml = `
+                  <div style="display:flex;gap:4px;margin-left:12px;align-items:center;">
+                    ${editBtn}
+                    <button class="btn-reject" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'inactive')">Deactivate</button>
+                  </div>
+                `;
+              } else {
+                actionBtnHtml = `
+                  <div style="display:flex;gap:4px;margin-left:12px;align-items:center;">
+                    ${editBtn}
+                    <button class="btn-approve" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'active')">Activate</button>
+                  </div>
+                `;
+              }
             } else {
               actionBtnHtml = `
-                <div style="margin-left:12px;">
-                  <button class="btn-approve" style="font-size:11px;padding:4px 8px;width:auto;margin:0;" onclick="changeEmployeeStatus('${emp.employee_id}', 'active')">Activate</button>
+                <div style="margin-left:12px;display:flex;align-items:center;">
+                  ${editBtn}
                 </div>
               `;
             }
@@ -12317,6 +12592,118 @@
         `;
       } catch (err) {
         console.error('Failed to load org overview', err);
+      }
+    }
+
+    function openAdminEditEmpModal(empId) {
+      const emp = window.allHrEmployeesMap ? window.allHrEmployeesMap[empId] : null;
+      if (!emp) {
+        toast('Employee details not found in cache. Refreshing dashboard...', 'info');
+        loadHrDashboard();
+        return;
+      }
+      document.getElementById('admin-edit-emp-id').value = emp.employee_id;
+      document.getElementById('admin-edit-emp-id-badge').textContent = emp.employee_id;
+      document.getElementById('admin-edit-full-name').value = emp.full_name || '';
+      document.getElementById('admin-edit-designation').value = emp.designation || '';
+      document.getElementById('admin-edit-department').value = emp.department || '';
+      document.getElementById('admin-edit-team').value = emp.team || '';
+      document.getElementById('admin-edit-mgr-id').value = emp.manager_id || '';
+      document.getElementById('admin-edit-phone').value = emp.phone || '';
+      document.getElementById('admin-edit-doj').value = emp.date_of_joining ? emp.date_of_joining.slice(0, 10) : '';
+      document.getElementById('admin-edit-role').value = emp.role || 'employee';
+      document.getElementById('admin-edit-status').value = emp.status || 'active';
+
+      document.getElementById('admin-edit-emp-modal').classList.add('open');
+    }
+
+    function closeAdminEditEmpModal() {
+      document.getElementById('admin-edit-emp-modal').classList.remove('open');
+    }
+
+    async function saveAdminEditEmp() {
+      const empId = document.getElementById('admin-edit-emp-id').value;
+      if (!empId) return;
+
+      const payload = {
+        full_name: document.getElementById('admin-edit-full-name').value.trim(),
+        designation: document.getElementById('admin-edit-designation').value.trim(),
+        department: document.getElementById('admin-edit-department').value.trim(),
+        team: document.getElementById('admin-edit-team').value.trim(),
+        manager_id: document.getElementById('admin-edit-mgr-id').value.trim(),
+        phone: document.getElementById('admin-edit-phone').value.trim(),
+        date_of_joining: document.getElementById('admin-edit-doj').value,
+        role: document.getElementById('admin-edit-role').value,
+        status: document.getElementById('admin-edit-status').value
+      };
+
+      try {
+        const res = await apiFetch(`/admin/employees/${empId}/edit`, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        toast(res.message || 'Employee master record updated successfully.', 'success');
+        closeAdminEditEmpModal();
+
+        // If the edited employee is the currently logged-in user, dynamically propagate changes
+        if (empId === loginEmpId) {
+          if (payload.full_name) loginName = payload.full_name;
+          if (!currentProfile) currentProfile = {};
+          Object.assign(currentProfile, payload);
+
+          if (payload.full_name) {
+            const initials = payload.full_name.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
+            const pNameEl = document.getElementById('profile-full-name');
+            if (pNameEl) pNameEl.textContent = payload.full_name;
+            const attNameEl = document.getElementById('att-emp-name');
+            if (attNameEl) attNameEl.textContent = payload.full_name;
+            const ddNameEl = document.getElementById('dd-emp-name');
+            if (ddNameEl) ddNameEl.textContent = payload.full_name;
+            const hAv = document.getElementById('header-avatar');
+            if (hAv) hAv.textContent = initials;
+            const pAv = document.getElementById('profile-avatar-lg');
+            if (pAv) pAv.textContent = initials;
+            const omniName = document.getElementById('omni-user-name');
+            if (omniName) omniName.textContent = payload.full_name;
+            const idFrontName = document.getElementById('omni-id-front-name');
+            if (idFrontName) idFrontName.textContent = payload.full_name;
+            const omniAv = document.getElementById('omni-user-avatar');
+            if (omniAv) omniAv.textContent = initials;
+          }
+          if (payload.designation) {
+            const pDesig = document.getElementById('p-desig');
+            if (pDesig) pDesig.textContent = payload.designation;
+            const attRole = document.getElementById('att-emp-role');
+            if (attRole) attRole.textContent = payload.designation;
+            const idFrontDept = document.getElementById('omni-id-front-dept');
+            if (idFrontDept) idFrontDept.textContent = payload.designation;
+          }
+          if (payload.department) {
+            const pDept = document.getElementById('p-dept');
+            if (pDept) pDept.textContent = payload.department;
+          }
+          if (payload.phone) {
+            const pPhone = document.getElementById('p-phone');
+            if (pPhone) pPhone.textContent = payload.phone;
+          }
+          if (payload.date_of_joining) {
+            const pDoj = document.getElementById('p-joining');
+            if (pDoj) pDoj.textContent = payload.date_of_joining;
+          }
+
+          if (typeof renderOmniTab === 'function') {
+            renderOmniTab('overview');
+          }
+        }
+
+        // Dynamically refresh HR Dashboard and Org Tree
+        await loadHrDashboard();
+        if (typeof loadDynamicOrgTree === 'function') {
+          loadDynamicOrgTree();
+        }
+      } catch (err) {
+        toast(err.message || 'Failed to update employee master record', 'error');
       }
     }
 

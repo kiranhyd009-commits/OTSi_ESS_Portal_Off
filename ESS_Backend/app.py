@@ -1826,7 +1826,7 @@ def update_profile():
         employee_id = g.current_employee_id
         
         # Only allow updating certain fields
-        allowed_fields = ['phone', 'designation', 'department']
+        allowed_fields = ['full_name', 'phone', 'designation', 'department', 'team']
         update_data = {k: v for k, v in data.items() if k in allowed_fields}
         
         if not update_data:
@@ -2038,6 +2038,58 @@ def update_employee_status(employee_id):
     except Exception as e:
         logger.error(f"Update employee status error: {str(e)}")
         return jsonify({'error': 'Failed to update status'}), 500
+
+
+@app.route('/api/admin/employees/<employee_id>/edit', methods=['POST', 'PUT'])
+@token_required
+@role_required('hr', 'admin')
+def admin_edit_employee(employee_id):
+    """Directly edit employee master records (HR and Admin only)"""
+    try:
+        data = request.get_json() or {}
+        emp = SupabaseDB.select_one('employees', {'employee_id': employee_id})
+        if not emp:
+            return jsonify({'error': 'Employee not found'}), 404
+
+        allowed_fields = [
+            'full_name', 'phone', 'designation', 'department', 'team',
+            'manager_id', 'manager_name', 'date_of_joining', 'role', 'status'
+        ]
+        update_data = {}
+        for f in allowed_fields:
+            if f in data and data[f] is not None:
+                val = str(data[f]).strip()
+                if f == 'role' and val not in ['employee', 'hr', 'admin']:
+                    continue
+                if f == 'status' and val not in ['active', 'inactive', 'on_leave']:
+                    continue
+                update_data[f] = val
+
+        if 'manager_id' in update_data and 'manager_name' not in update_data:
+            mgr = SupabaseDB.select_one('employees', {'employee_id': update_data['manager_id']})
+            if mgr:
+                update_data['manager_name'] = mgr.get('full_name')
+
+        if not update_data:
+            return jsonify({'error': 'No valid fields provided for update'}), 400
+
+        update_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+        SupabaseDB.update('employees', {'employee_id': employee_id}, update_data)
+
+        log_audit(g.current_employee_id, 'ADMIN_EDIT_EMPLOYEE', 'employees',
+                  entity_id=employee_id, new_values=update_data)
+
+        updated_emp = SupabaseDB.select_one('employees', {'employee_id': employee_id})
+        if updated_emp:
+            updated_emp.pop('password_hash', None)
+
+        return jsonify({
+            'message': f'Employee {employee_id} updated successfully.',
+            'employee': updated_emp
+        }), 200
+    except Exception as e:
+        logger.error(f"Admin edit employee error: {str(e)}")
+        return jsonify({'error': 'Failed to update employee details'}), 500
 
 
 @app.route('/api/admin/team-attendance', methods=['GET'])
