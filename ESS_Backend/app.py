@@ -1934,14 +1934,8 @@ def get_profile():
         employee['is_manager'] = len(reports) > 0
         employee['is_system_admin'] = is_system_admin_account(employee)
         
-        # Identify Higher Officials / C-Suite (President Rajesh K., CEO Chandra Sekhar M., Executive Leadership)
-        desig_lower = (employee.get('designation') or '').lower()
-        dept_lower = (employee.get('department') or '').lower()
-        is_exec = (
-            employee_id in ['OTSI0001', 'EMP1001', 'EMP1000'] or
-            any(k in desig_lower for k in ['president', 'chief executive officer', 'ceo', 'chairman', 'founder', 'director - global delivery']) or
-            'executive leadership' in dept_lower
-        )
+        # Identify Higher Officials / C-Suite (Strictly President Rajesh K. and CEO Chandra Sekhar M.)
+        is_exec = employee_id in ['OTSI0001', 'EMP1001']
         employee['is_executive'] = is_exec
         
         employee['mfa_globally_enabled'] = is_mfa_enabled_globally()
@@ -2624,16 +2618,10 @@ def get_executive_overview():
         if not emp:
             return jsonify({'error': 'Employee not found'}), 404
             
-        desig_lower = (emp.get('designation') or '').lower()
-        dept_lower = (emp.get('department') or '').lower()
-        is_exec = (
-            current_emp_id in ['OTSI0001', 'EMP1001', 'EMP1000'] or
-            any(k in desig_lower for k in ['president', 'chief executive officer', 'ceo', 'chairman', 'founder']) or
-            'executive leadership' in dept_lower or
-            emp.get('role') in ['admin', 'hr']
-        )
+        # Strictly restricted to President Rajesh K. and CEO Chandra Sekhar M.
+        is_exec = current_emp_id in ['OTSI0001', 'EMP1001']
         if not is_exec:
-            return jsonify({'error': 'Access denied: Executive privileges required.'}), 403
+            return jsonify({'error': 'Access denied: Executive command center is strictly reserved for President and CEO.'}), 403
             
         today = date.today().isoformat()
         employees = SupabaseDB.select('employees', '*') or []
