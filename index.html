@@ -7954,8 +7954,8 @@
         <div id="checkout-policy-warning-box" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; display: flex; gap: 12px; align-items: flex-start;">
           <div style="font-size: 20px; line-height: 1;">⚠️</div>
           <div style="font-size: 12.5px; line-height: 1.5; color: #92400e;">
-            <strong style="color: #b45309; display: block; margin-bottom: 2px;">Half Day Policy Alert</strong>
-            <span id="checkout-policy-warning-text">OTSi policy requires a minimum of <strong>7.0 hours</strong> for a Full Day. If you check out now, your attendance status will be logged as a <strong>Half Day</strong>.</span>
+            <strong style="color: #b45309; display: block; margin-bottom: 2px;">OTSi Working Hours Policy</strong>
+            <span id="checkout-policy-warning-text">A minimum of <strong>4.0 hours</strong> is required for a <strong>Half Day</strong>, and <strong>7.0 hours</strong> for a <strong>Full Day</strong>.</span>
           </div>
         </div>
 
@@ -7973,7 +7973,7 @@
                   style="flex: 1; padding: 11px 16px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, var(--otsi-navy, #04466C) 100%); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 159, 218, 0.25);">
             Keep Working (Cancel)
           </button>
-          <button type="button" class="btn-sub" onclick="confirmAndExecuteCheckOut()"
+          <button type="button" class="btn-sub" id="checkout-confirm-action-btn" onclick="confirmAndExecuteCheckOut()"
                   style="flex: 1; padding: 11px 16px; font-size: 13px; font-weight: 600; background: #FFF1F2; color: #E11D48; border: 1px solid #FECDD3; border-radius: 10px; cursor: pointer;">
             Confirm Check-Out
           </button>
@@ -8623,14 +8623,15 @@
 
       const now = new Date();
       let elapsedHours = 0;
+      let totalMins = 0;
       let hoursInt = 0;
       let minsInt = 0;
       if (checkinTime) {
         const diffMs = Math.max(0, now - checkinTime);
         elapsedHours = diffMs / (1000 * 60 * 60);
-        const totalSecs = Math.floor(diffMs / 1000);
-        hoursInt = Math.floor(totalSecs / 3600);
-        minsInt = Math.floor((totalSecs % 3600) / 60);
+        totalMins = Math.floor(diffMs / (1000 * 60));
+        hoursInt = Math.floor(totalMins / 60);
+        minsInt = totalMins % 60;
       }
 
       const workedDisplay = document.getElementById('checkout-worked-hours-display');
@@ -8646,41 +8647,84 @@
       const modalIcon = document.getElementById('checkout-modal-icon');
       const titleText = document.getElementById('checkout-modal-title-text');
       const promptText = document.getElementById('checkout-prompt-text');
+      const confirmBtn = document.getElementById('checkout-confirm-action-btn');
 
-      if (elapsedHours < 7.0) {
-        // Under 7.0 hours: show Amber Half Day alert
+      if (elapsedHours < 4.0) {
+        // TIER 1: Under 4.0 hours (< 4.0h) -> Absent (does not qualify for Half Day)
+        const minsToHalf = Math.max(1, 240 - totalMins);
+        const hToHalf = Math.floor(minsToHalf / 60);
+        const mToHalf = minsToHalf % 60;
+        const timeToHalfStr = hToHalf > 0 ? `${hToHalf}h ${mToHalf}m` : `${mToHalf}m`;
+
+        if (modalIcon) modalIcon.textContent = '🛑';
+        if (titleText) titleText.textContent = 'Early Check-Out Alert (< 4.0 Hours)';
+        if (warningBox) {
+          warningBox.style.display = 'flex';
+          warningBox.style.background = 'rgba(239, 68, 68, 0.08)';
+          warningBox.style.borderColor = 'rgba(239, 68, 68, 0.35)';
+          warningBox.innerHTML = `
+            <div style="font-size: 22px; line-height: 1;">🛑</div>
+            <div style="font-size: 12.5px; line-height: 1.5; color: #991b1b;">
+              <strong style="color: #b91c1c; display: block; margin-bottom: 2px;">Insufficient Hours Alert (< 4.0h)</strong>
+              OTSi policy requires a minimum of <strong>4.0 hours</strong> for a <strong>Half Day</strong> and <strong>7.0 hours</strong> for a <strong>Full Day</strong>.
+              <div style="margin-top: 4px;">
+                Checking out now with <strong>${hoursInt}h ${minsInt}m</strong> will mark today as <strong style="color: #b91c1c;">Absent</strong>.
+              </div>
+              <div style="margin-top: 5px; font-weight: 600; color: #7f1d1d;">
+                ⏳ Work another <strong>${timeToHalfStr}</strong> to qualify for a Half Day.
+              </div>
+            </div>
+          `;
+        }
+        if (promptText) promptText.textContent = 'Are you sure you want to check out? You will be marked Absent for today.';
+        if (confirmBtn) confirmBtn.textContent = 'Check Out (Mark Absent)';
+      } else if (elapsedHours < 7.0) {
+        // TIER 2: Between 4.0 and 7.0 hours (4.0h <= elapsed < 7.0h) -> Half Day
+        const minsToFull = Math.max(1, 420 - totalMins);
+        const hToFull = Math.floor(minsToFull / 60);
+        const mToFull = minsToFull % 60;
+        const timeToFullStr = `${hToFull}h ${mToFull}m`;
+
         if (modalIcon) modalIcon.textContent = '⚠️';
-        if (titleText) titleText.textContent = 'Early Check-Out Confirmation';
+        if (titleText) titleText.textContent = 'Half Day Check-Out Confirmation';
         if (warningBox) {
           warningBox.style.display = 'flex';
           warningBox.style.background = 'rgba(245, 158, 11, 0.08)';
           warningBox.style.borderColor = 'rgba(245, 158, 11, 0.35)';
           warningBox.innerHTML = `
-            <div style="font-size: 20px; line-height: 1;">⚠️</div>
+            <div style="font-size: 22px; line-height: 1;">⚠️</div>
             <div style="font-size: 12.5px; line-height: 1.5; color: #92400e;">
-              <strong style="color: #b45309; display: block; margin-bottom: 2px;">Half Day Policy Alert</strong>
-              OTSi policy requires a minimum of <strong>7.0 hours</strong> for a Full Day. If you check out now with <strong>${hoursInt}h ${minsInt}m</strong>, today will be recorded as a <strong>Half Day</strong>.
+              <strong style="color: #b45309; display: block; margin-bottom: 2px;">Half Day Policy Alert (4.0h – 7.0h)</strong>
+              You have completed <strong>${hoursInt}h ${minsInt}m</strong> (meets 4.0h minimum for <strong>Half Day</strong>).
+              <div style="margin-top: 4px;">
+                OTSi policy requires <strong>7.0 hours</strong> for a Full Day. If you check out now, today will be recorded as a <strong>Half Day</strong>.
+              </div>
+              <div style="margin-top: 5px; font-weight: 600; color: #78350f;">
+                ⏳ Work another <strong>${timeToFullStr}</strong> to achieve a Full Day.
+              </div>
             </div>
           `;
         }
-        if (promptText) promptText.textContent = 'Are you sure you want to check out early?';
+        if (promptText) promptText.textContent = 'Are you sure you want to end your shift as a Half Day?';
+        if (confirmBtn) confirmBtn.textContent = 'Confirm Half Day Check-Out';
       } else {
-        // 7.0+ hours: Full day achieved
-        if (modalIcon) modalIcon.textContent = '🏁';
+        // TIER 3: 7.0+ hours -> Full Day
+        if (modalIcon) modalIcon.textContent = '🎉';
         if (titleText) titleText.textContent = 'Check-Out Confirmation';
         if (warningBox) {
           warningBox.style.display = 'flex';
           warningBox.style.background = 'rgba(16, 185, 129, 0.08)';
           warningBox.style.borderColor = 'rgba(16, 185, 129, 0.35)';
           warningBox.innerHTML = `
-            <div style="font-size: 20px; line-height: 1;">🎉</div>
+            <div style="font-size: 22px; line-height: 1;">🎉</div>
             <div style="font-size: 12.5px; line-height: 1.5; color: #065f46;">
               <strong style="color: #047857; display: block; margin-bottom: 2px;">Full Day Complete (${hoursInt}h ${minsInt}m)</strong>
-              You have completed the 7.0-hour requirement for a full day. Great work today!
+              You have completed the <strong>7.0-hour</strong> requirement for a Full Day. Great work today!
             </div>
           `;
         }
         if (promptText) promptText.textContent = 'Ready to end your shift and check out?';
+        if (confirmBtn) confirmBtn.textContent = 'Confirm Check-Out';
       }
 
       document.getElementById('checkout-confirm-modal').classList.add('open');

@@ -1253,13 +1253,20 @@ def check_out():
         check_in = datetime.fromisoformat(record['check_in_time'])
         working_hours = AttendanceUtils.calculate_working_hours(check_in, check_out_time)
         
-        # Apply 7-hour minimum rule for full day
+        # Apply OTSi working hours policy:
+        # Full Day: >= 7.0 hours
+        # Half Day: >= 4.0 hours and < 7.0 hours
+        # Absent: < 4.0 hours (minimum 4.0 hours required for half day)
         new_status = record['status']
-        if working_hours < 7.0 and new_status not in ['absent']:
+        if working_hours < 4.0:
+            new_status = 'absent'
+        elif working_hours < 7.0:
             new_status = 'half_day'
         elif not is_wfh and new_status == 'wfh':
             # Checked in WFH, but checked out from Office premises -> Hybrid day, marked present
             new_status = 'present'
+        elif new_status not in ['present', 'wfh']:
+            new_status = 'wfh' if is_wfh else 'present'
             
         # Update record
         SupabaseDB.update('attendance_logs',
@@ -3133,7 +3140,15 @@ def approve_attendance_correction(req_id):
         if att_log:
             is_wfh = att_log.get('is_wfh', False)
             
-        status = 'wfh' if is_wfh else 'present'
+        if working_hours is not None:
+            if working_hours < 4.0:
+                status = 'absent'
+            elif working_hours < 7.0:
+                status = 'half_day'
+            else:
+                status = 'wfh' if is_wfh else 'present'
+        else:
+            status = 'wfh' if is_wfh else 'present'
         
         try:
             if final_check_in:
