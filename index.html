@@ -4292,19 +4292,27 @@
 
     /* Full-Width Modern Table Card (First Image Proportions & Second Image Colors) */
     .modern-table-card {
-      background: #ffffff;
       border-radius: 10px;
-      border: 1px solid var(--border);
+      border: 1.5px solid transparent;
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.35) 45%, rgba(4, 70, 108, 0.45) 75%, var(--otsi-blue, #109FDA) 100%) border-box;
       overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 4px 16px rgba(16, 159, 218, 0.10), 0 1px 4px rgba(0, 0, 0, 0.03);
       margin-bottom: 16px;
       width: 100%;
+      transition: all 0.22s ease;
+    }
+
+    .modern-table-card:hover {
+      box-shadow: 0 6px 20px rgba(16, 159, 218, 0.14), 0 1px 4px rgba(0, 0, 0, 0.04);
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.5) 50%, var(--otsi-navy, #04466C) 100%) border-box;
     }
 
     .modern-table-header {
       padding: 10px 16px;
       background: #ffffff;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(16, 159, 218, 0.12);
       display: flex;
       justify-content: space-between;
       align-items: center;
