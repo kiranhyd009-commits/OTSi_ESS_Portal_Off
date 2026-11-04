@@ -862,6 +862,14 @@
       justify-content: center;
     }
 
+    .header-logo-box img,
+    .otsi-logo-wrap img {
+      max-height: 34px !important;
+      max-width: 160px !important;
+      width: auto !important;
+      object-fit: contain !important;
+    }
+
     .header-brand {
       font-size: 15px;
       font-weight: 800;
@@ -971,9 +979,13 @@
       font-family: inherit;
     }
 
+    .bottom-nav svg,
     .bnav-item svg {
-      width: 22px;
-      height: 22px;
+      width: 22px !important;
+      height: 22px !important;
+      max-width: 22px !important;
+      max-height: 22px !important;
+      flex-shrink: 0 !important;
     }
 
     .bnav-item span {
@@ -5798,8 +5810,7 @@
 
         <!-- LOGIN -->
         <div id="login-form" class="form-section active">
-          <div class="form-title">Welcome to OTSi</Portal>
-          </div>
+          <div class="form-title">Welcome to OTSi</div>
           <div class="form-sub">Sign in with your Employee ID or Work Email</div>
           <div class="fgroup">
             <label class="flabel">Employee ID or Work Email</label>
@@ -7454,17 +7465,16 @@
         <span>Timesheet</span>
       </button>
       <button class="bnav-item" onclick="showPage('hd')" id="bnav-hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </svg>
+        <span>Help Desk</span>
+      </button>
       <button class="bnav-item" onclick="showPage('executive')" id="bnav-executive" style="display:none;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
         </svg>
         <span>Executive</span>
-      </button>
-
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
-        <span>Help Desk</span>
       </button>
     </nav>
   </div>
