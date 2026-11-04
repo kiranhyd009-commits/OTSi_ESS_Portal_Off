@@ -4252,23 +4252,23 @@
     }
     /* ════ ACCIDENTAL CHECK-OUT UNDO BANNER (OTSi Aurora Frame) ════ */
     
-    /* ════ C-SUITE EXECUTIVE OVERVIEW COMMAND CENTER ════ */
+    /* ════ C-SUITE EXECUTIVE INTELLIGENCE PULSE (OTSi Signature Blue) ════ */
     .csuite-hero {
-      background: linear-gradient(135deg, #032b43 0%, #04466C 50%, #0A192F 100%);
+      background: linear-gradient(135deg, #032b43 0%, #04466C 55%, #0A192F 100%);
       border-radius: 16px;
-      padding: 24px 26px;
+      padding: 24px 28px;
       color: #ffffff;
       position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
-      border: 1.5px solid rgba(245, 158, 11, 0.35);
-      box-shadow: 0 8px 32px rgba(4, 70, 108, 0.28), 0 2px 8px rgba(0, 0, 0, 0.12);
+      margin-bottom: 22px;
+      border: 1.5px solid rgba(16, 159, 218, 0.4);
+      box-shadow: 0 10px 36px rgba(4, 70, 108, 0.32), 0 2px 10px rgba(0, 0, 0, 0.15);
     }
     .csuite-hero::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, #F59E0B 0%, #FBBF24 50%, var(--otsi-blue, #109FDA) 100%);
+      top: 0; left: 0; right: 0; height: 3.5px;
+      background: linear-gradient(90deg, #109FDA 0%, #38BDF8 50%, #04466C 100%);
     }
     .csuite-badge {
       display: inline-flex;
@@ -4278,12 +4278,12 @@
       font-weight: 800;
       letter-spacing: 0.8px;
       text-transform: uppercase;
-      color: #FBBF24;
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.4);
-      padding: 4px 10px;
+      color: #38BDF8;
+      background: rgba(16, 159, 218, 0.18);
+      border: 1px solid rgba(16, 159, 218, 0.45);
+      padding: 4px 12px;
       border-radius: 20px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .csuite-title {
       font-size: 22px;
@@ -4294,9 +4294,41 @@
     }
     .csuite-sub {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.78);
-      max-width: 680px;
+      color: rgba(255, 255, 255, 0.82);
+      max-width: 720px;
       line-height: 1.45;
+    }
+    .csuite-lens-toggle {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      gap: 4px;
+    }
+    .csuite-lens-btn {
+      padding: 8px 18px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border-radius: 9px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: rgba(255, 255, 255, 0.75);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .csuite-lens-btn.active {
+      background: #109FDA;
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(16, 159, 218, 0.5);
+    }
+    .csuite-lens-btn:hover:not(.active) {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
     }
     .csuite-kpi-grid {
       display: grid;
@@ -4309,35 +4341,36 @@
       border-radius: 14px;
       padding: 16px 18px;
       border: 1px solid var(--border);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 2px 12px rgba(4, 70, 108, 0.05);
       position: relative;
       overflow: hidden;
       transition: all 0.2s ease;
     }
     .csuite-kpi-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(16, 159, 218, 0.14);
+      box-shadow: 0 8px 24px rgba(16, 159, 218, 0.16);
+      border-color: rgba(16, 159, 218, 0.4);
     }
     .csuite-kpi-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--otsi-blue, #109FDA), var(--otsi-navy, #04466C));
+      background: linear-gradient(90deg, #109FDA, #04466C);
     }
-    .csuite-kpi-card.gold::before {
-      background: linear-gradient(90deg, #F59E0B, #FBBF24);
-    }
-    .csuite-kpi-card.green::before {
+    .csuite-kpi-card.accent-green::before {
       background: linear-gradient(90deg, #10B981, #059669);
     }
-    .csuite-kpi-card.purple::before {
+    .csuite-kpi-card.accent-amber::before {
+      background: linear-gradient(90deg, #F59E0B, #D97706);
+    }
+    .csuite-kpi-card.accent-purple::before {
       background: linear-gradient(90deg, #8B5CF6, #6D28D9);
     }
     .csuite-kpi-label {
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
       color: var(--slate);
       margin-bottom: 6px;
       display: flex;
@@ -4347,7 +4380,7 @@
     .csuite-kpi-val {
       font-size: 26px;
       font-weight: 800;
-      color: var(--text-dark, #0F172A);
+      color: #0F172A;
       line-height: 1.1;
       margin-bottom: 4px;
       font-variant-numeric: tabular-nums;
@@ -4355,6 +4388,40 @@
     .csuite-kpi-sub {
       font-size: 11.5px;
       color: var(--slate);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .csuite-card-box {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 20px 22px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(4, 70, 108, 0.05);
+      margin-bottom: 22px;
+    }
+    .csuite-card-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #F1F5F9;
+      padding-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .csuite-card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .csuite-card-sub {
+      font-size: 12px;
+      color: var(--slate);
+      margin-top: 2px;
     }
     .csuite-alert-item {
       display: flex;
@@ -4379,13 +4446,93 @@
     .csuite-alert-title {
       font-size: 13px;
       font-weight: 700;
-      color: var(--text-dark, #0F172A);
+      color: #0F172A;
       margin-bottom: 2px;
     }
     .csuite-alert-desc {
       font-size: 12px;
       color: var(--slate);
       line-height: 1.4;
+    }
+    .funnel-stage-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .funnel-stage-label {
+      width: 120px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0F172A;
+      flex-shrink: 0;
+    }
+    .funnel-bar-track {
+      flex: 1;
+      height: 24px;
+      background: #F1F5F9;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .funnel-bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 700;
+      transition: width 0.4s ease;
+    }
+    .matrix-5x5 {
+      display: grid;
+      grid-template-columns: 110px repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .matrix-cell {
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .matrix-hdr-cell {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--slate);
+      text-align: center;
+      padding: 6px 2px;
+    }
+    .matrix-lbl-cell {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #page-executive, #page-executive * {
+        visibility: visible;
+      }
+      #page-executive {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      .csuite-lens-toggle, .btn-sub, #csuite-location-filter {
+        display: none !important;
+      }
     }
 
     .undo-checkout-banner {
@@ -6999,121 +7146,321 @@
             <!-- ── C-SUITE EXECUTIVE OVERVIEW PAGE (President & CEO Command Center) ── -->
       <div id="page-executive" class="page">
         <div class="page-pad">
-          <!-- Executive Hero Banner -->
+          <!-- Executive Hero Banner with Dual Lens Toggle -->
           <div class="csuite-hero">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
               <div>
                 <div class="csuite-badge">
-                  <span>👑</span> C-SUITE EXECUTIVE COMMAND CENTER
+                  <span>👑</span> C-SUITE EXECUTIVE INTELLIGENCE PULSE
                 </div>
-                <div class="csuite-title" id="csuite-exec-name">Chandra Sekhar M. (CEO)</div>
+                <div class="csuite-title" id="csuite-exec-name">Rajesh K. · President &amp; Founder</div>
                 <div class="csuite-sub" id="csuite-exec-title">
-                  Real-time Strategic Workforce Intelligence &amp; Delivery Governance across OTSi Global Footprint
+                  Strategic Workforce Intelligence, Global Delivery Governance &amp; Enterprise Execution across OTSi Footprint
+                </div>
+                <div style="margin-top:12px; display:inline-flex; align-items:center; gap:8px; font-size:11.5px; color:rgba(255,255,255,0.75); background:rgba(0,0,0,0.25); padding:4px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.15);">
+                  <span style="width:7px; height:7px; border-radius:50%; background:#10B981; display:inline-block;"></span>
+                  <span id="csuite-freshness-pill">Today at 04:30 PM (Live Synced)</span>
                 </div>
               </div>
-              <div style="display:flex; align-items:center; gap:10px;">
-                <select id="csuite-location-filter" onchange="filterExecutiveLocation(this.value)" 
-                        style="padding:8px 14px; font-size:12.5px; font-weight:600; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(0,0,0,0.3); color:#fff; cursor:pointer;">
-                  <option value="all">🌐 All Locations (Global)</option>
-                  <option value="hyd">🏢 Hyderabad HQ (Hitec City)</option>
-                  <option value="blr">🏢 Bangalore Office</option>
-                  <option value="client">💼 Client Sites (APAC / US)</option>
-                </select>
-                <button type="button" class="btn-sub" onclick="loadExecutiveOverview()" 
-                        style="padding:8px 14px; font-size:12.5px; font-weight:700; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; cursor:pointer;">
-                  🔄 Refresh Pulse
-                </button>
+
+              <!-- Executive Action Controls -->
+              <div style="display:flex; flex-direction:column; align-items:flex-end; gap:12px;">
+                <!-- Dual Lens Segmented Switcher -->
+                <div class="csuite-lens-toggle">
+                  <button type="button" class="csuite-lens-btn active" id="lens-btn-strategic" onclick="switchExecutiveLens('strategic')">
+                    <span>🌐</span> Strategic Growth (President)
+                  </button>
+                  <button type="button" class="csuite-lens-btn" id="lens-btn-delivery" onclick="switchExecutiveLens('delivery')">
+                    <span>⚡</span> Delivery &amp; Operations (CEO)
+                  </button>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <select id="csuite-location-filter" onchange="filterExecutiveLocation(this.value)"
+                          style="padding:8px 12px; font-size:12px; font-weight:600; border-radius:8px; border:1px solid rgba(255,255,255,0.25); background:rgba(0,0,0,0.3); color:#fff; cursor:pointer;">
+                    <option value="all">🌐 All Locations (Global)</option>
+                    <option value="hyd">🏢 Hyderabad HQ (Hitec City)</option>
+                    <option value="blr">🏢 Bangalore Tech Park</option>
+                    <option value="vij">🏢 Vijayawada IT Hub</option>
+                    <option value="us">🇺🇸 US Client On-Site</option>
+                    <option value="ph">🇵🇭 Philippines GDC</option>
+                  </select>
+
+                  <button type="button" class="btn-sub" onclick="exportExecutiveReport()"
+                          style="padding:8px 12px; font-size:12px; font-weight:700; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; cursor:pointer;" title="Export Executive PDF">
+                    📄 Export PDF
+                  </button>
+
+                  <button type="button" class="btn-sub" onclick="loadExecutiveOverview()"
+                          style="padding:8px 12px; font-size:12px; font-weight:700; background:rgba(16,159,218,0.3); border:1px solid rgba(16,159,218,0.5); color:#fff; border-radius:8px; cursor:pointer;" title="Refresh Pulse">
+                    ⟳ Refresh
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Executive KPI Vital Signs Strip -->
-          <div class="csuite-kpi-grid">
-            <div class="csuite-kpi-card gold">
-              <div class="csuite-kpi-label">
-                <span>Total Headcount</span>
-                <span>👥</span>
+          <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+          <!-- VIEW 1: STRATEGIC GROWTH & PORTFOLIO (PRESIDENT'S LENS)                        -->
+          <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+          <div id="csuite-view-strategic">
+            <!-- Strategic KPI Strip -->
+            <div class="csuite-kpi-grid">
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label">
+                  <span>Total Workforce</span>
+                  <span>👥</span>
+                </div>
+                <div class="csuite-kpi-val" id="strat-headcount">257</div>
+                <div class="csuite-kpi-sub">
+                  <span style="color:#10B981; font-weight:700;">↑ +12</span> MoM · 100% Active Staff
+                </div>
               </div>
-              <div class="csuite-kpi-val" id="csuite-total-headcount">250</div>
-              <div class="csuite-kpi-sub">▲ +12 this month · 100% Active</div>
+
+              <div class="csuite-kpi-card accent-green">
+                <div class="csuite-kpi-label">
+                  <span>Enterprise Clients</span>
+                  <span>🏛️</span>
+                </div>
+                <div class="csuite-kpi-val" id="strat-active-clients">18</div>
+                <div class="csuite-kpi-sub">
+                  <span style="color:#10B981; font-weight:700;">94.4%</span> Client Retention Rate
+                </div>
+              </div>
+
+              <div class="csuite-kpi-card accent-purple">
+                <div class="csuite-kpi-label">
+                  <span>Revenue Run-Rate</span>
+                  <span>📈</span>
+                </div>
+                <div class="csuite-kpi-val" id="strat-revenue-runrate">$34.2M</div>
+                <div class="csuite-kpi-sub">
+                  <span style="color:#10B981; font-weight:700;">↑ +14.8%</span> YoY Growth Outlook
+                </div>
+              </div>
+
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label">
+                  <span>Billable Utilization</span>
+                  <span>⚙️</span>
+                </div>
+                <div class="csuite-kpi-val" id="strat-utilization-pct">89.4%</div>
+                <div class="csuite-kpi-sub">218 Billable · 32 Bench/Ops</div>
+              </div>
+
+              <div class="csuite-kpi-card accent-amber">
+                <div class="csuite-kpi-label">
+                  <span>Global Centers</span>
+                  <span>🌐</span>
+                </div>
+                <div class="csuite-kpi-val" id="strat-global-centers">5</div>
+                <div class="csuite-kpi-sub">APAC &amp; Americas Delivery</div>
+              </div>
             </div>
 
-            <div class="csuite-kpi-card green">
-              <div class="csuite-kpi-label">
-                <span>Present Office</span>
-                <span>🏢</span>
-              </div>
-              <div class="csuite-kpi-val" id="csuite-present-office">182</div>
-              <div class="csuite-kpi-sub">72.8% on-premises · HQ &amp; BLR</div>
-            </div>
+            <!-- Two-Column Strategic Grid -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(420px, 1fr)); gap:20px; margin-bottom:24px;">
+              <!-- Left Column: Global Footprint & Practice Contribution -->
+              <div>
+                <!-- Global Footprint Presence -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>🗺️</span> Global Footprint &amp; Delivery Centers
+                      </div>
+                      <div class="csuite-card-sub">Headcount distribution &amp; in-office presence across centers</div>
+                    </div>
+                    <span class="tag tag-g" style="font-size:11px; font-weight:700;">5 Delivery Nodes</span>
+                  </div>
+                  <div id="strat-locations-list" style="display:flex; flex-direction:column; gap:10px;">
+                    <!-- Dynamically Populated -->
+                  </div>
+                </div>
 
-            <div class="csuite-kpi-card">
-              <div class="csuite-kpi-label">
-                <span>Remote / WFH</span>
-                <span>💻</span>
+                <!-- Strategic Practice Revenue Contribution -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>📊</span> Practice Revenue &amp; Skill Distribution
+                      </div>
+                      <div class="csuite-card-sub">Run-rate contribution across core technology practices</div>
+                    </div>
+                  </div>
+                  <div id="strat-practices-list" style="display:flex; flex-direction:column; gap:12px;">
+                    <!-- Dynamically Populated -->
+                  </div>
+                </div>
               </div>
-              <div class="csuite-kpi-val" id="csuite-remote-wfh">46</div>
-              <div class="csuite-kpi-sub">18.4% verified remote</div>
-            </div>
 
-            <div class="csuite-kpi-card purple">
-              <div class="csuite-kpi-label">
-                <span>On Planned Leave</span>
-                <span>🌴</span>
-              </div>
-              <div class="csuite-kpi-val" id="csuite-on-leave">18</div>
-              <div class="csuite-kpi-sub">7.2% active approved leaves</div>
-            </div>
+              <!-- Right Column: Enterprise Anomalies & Strategic Initiatives -->
+              <div>
+                <!-- Enterprise Strategic Anomaly Detection -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>⚠️</span> Enterprise Strategic Anomaly Detection
+                      </div>
+                      <div class="csuite-card-sub">Priority risks, mobility quotas &amp; contract horizons</div>
+                    </div>
+                    <span class="tag tag-o" style="font-size:11px; font-weight:700;">3 Action Items</span>
+                  </div>
+                  <div id="strat-anomalies-list">
+                    <!-- Dynamically Populated -->
+                  </div>
+                </div>
 
-            <div class="csuite-kpi-card gold">
-              <div class="csuite-kpi-label">
-                <span>Billable Utilization</span>
-                <span>💼</span>
+                <!-- Strategic Initiatives Tracker -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>🚀</span> Strategic Corporate Initiatives
+                      </div>
+                      <div class="csuite-card-sub">Milestone execution against presidential targets</div>
+                    </div>
+                    <span class="tag tag-g" style="font-size:11px; font-weight:700;">All Active</span>
+                  </div>
+                  <div id="strat-initiatives-list" style="display:flex; flex-direction:column; gap:12px;">
+                    <!-- Dynamically Populated -->
+                  </div>
+                </div>
               </div>
-              <div class="csuite-kpi-val" id="csuite-utilization-pct">89.4%</div>
-              <div class="csuite-kpi-sub">218 Billable · 32 Bench/Ops</div>
             </div>
           </div>
 
-          <!-- Two-Column Executive Radar & Attention Grid -->
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:20px; margin-bottom:24px;">
-            <!-- Practice & Delivery Health Radar -->
-            <div class="modern-table-card otsi-aurora-card" style="padding:20px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                <div>
-                  <div style="font-size:15px; font-weight:800; color:var(--text-dark, #0F172A); display:flex; align-items:center; gap:8px;">
-                    <span>📊</span> Practice &amp; Delivery Health Radar
-                  </div>
-                  <div style="font-size:12px; color:var(--slate); margin-top:2px;">Headcount, attendance &amp; billability across 7 delivery units</div>
+          <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+          <!-- VIEW 2: DELIVERY & OPERATIONS GOVERNANCE (CEO'S LENS)                           -->
+          <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
+          <div id="csuite-view-delivery" style="display:none;">
+            <!-- Delivery KPI Strip (Image 2 style) -->
+            <div class="csuite-kpi-grid">
+              <div class="csuite-kpi-card accent-amber">
+                <div class="csuite-kpi-label">
+                  <span>Projects At Risk</span>
+                  <span>🚨</span>
                 </div>
-                <span class="tag tag-g" style="font-size:11px;">All Practices Healthy</span>
+                <div class="csuite-kpi-val" id="ceo-projects-at-risk">3 of 28</div>
+                <div class="csuite-kpi-sub">
+                  <span style="color:#D97706; font-weight:700;">10.7%</span> Portfolio Exposure
+                </div>
               </div>
 
-              <div id="csuite-practices-list" style="display:flex; flex-direction:column; gap:12px;">
-                <!-- Dynamically populated -->
-                <div style="text-align:center; padding:30px; color:var(--slate);">Loading practice health data...</div>
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label">
+                  <span>Tasks Delayed</span>
+                  <span>⏱️</span>
+                </div>
+                <div class="csuite-kpi-val" id="ceo-tasks-delayed">14.0%</div>
+                <div class="csuite-kpi-sub">
+                  <span style="color:#10B981; font-weight:700;">↓ -3.2%</span> Improvement vs Sprint 7
+                </div>
+              </div>
+
+              <div class="csuite-kpi-card accent-green">
+                <div class="csuite-kpi-label">
+                  <span>Avg Delivery Deviation</span>
+                  <span>📐</span>
+                </div>
+                <div class="csuite-kpi-val" id="ceo-avg-deviation">+4.2 Days</div>
+                <div class="csuite-kpi-sub">Within SLA Tolerance (≤ 7d)</div>
+              </div>
+
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label">
+                  <span>Cost Burn Variance</span>
+                  <span>💵</span>
+                </div>
+                <div class="csuite-kpi-val" id="ceo-cost-variance">+$42K</div>
+                <div class="csuite-kpi-sub">3.5% Under Budget Threshold</div>
+              </div>
+
+              <div class="csuite-kpi-card accent-purple">
+                <div class="csuite-kpi-label">
+                  <span>Bench Strength (RMG)</span>
+                  <span>🔄</span>
+                </div>
+                <div class="csuite-kpi-val" id="ceo-bench-strength">32 Eng</div>
+                <div class="csuite-kpi-sub">12.4% Redeployment Pipeline</div>
               </div>
             </div>
 
-            <!-- Executive Attention & Governance Alerts -->
-            <div class="modern-table-card otsi-aurora-card" style="padding:20px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                <div>
-                  <div style="font-size:15px; font-weight:800; color:var(--text-dark, #0F172A); display:flex; align-items:center; gap:8px;">
-                    <span>🚨</span> Executive Attention &amp; Strategic Alerts
+            <!-- Two-Column Operations Layout -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(420px, 1fr)); gap:20px; margin-bottom:24px;">
+              <!-- Left Column: Sprint Delivery Timeline & Practice Scorecards -->
+              <div>
+                <!-- Sprint Milestone Timeline -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>📈</span> Sprint Delivery Milestones (Planned vs Actual)
+                      </div>
+                      <div class="csuite-card-sub">Multi-sprint completion velocity across 7 delivery units</div>
+                    </div>
+                    <span class="tag tag-g" style="font-size:11px; font-weight:700;">Sprint 8 Active</span>
                   </div>
-                  <div style="font-size:12px; color:var(--slate); margin-top:2px;">Priority action items across project delivery and HR operations</div>
+                  <div id="ceo-sprint-timeline" style="display:flex; flex-direction:column; gap:8px;">
+                    <!-- Dynamically Populated -->
+                  </div>
+                </div>
+
+                <!-- Practice Delivery Scorecards -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>💼</span> Practice Delivery Scorecards &amp; Leads
+                      </div>
+                      <div class="csuite-card-sub">Headcount, milestone completion &amp; active project count</div>
+                    </div>
+                  </div>
+                  <div id="ceo-practice-scorecards" style="display:flex; flex-direction:column; gap:10px;">
+                    <!-- Dynamically Populated -->
+                  </div>
                 </div>
               </div>
 
-              <div id="csuite-alerts-list">
-                <!-- Dynamically populated -->
+              <!-- Right Column: Issue-to-Action Funnel & 5x5 Risk Matrix -->
+              <div>
+                <!-- Issue to Action Funnel (Image 2 style) -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>🔻</span> Issue-to-Action Funnel
+                      </div>
+                      <div class="csuite-card-sub">Lifecycle governance of client &amp; technical escalations</div>
+                    </div>
+                    <span class="tag tag-b" style="font-size:11px; font-weight:700;">68 Items Tracked</span>
+                  </div>
+                  <div id="ceo-action-funnel" style="padding:10px 0;">
+                    <!-- Dynamically Populated -->
+                  </div>
+                </div>
+
+                <!-- 5x5 Project Risk & Consequence Matrix (Image 2 style) -->
+                <div class="csuite-card-box">
+                  <div class="csuite-card-hdr">
+                    <div>
+                      <div class="csuite-card-title">
+                        <span>🎯</span> 5×5 Project Risk &amp; Consequence Matrix
+                      </div>
+                      <div class="csuite-card-sub">Likelihood vs Consequence risk heat cluster</div>
+                    </div>
+                    <span class="tag tag-o" style="font-size:11px; font-weight:700;">28 Projects Classified</span>
+                  </div>
+                  <div id="ceo-risk-matrix">
+                    <!-- 5x5 Matrix rendered here -->
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
 
       <div id="page-profile" class="page">
         <!-- HR/Admin Profile extra options -->
@@ -10519,86 +10866,297 @@
     // ─── NAVIGATION ───
     const pageNames = { att: 'Attendance', leave: 'Leave Request', ts: 'Timesheet', hd: 'Help Desk', profile: 'Profile', admin: 'Administration', executive: 'Executive Overview' };
     
-    /* ════ C-SUITE EXECUTIVE OVERVIEW LOGIC ════ */
+    /* ════ C-SUITE EXECUTIVE INTELLIGENCE PULSE LOGIC ════ */
+    let currentExecutiveLens = 'strategic'; // 'strategic' or 'delivery'
+    let currentExecutiveData = null;
+
+    function switchExecutiveLens(lens) {
+      currentExecutiveLens = lens;
+      const btnStrat = document.getElementById('lens-btn-strategic');
+      const btnDeliv = document.getElementById('lens-btn-delivery');
+      const viewStrat = document.getElementById('csuite-view-strategic');
+      const viewDeliv = document.getElementById('csuite-view-delivery');
+
+      if (lens === 'strategic') {
+        if (btnStrat) btnStrat.classList.add('active');
+        if (btnDeliv) btnDeliv.classList.remove('active');
+        if (viewStrat) viewStrat.style.display = 'block';
+        if (viewDeliv) viewDeliv.style.display = 'none';
+      } else {
+        if (btnStrat) btnStrat.classList.remove('active');
+        if (btnDeliv) btnDeliv.classList.add('active');
+        if (viewStrat) viewStrat.style.display = 'none';
+        if (viewDeliv) viewDeliv.style.display = 'block';
+      }
+    }
+
     async function loadExecutiveOverview() {
       try {
-        const data = await apiFetch('/executive/overview');
+        const loc = document.getElementById('csuite-location-filter') ? document.getElementById('csuite-location-filter').value : 'all';
+        const data = await apiFetch(`/executive/overview?location=${encodeURIComponent(loc)}`);
         if (!data) return;
+        currentExecutiveData = data;
 
-        // Populate Executive Header
-        const execName = document.getElementById('csuite-exec-name');
-        if (execName && data.executive) {
-          execName.textContent = `${data.executive.name} · ${data.executive.designation}`;
+        // Auto-select default view based on logged in user:
+        if (currentProfile && currentProfile.employee_id === 'EMP1001') {
+          // Chandra Sekhar M. (CEO) defaults to Delivery view on first load
+          if (!window._csuiteLensUserInteracted) {
+            switchExecutiveLens('delivery');
+          }
+        } else {
+          // Rajesh K. (President) defaults to Strategic view
+          if (!window._csuiteLensUserInteracted) {
+            switchExecutiveLens('strategic');
+          }
         }
 
-        // Populate KPIs
-        if (data.kpis) {
-          const k = data.kpis;
-          const totalEl = document.getElementById('csuite-total-headcount');
-          if (totalEl) totalEl.textContent = k.total_headcount || 250;
-          const presEl = document.getElementById('csuite-present-office');
-          if (presEl) presEl.textContent = k.present_office || 182;
-          const wfhEl = document.getElementById('csuite-remote-wfh');
-          if (wfhEl) wfhEl.textContent = k.wfh_remote || 46;
-          const leaveEl = document.getElementById('csuite-on-leave');
-          if (leaveEl) leaveEl.textContent = k.on_leave || 18;
-          const utilEl = document.getElementById('csuite-utilization-pct');
-          if (utilEl) utilEl.textContent = `${k.utilization_pct || 89.4}%`;
+        // Header info
+        if (data.executive) {
+          const eName = document.getElementById('csuite-exec-name');
+          if (eName) eName.textContent = `${data.executive.name} · ${data.executive.designation}`;
+          const pill = document.getElementById('csuite-freshness-pill');
+          if (pill && data.executive.data_freshness) pill.textContent = data.executive.data_freshness;
         }
 
-        // Populate Practices Radar
-        const practicesContainer = document.getElementById('csuite-practices-list');
-        if (practicesContainer && data.practices) {
-          practicesContainer.innerHTML = '';
-          data.practices.forEach(p => {
-            const row = document.createElement('div');
-            row.style.cssText = 'padding:10px 12px; border-radius:10px; background:#F8FAFC; border:1px solid #E2E8F0;';
-            row.innerHTML = `
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+        // ════ Populate Strategic View (President) ════
+        if (data.strategic) {
+          const s = data.strategic;
+          const k = s.kpis;
+          if (k) {
+            const h = document.getElementById('strat-headcount');
+            if (h) h.textContent = k.total_headcount || 257;
+            const c = document.getElementById('strat-active-clients');
+            if (c) c.textContent = k.active_clients || 18;
+            const r = document.getElementById('strat-revenue-runrate');
+            if (r) r.textContent = k.revenue_runrate || '$34.2M';
+            const u = document.getElementById('strat-utilization-pct');
+            if (u) u.textContent = `${k.billable_utilization || 89.4}%`;
+            const g = document.getElementById('strat-global-centers');
+            if (g) g.textContent = k.global_locations_count || 5;
+          }
+
+          // Populate Global Footprint
+          const locContainer = document.getElementById('strat-locations-list');
+          if (locContainer && s.locations) {
+            locContainer.innerHTML = '';
+            s.locations.forEach(l => {
+              const row = document.createElement('div');
+              row.style.cssText = 'padding:12px 14px; border-radius:10px; background:#F8FAFC; border:1px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;';
+              row.innerHTML = `
                 <div>
-                  <strong style="font-size:13px; color:var(--text-dark, #0F172A);">${p.name}</strong>
-                  <div style="font-size:11.5px; color:var(--slate);">Lead: ${p.lead} · ${p.headcount} Team Members</div>
+                  <div style="font-size:13.5px; font-weight:800; color:#0F172A;">${l.city}</div>
+                  <div style="font-size:11.5px; color:var(--slate); margin-top:2px;">${l.campus} · Lead: ${l.lead}</div>
                 </div>
                 <div style="text-align:right;">
-                  <span class="tag tag-g" style="font-size:10.5px; font-weight:700;">${p.status}</span>
-                  <div style="font-size:11px; font-weight:700; color:var(--otsi-navy); margin-top:3px;">${p.attendance_rate}% Attendance</div>
+                  <span class="tag tag-b" style="font-size:11px; font-weight:700;">${l.headcount} Staff</span>
+                  <div style="font-size:11.5px; font-weight:700; color:#059669; margin-top:3px;">${l.in_office_pct}% In-Office</div>
                 </div>
-              </div>
-              <div style="width:100%; height:6px; background:#E2E8F0; border-radius:3px; overflow:hidden;">
-                <div style="width:${p.attendance_rate}%; height:100%; background:linear-gradient(90deg, var(--otsi-blue, #109FDA), #10B981); border-radius:3px;"></div>
-              </div>
-            `;
-            practicesContainer.appendChild(row);
-          });
+              `;
+              locContainer.appendChild(row);
+            });
+          }
+
+          // Populate Practices Revenue Distribution
+          const pracContainer = document.getElementById('strat-practices-list');
+          if (pracContainer && s.revenue_distribution) {
+            pracContainer.innerHTML = '';
+            s.revenue_distribution.forEach(p => {
+              const row = document.createElement('div');
+              row.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                  <strong style="font-size:13px; color:#0F172A;">${p.practice}</strong>
+                  <div style="font-size:12px; font-weight:700; color:#04466C;">${p.amount} · ${p.share}%</div>
+                </div>
+                <div style="width:100%; height:7px; background:#E2E8F0; border-radius:4px; overflow:hidden;">
+                  <div style="width:${p.share}%; height:100%; background:${p.color || '#109FDA'}; border-radius:4px;"></div>
+                </div>
+              `;
+              pracContainer.appendChild(row);
+            });
+          }
+
+          // Populate Strategic Anomalies
+          const anomContainer = document.getElementById('strat-anomalies-list');
+          if (anomContainer && s.anomalies) {
+            anomContainer.innerHTML = '';
+            s.anomalies.forEach(a => {
+              const borderCol = a.severity === 'High' ? '#EF4444' : '#F59E0B';
+              const tagClass = a.severity === 'High' ? 'tag-o' : 'tag-s';
+              const item = document.createElement('div');
+              item.className = 'csuite-alert-item';
+              item.style.borderLeft = `4px solid ${borderCol}`;
+              item.innerHTML = `
+                <div class="csuite-alert-icon">${a.severity === 'High' ? '🚨' : '⚠️'}</div>
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div class="csuite-alert-title">${a.title}</div>
+                    <span class="tag ${tagClass}" style="font-size:10px; font-weight:700;">${a.severity} · ${a.time}</span>
+                  </div>
+                  <div class="csuite-alert-desc">${a.desc}</div>
+                  <div style="font-size:11px; font-weight:600; color:#04466C; margin-top:4px;">Accountable: ${a.owner}</div>
+                </div>
+              `;
+              anomContainer.appendChild(item);
+            });
+          }
+
+          // Populate Strategic Initiatives
+          const initContainer = document.getElementById('strat-initiatives-list');
+          if (initContainer && s.initiatives) {
+            initContainer.innerHTML = '';
+            s.initiatives.forEach(it => {
+              const row = document.createElement('div');
+              row.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                  <div>
+                    <strong style="font-size:13px; color:#0F172A;">${it.name}</strong>
+                    <span style="font-size:11px; color:var(--slate); margin-left:6px;">Target: ${it.target}</span>
+                  </div>
+                  <span class="tag tag-g" style="font-size:10.5px; font-weight:700;">${it.status} (${it.progress}%)</span>
+                </div>
+                <div style="width:100%; height:6px; background:#E2E8F0; border-radius:3px; overflow:hidden;">
+                  <div style="width:${it.progress}%; height:100%; background:${it.color || '#109FDA'}; border-radius:3px;"></div>
+                </div>
+              `;
+              initContainer.appendChild(row);
+            });
+          }
         }
 
-        // Populate Alerts
-        const alertsContainer = document.getElementById('csuite-alerts-list');
-        if (alertsContainer && data.alerts) {
-          alertsContainer.innerHTML = '';
-          const icons = { timesheet: '⏱️', leave: '🌴', rmg: '💼', facility: '🏢' };
-          data.alerts.forEach(a => {
-            const icon = icons[a.type] || '📌';
-            const item = document.createElement('div');
-            item.className = 'csuite-alert-item';
-            item.innerHTML = `
-              <div class="csuite-alert-icon">${icon}</div>
-              <div>
-                <div class="csuite-alert-title">${a.title}</div>
-                <div class="csuite-alert-desc">${a.desc}</div>
+        // ════ Populate Delivery & Operations View (CEO) ════
+        if (data.operational) {
+          const op = data.operational;
+          const k = op.kpis;
+          if (k) {
+            const rk = document.getElementById('ceo-projects-at-risk');
+            if (rk) rk.textContent = `${k.projects_at_risk_count} of ${k.projects_total}`;
+            const td = document.getElementById('ceo-tasks-delayed');
+            if (td) td.textContent = k.tasks_delayed_pct;
+            const dev = document.getElementById('ceo-avg-deviation');
+            if (dev) dev.textContent = k.avg_delivery_deviation;
+            const cv = document.getElementById('ceo-cost-variance');
+            if (cv) cv.textContent = k.cost_burn_variance;
+            const bs = document.getElementById('ceo-bench-strength');
+            if (bs) bs.textContent = `${k.bench_strength_count} Eng`;
+          }
+
+          // Sprint Timeline
+          const timelineContainer = document.getElementById('ceo-sprint-timeline');
+          if (timelineContainer && op.sprint_timeline) {
+            timelineContainer.innerHTML = '';
+            op.sprint_timeline.forEach(st => {
+              const row = document.createElement('div');
+              row.style.cssText = 'display:flex; align-items:center; gap:12px; margin-bottom:6px; font-size:12px;';
+              row.innerHTML = `
+                <div style="width:65px; font-weight:700; color:#0F172A;">${st.sprint}</div>
+                <div style="flex:1; height:8px; background:#E2E8F0; border-radius:4px; overflow:hidden; position:relative;">
+                  <div style="width:${st.planned}%; height:100%; background:rgba(16,159,218,0.3); position:absolute;"></div>
+                  <div style="width:${st.actual}%; height:100%; background:#109FDA; position:absolute;"></div>
+                </div>
+                <div style="width:75px; text-align:right; font-weight:700; color:#04466C;">${st.actual}% / ${st.planned}%</div>
+              `;
+              timelineContainer.appendChild(row);
+            });
+          }
+
+          // Issue to Action Funnel
+          const funnelContainer = document.getElementById('ceo-action-funnel');
+          if (funnelContainer && op.issue_action_funnel) {
+            funnelContainer.innerHTML = '';
+            op.issue_action_funnel.forEach(f => {
+              const pct = Math.min(100, Math.max(15, (f.count / 30) * 100));
+              const row = document.createElement('div');
+              row.className = 'funnel-stage-row';
+              row.innerHTML = `
+                <div class="funnel-stage-label">${f.stage}</div>
+                <div class="funnel-bar-track">
+                  <div class="funnel-bar-fill" style="width:${pct}%; background:${f.color};">
+                    ${f.count} Items
+                  </div>
+                </div>
+              `;
+              funnelContainer.appendChild(row);
+            });
+          }
+
+          // 5x5 Project Risk Matrix
+          const matrixContainer = document.getElementById('ceo-risk-matrix');
+          if (matrixContainer && op.risk_matrix) {
+            matrixContainer.innerHTML = `
+              <div class="matrix-5x5">
+                <div class="matrix-hdr-cell">Likelihood \ Severity</div>
+                <div class="matrix-hdr-cell">1-Insignif</div>
+                <div class="matrix-hdr-cell">2-Minor</div>
+                <div class="matrix-hdr-cell">3-Signif</div>
+                <div class="matrix-hdr-cell">4-Major</div>
+                <div class="matrix-hdr-cell">5-Severe</div>
               </div>
             `;
-            alertsContainer.appendChild(item);
-          });
+            const grid = matrixContainer.querySelector('.matrix-5x5');
+            const bgTiers = [
+              ['#ECFDF5', '#D1FAE5', '#FEF3C7', '#FEE2E2', '#FECACA'],
+              ['#D1FAE5', '#A7F3D0', '#FDE68A', '#FCA5A5', '#F87171'],
+              ['#FEF3C7', '#FDE68A', '#FCD34D', '#F87171', '#EF4444'],
+              ['#FEE2E2', '#FCA5A5', '#F87171', '#EF4444', '#DC2626'],
+              ['#FECACA', '#F87171', '#EF4444', '#DC2626', '#991B1B']
+            ];
+
+            op.risk_matrix.forEach((r, rIdx) => {
+              const rowLabel = document.createElement('div');
+              rowLabel.className = 'matrix-lbl-cell';
+              rowLabel.textContent = r.row;
+              grid.appendChild(rowLabel);
+
+              [r.c1, r.c2, r.c3, r.c4, r.c5].forEach((cnt, cIdx) => {
+                const cell = document.createElement('div');
+                cell.className = 'matrix-cell';
+                cell.style.background = bgTiers[rIdx][cIdx];
+                cell.style.color = (rIdx >= 3 || cIdx >= 3) ? '#7F1D1D' : '#065F46';
+                cell.textContent = cnt > 0 ? cnt : '—';
+                grid.appendChild(cell);
+              });
+            });
+          }
+
+          // Practice Scorecards
+          const scorecardsContainer = document.getElementById('ceo-practice-scorecards');
+          if (scorecardsContainer && op.practices) {
+            scorecardsContainer.innerHTML = '';
+            op.practices.forEach(p => {
+              const row = document.createElement('div');
+              row.style.cssText = 'padding:10px 14px; border-radius:10px; background:#F8FAFC; border:1px solid #E2E8F0;';
+              row.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                  <div>
+                    <strong style="font-size:13px; color:#0F172A;">${p.name}</strong>
+                    <div style="font-size:11.5px; color:var(--slate);">Lead: ${p.lead} · ${p.headcount} Team Members</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <span class="tag ${p.status === 'Optimal' ? 'tag-g' : 'tag-o'}" style="font-size:10px; font-weight:700;">${p.status}</span>
+                    <div style="font-size:11.5px; font-weight:700; color:#04466C; margin-top:2px;">Dev: ${p.delivery_deviation}</div>
+                  </div>
+                </div>
+                <div style="width:100%; height:5px; background:#E2E8F0; border-radius:3px; overflow:hidden;">
+                  <div style="width:${p.attendance_rate}%; height:100%; background:linear-gradient(90deg, #109FDA, #04466C); border-radius:3px;"></div>
+                </div>
+              `;
+              scorecardsContainer.appendChild(row);
+            });
+          }
         }
       } catch (err) {
-        console.error('Failed to load executive overview', err);
+        console.error('Failed to load executive intelligence pulse', err);
       }
     }
 
     function filterExecutiveLocation(loc) {
-      toast(`Filtering Executive Pulse: ${loc.toUpperCase()}`, 'info');
+      toast(`Executive Pulse Location: ${loc.toUpperCase()}`, 'info');
       loadExecutiveOverview();
+    }
+
+    function exportExecutiveReport() {
+      toast('Generating Executive PDF Summary...', 'info');
+      window.print();
     }
 
     function showPage(name) {

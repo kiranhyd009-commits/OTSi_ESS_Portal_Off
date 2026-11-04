@@ -1,5 +1,5 @@
 // OTSi ESS Portal - Mobile Service Worker
-const CACHE_NAME = 'otsi-ess-v36';
+const CACHE_NAME = 'otsi-ess-v37';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
