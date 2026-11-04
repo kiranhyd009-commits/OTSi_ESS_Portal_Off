@@ -1247,6 +1247,81 @@ def check_out():
         logger.error(f"Check-out error: {str(e)}")
         return jsonify({'error': 'Check-out failed'}), 500
 
+@app.route('/api/attendance/undo-checkout', methods=['POST'])
+@token_required
+def undo_check_out():
+    """Cancel accidental check-out within grace window and resume shift"""
+    try:
+        employee_id = g.current_employee_id
+        today = date.today()
+        
+        # Get today's attendance record
+        record = SupabaseDB.select_one('attendance_logs', {
+            'employee_id': employee_id,
+            'attendance_date': today.isoformat()
+        })
+        
+        if not record or not record.get('check_in_time'):
+            return jsonify({'error': 'No active check-in record found for today.'}), 400
+            
+        if not record.get('check_out_time'):
+            return jsonify({'error': 'You are currently checked in. No check-out to undo.'}), 400
+            
+        # Optional grace window validation (allow up to 30 minutes grace window for accidental checkouts)
+        check_out_str = record.get('check_out_time')
+        try:
+            clean_co = check_out_str.replace('Z', '+00:00')
+            co_time = datetime.fromisoformat(clean_co)
+            now_utc = datetime.now(timezone.utc)
+            elapsed_minutes = (now_utc - co_time).total_seconds() / 60.0
+            if elapsed_minutes > 30.0:
+                return jsonify({'error': 'The 30-minute undo grace period has expired. Please submit an Attendance Correction request.'}), 400
+        except Exception as te:
+            logger.warning(f"Error parsing check_out_time for grace window: {te}")
+            
+        # Determine restored status:
+        is_wfh = record.get('is_wfh', False)
+        is_late = record.get('is_late', False)
+        restored_status = 'wfh' if is_wfh else ('late' if is_late else 'present')
+        
+        # Reset check_out_time to None and restore status
+        SupabaseDB.update('attendance_logs',
+                         {'employee_id': employee_id, 'attendance_date': today.isoformat()},
+                         {
+                             'check_out_time': None,
+                             'working_hours': 0.0,
+                             'status': restored_status
+                         })
+                         
+        # Create notification
+        try:
+            NotificationUtils.create_notification(
+                employee_id,
+                'Check-Out Cancelled',
+                'Your accidental check-out has been cancelled and your active shift is resumed.',
+                'checkin',
+                action_url='att'
+            )
+        except Exception as ne:
+            logger.warning(f"Notification error on undo check-out: {ne}")
+        
+        try:
+            log_audit(employee_id, 'UNDO_CHECK_OUT', 'attendance', record.get('id'))
+        except Exception as ae:
+            logger.warning(f"Audit log error on undo check-out: {ae}")
+        
+        return jsonify({
+            'message': 'Check-out cancelled successfully. Shift resumed.',
+            'check_in_time': record['check_in_time'],
+            'status': restored_status,
+            'is_wfh': is_wfh
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Undo check-out error: {str(e)}")
+        return jsonify({'error': 'Failed to undo check-out.'}), 500
+
+
 
 @app.route('/api/attendance/today', methods=['GET'])
 @token_required
