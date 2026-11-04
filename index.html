@@ -4160,6 +4160,40 @@
       margin-top: 1px;
     }
 
+    /* ══════════════════════════════════════════════════════════════════════════
+       ✨ OTSi AURORA FRAME (Official Design System Standard: "otsi-aurora-card")
+       Signature bioluminescent dual-gradient border with top illuminated accent.
+       Usage: class="otsi-aurora-card" on any container, card, widget or panel.
+       ══════════════════════════════════════════════════════════════════════════ */
+    .otsi-aurora-card {
+      position: relative;
+      border-radius: 12px;
+      border: 1.5px solid transparent;
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.5) 50%, var(--otsi-navy, #04466C) 100%) border-box;
+      box-shadow: 0 4px 16px rgba(16, 159, 218, 0.14), 0 1px 4px rgba(0, 0, 0, 0.04);
+      transition: all 0.22s ease;
+    }
+
+    .otsi-aurora-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 2.5px;
+      background: linear-gradient(90deg, transparent, var(--otsi-blue, #109FDA), var(--otsi-teal, #00A389), transparent);
+      border-radius: 0 0 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .otsi-aurora-card:hover {
+      box-shadow: 0 6px 22px rgba(16, 159, 218, 0.20), 0 2px 6px rgba(0, 0, 0, 0.05);
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, rgba(16, 159, 218, 0.65) 50%, var(--otsi-navy, #04466C) 100%) border-box;
+    }
+
     /* Creative Identifiable Quick Navigation Panel (220px, parallel to Permission & Short Leave Summary) */
     .leave-quick-nav-top {
       width: 220px;
