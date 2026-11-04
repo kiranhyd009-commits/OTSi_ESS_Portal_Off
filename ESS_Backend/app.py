@@ -1050,14 +1050,62 @@ def check_in():
         longitude = data.get('longitude')
         is_wfh = data.get('is_wfh', False)
         
+        resume_shift = data.get('resume_shift', False)
+        
         # Check if already checked in today
         existing = SupabaseDB.select_one('attendance_logs', {
             'employee_id': employee_id,
             'attendance_date': today.isoformat()
         })
         
-        if existing and existing['check_in_time']:
-            return jsonify({'error': 'Already checked in today'}), 400
+        if existing and existing.get('check_in_time'):
+            # If already checked out today:
+            if existing.get('check_out_time'):
+                if resume_shift:
+                    is_wfh = existing.get('is_wfh', False)
+                    is_late = existing.get('is_late', False)
+                    restored_status = 'wfh' if is_wfh else ('late' if is_late else 'present')
+                    
+                    SupabaseDB.update('attendance_logs',
+                                     {'employee_id': employee_id, 'attendance_date': today.isoformat()},
+                                     {
+                                         'check_out_time': None,
+                                         'working_hours': 0.0,
+                                         'status': restored_status
+                                     })
+                    
+                    try:
+                        NotificationUtils.create_notification(
+                            employee_id,
+                            'Shift Resumed',
+                            'Your shift for today has been resumed successfully.',
+                            'checkin',
+                            action_url='att'
+                        )
+                    except Exception:
+                        pass
+                    
+                    try:
+                        log_audit(employee_id, 'RESUME_SHIFT', 'attendance', existing.get('id'))
+                    except Exception:
+                        pass
+                    
+                    return jsonify({
+                        'message': 'Shift resumed successfully',
+                        'check_in_time': existing['check_in_time'],
+                        'status': restored_status,
+                        'is_wfh': is_wfh,
+                        'resumed': True
+                    }), 200
+                else:
+                    return jsonify({
+                        'error': 'Already checked in today',
+                        'can_resume': True,
+                        'check_in_time': existing['check_in_time'],
+                        'check_out_time': existing['check_out_time']
+                    }), 400
+            else:
+                return jsonify({'error': 'Already checked in today'}), 400
         
         # Verify location if not WFH
         location_verified = is_wfh

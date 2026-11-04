@@ -7982,6 +7982,50 @@
     </div>
   </div>
 
+  <!-- ════ RESUME SHIFT CONFIRMATION MODAL ════ -->
+  <div class="modal-overlay" id="resume-shift-modal" style="z-index: 100000;">
+    <div class="modal-sheet otsi-aurora-card" style="max-width: 440px; padding: 0; overflow: hidden; border-radius: 20px;">
+      <div class="modal-header" style="padding: 16px 20px; background: linear-gradient(135deg, rgba(16, 159, 218, 0.12) 0%, rgba(4, 70, 108, 0.18) 100%);">
+        <div class="modal-header-title" style="font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+          <span>🔄</span>
+          <span>Resume Workday / Active Shift</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeResumeShiftModal()" aria-label="Close">&#x2715;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 22px 22px 16px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--slate); margin-bottom: 4px;">Previous Shift Log</div>
+          <div id="resume-shift-times-display" style="font-size: 18px; font-weight: 700; color: var(--text-dark, #0F172A);">
+            --:-- → --:--
+          </div>
+          <div style="font-size: 12px; color: var(--slate); margin-top: 4px;">
+            Earlier check-out detected today.
+          </div>
+        </div>
+
+        <div style="background: rgba(16, 159, 218, 0.08); border: 1px solid rgba(16, 159, 218, 0.28); border-radius: 12px; padding: 12px 14px; margin-bottom: 18px; display: flex; gap: 12px; align-items: flex-start;">
+          <div style="font-size: 20px; line-height: 1;">💡</div>
+          <div style="font-size: 12.5px; line-height: 1.5; color: var(--otsi-navy, #04466C);">
+            <strong style="display: block; margin-bottom: 2px;">Continuing Work Today?</strong>
+            Resuming your shift will cancel the early check-out, restore your active timer from morning, and let you check out normally when your workday ends.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: stretch;">
+          <button type="button" class="btn-main" onclick="confirmResumeShift()" 
+                  style="flex: 1; padding: 11px 16px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, var(--otsi-blue, #109FDA) 0%, var(--otsi-navy, #04466C) 100%); color: white; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(16, 159, 218, 0.25);">
+            Yes, Resume My Shift
+          </button>
+          <button type="button" class="btn-sub" onclick="closeResumeShiftModal()"
+                  style="flex: 1; padding: 11px 16px; font-size: 13px; font-weight: 600; background: #F1F5F9; color: var(--slate); border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <!-- ════ EDIT PROFILE MODAL ════ -->
   <div class="modal-overlay" id="edit-profile-modal">
     <div class="modal-sheet" style="max-width:480px;">
@@ -8204,7 +8248,9 @@
       const data = text ? JSON.parse(text) : {};
 
       if (!response.ok) {
-        throw new Error(data.error || data.message || 'Request failed');
+        const err = new Error(data.error || data.message || 'Request failed');
+        err.data = data;
+        throw err;
       }
 
       return data;
@@ -8504,31 +8550,65 @@
     }
 
     // ─── CHECK IN / OUT ───
-    async function doCheckIn() {
+    async function doCheckIn(isResume = false) {
       // If outside office and WFH is NOT enabled, block check-in
       if (!locationAllowed && !isWFH) {
         toast('Outside office premises. Please enable the "Work From Home" toggle to check in remotely.', 'error');
         return;
       }
-      if (!isCheckedIn) {
+      if (!isCheckedIn || isResume) {
         try {
           const payload = {
             latitude: currentPosition ? currentPosition.latitude : OFFICE_LAT,
             longitude: currentPosition ? currentPosition.longitude : OFFICE_LNG,
             is_wfh: isWFH,
-            location: isWFH ? 'WFH' : 'OTSi Office'
+            location: isWFH ? 'WFH' : 'OTSi Office',
+            resume_shift: isResume
           };
           const result = await apiFetch('/attendance/check-in', {
             method: 'POST',
             body: JSON.stringify(payload)
           });
           applyCheckedInState(result.check_in_time, result.status || (isWFH ? 'wfh' : 'present'), isWFH);
-          toast(`Checked in successfully (${isWFH ? 'WFH' : 'Office'})`, 'success');
+          hideUndoCheckoutBanner();
+          loadAttendanceStats();
+          loadRecentAttendance();
+          toast(result.resumed ? 'Shift resumed successfully! Live timer running.' : `Checked in successfully (${isWFH ? 'WFH' : 'Office'})`, 'success');
         } catch (err) {
-          toast(err.message, 'error');
+          if (err.data && err.data.can_resume) {
+            showResumeShiftModal(err.data.check_in_time, err.data.check_out_time);
+          } else {
+            toast(err.message, 'error');
+          }
         }
       }
     }
+
+    function showResumeShiftModal(inIso, outIso) {
+      let inStr = '--:--';
+      let outStr = '--:--';
+      try {
+        if (inIso) inStr = parseBackendTime(inIso).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
+        if (outIso) outStr = parseBackendTime(outIso).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
+      } catch (e) {}
+
+      const displayEl = document.getElementById('resume-shift-times-display');
+      if (displayEl) displayEl.textContent = `${inStr} → ${outStr}`;
+
+      const modal = document.getElementById('resume-shift-modal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeResumeShiftModal() {
+      const modal = document.getElementById('resume-shift-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    async function confirmResumeShift() {
+      closeResumeShiftModal();
+      await doCheckIn(true);
+    }
+
 
 
     /* ════ SMART CHECKOUT SAFEGUARDS: CONFIRMATION & UNDO GRACE PERIOD ════ */
