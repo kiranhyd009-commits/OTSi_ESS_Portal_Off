@@ -2313,60 +2313,20 @@ def mark_notification_read(notif_id):
 @app.route('/api/profile/update-requests', methods=['POST'])
 @token_required
 def request_profile_update():
-    """Employee submits a profile update request"""
+    """Employee submits a profile update directly to employees master table"""
     try:
-        data = request.get_json()
+        data = request.get_json() or {}
         employee_id = g.current_employee_id
-        
-        # Check if the employee is ravi.mallela@otsi.co.in (EMP1105) to bypass approval
-        is_bypass = (employee_id == 'EMP1105' or g.current_user.get('email') == 'ravi.mallela@otsi.co.in')
-        
-        if is_bypass:
-            # Directly update the employees table
-            allowed_fields = ['full_name', 'phone', 'designation', 'department']
-            update_data = {k: v for k, v in data.items() if k in allowed_fields}
-            if update_data:
-                update_data['updated_at'] = datetime.now(timezone.utc).isoformat()
-                SupabaseDB.update('employees', {'employee_id': employee_id}, update_data)
-            
-            # Log approved request in the request table for auditing
-            update_req = {
-                'employee_id': employee_id,
-                'requested_changes': data,
-                'status': 'approved',
-                'created_at': datetime.now(timezone.utc).isoformat(),
-                'reviewed_by': 'system',
-                'review_date': datetime.now(timezone.utc).isoformat()
-            }
-            SupabaseDB.insert('profile_update_requests', update_req)
-            
-            log_audit(employee_id, 'UPDATE_PROFILE_BYPASS', 'employees',
-                      new_values=update_data)
-            return jsonify({'message': 'Profile updated successfully (Bypassed approval).', 'direct': True}), 201
-            
-        # Insert request into database
-        update_req = {
-            'employee_id': employee_id,
-            'requested_changes': data,
-            'status': 'pending',
-            'created_at': datetime.now(timezone.utc).isoformat()
-        }
-        req_result = SupabaseDB.insert('profile_update_requests', update_req)
-        
-        # Notify HR
-        hr_users = SupabaseDB.select('employees', 'employee_id', {'role': 'hr'})
-        admin_users = SupabaseDB.select('employees', 'employee_id', {'role': 'admin'})
-        hr_ids = [u['employee_id'] for u in hr_users + admin_users]
-        for nid in set(hr_ids):
-            NotificationUtils.create_notification(
-                nid,
-                'Profile Update Request',
-                f'{employee_id} has requested a profile update.',
-                'profile_update',
-                action_url='profile'
-            )
-            
-        return jsonify({'message': 'Profile update request submitted successfully.', 'direct': False}), 201
+
+        allowed_fields = ['full_name', 'phone', 'designation', 'department', 'team']
+        update_data = {k: v for k, v in data.items() if k in allowed_fields and v is not None}
+
+        if update_data:
+            update_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+            SupabaseDB.update('employees', {'employee_id': employee_id}, update_data)
+            log_audit(employee_id, 'UPDATE_PROFILE', 'employees', new_values=update_data)
+
+        return jsonify({'message': 'Profile updated successfully.', 'direct': True}), 200
     except Exception as e:
         logger.error(f"Request profile update error: {str(e)}")
         return jsonify({'error': 'Failed to submit request'}), 500
