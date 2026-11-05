@@ -5025,15 +5025,20 @@
     }
 
     .leave-cal-event-pill {
-      font-size: 9.5px;
+      font-size: 10px;
       font-weight: 600;
-      padding: 2px 5px;
-      border-radius: 4px;
+      padding: 3px 6px;
+      border-radius: 5px;
       margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      word-break: break-word;
+      line-height: 1.25;
       text-align: center;
+      display: block;
+      transition: transform 0.15s ease;
+    }
+    .leave-cal-event-pill:hover {
+      transform: scale(1.02);
     }
 
     .leave-cal-event-pill.approved {
@@ -12355,6 +12360,24 @@
       renderLeaveCalendar();
     }
 
+    function getShortFestivalName(occasion) {
+      if (!occasion) return 'Holiday';
+      const nameMap = {
+        'Sankranti / Pongal': 'Sankranti',
+        'Makara Sankranti': 'Makara Sankranti',
+        'Budha Purnima / May Day': 'May Day',
+        'Eidul Azha (Bakrid)': 'Bakrid (Eid)',
+        'Mahatma Gandhi Jayanthi': 'Gandhi Jayanthi',
+        'Vijaya Dasami (Dussehra)': 'Vijaya Dasami',
+        'Following Day of Vijaya Dasami': 'Day after Dussehra',
+        'Juneteenth National Independence Day': 'Juneteenth',
+        'Independence Day (Observed)': 'Independence Day',
+        'Martin Luther King Jr. Day': 'MLK Day',
+        'Day After Thanksgiving': 'Day after Thanksgiving'
+      };
+      return nameMap[occasion] || occasion;
+    }
+
     function getHolidayForCalendar(dateStr, selectedLoc) {
       if (!window.allCompanyHolidaysData || !window.allCompanyHolidaysData.length) return null;
       const locSelect = document.getElementById('leave-cal-location-select');
@@ -12439,11 +12462,9 @@
         // Check company holidays matching selected location
         const matchedHol = getHolidayForCalendar(dateStr);
         if (matchedHol) {
-          const locNotice = (matchedHol.remark && matchedHol.remark !== 'All Locations' && matchedHol.remark !== 'All US Locations')
-            ? ` (${matchedHol.remark})`
-            : '';
+          const shortName = getShortFestivalName(matchedHol.occasion);
           const fullHolidayTitle = `${matchedHol.occasion} · ${matchedHol.remark || 'All Locations'} [${matchedHol.region || 'India'}]`;
-          eventsHtml += `<div class="leave-cal-event-pill holiday" title="${fullHolidayTitle}">🎉 ${matchedHol.occasion}${locNotice}</div>`;
+          eventsHtml += `<div class="leave-cal-event-pill holiday" title="${fullHolidayTitle}">🎉 ${shortName}</div>`;
         }
 
         // Check leave applications covering this day
