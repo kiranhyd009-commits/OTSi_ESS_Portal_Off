@@ -1043,7 +1043,9 @@
     }
 
     /* ── ATTENDANCE page (HOME - COMPACT COMFORTABLE VIEW) ── */
+        /* ── ATTENDANCE page (HOME - COMPACT COMFORTABLE VIEW) ── */
     .att-hero {
+      position: relative;
       background: linear-gradient(160deg, var(--otsi-navy) 0%, var(--otsi-blue) 100%);
       padding: 10px 18px;
       color: #fff;
@@ -1055,7 +1057,19 @@
       border-radius: 0;
     }
 
+    #att-weather-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
     .att-hero-left {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       gap: 2px;
@@ -1063,6 +1077,8 @@
     }
 
     .att-hero-right {
+      position: relative;
+      z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -6215,6 +6231,7 @@
       <!-- ── ATTENDANCE PAGE (Home) ── -->
       <div id="page-att" class="page active">
         <div class="att-hero">
+          <canvas id="att-weather-canvas"></canvas>
           <div class="att-hero-left">
             <div class="att-hero-greeting" id="att-greeting">Good Morning,</div>
             <div class="att-hero-name" id="att-emp-name">--</div>
@@ -6238,11 +6255,42 @@
             <!-- Digital Time -->
             <div class="live-time" id="att-Check">--:--:--</div>
 
-            <!-- Weather Widget -->
+            <!-- Weather Widget & VFX Switcher -->
             <div id="weather-widget"
-              style="margin-top: 2px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11.5px; font-weight: 600; color: rgba(255, 255, 255, 0.9); background: rgba(0, 0, 0, 0.15); padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(5px);">
+              onclick="toggleWeatherFxMenu(event)"
+              title="Click to preview realistic Rain, Clouds, Thunderstorm or Live Weather VFX"
+              style="margin-top: 2px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11.5px; font-weight: 600; color: rgba(255, 255, 255, 0.95); background: rgba(0, 0, 0, 0.22); padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(5px); cursor: pointer; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.18); user-select: none;">
               <span id="weather-icon">☁️</span>
               <span id="weather-text">Loading weather...</span>
+              <i class="fas fa-magic" style="font-size: 9px; opacity: 0.75; margin-left: 2px;" title="VFX Menu"></i>
+            </div>
+
+            <!-- Weather FX Switcher Dropdown -->
+            <div id="weather-fx-menu" style="display:none; position: absolute; top: calc(100% + 6px); right: 0; background: #ffffff; color: var(--text-dark); border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid #E2E8F0; z-index: 1000; min-width: 195px; padding: 6px 0; font-size: 12px; text-align: left;">
+              <div style="padding: 6px 12px; font-size: 10px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between;">
+                <span>Atmospheric VFX</span>
+                <span style="font-size: 9px; background: #E0F2FE; color: #0284C7; font-weight: 700; padding: 1px 6px; border-radius: 10px;">LIVE</span>
+              </div>
+              <button type="button" onclick="setManualWeatherVfx('auto')" class="weather-fx-item" id="wfx-btn-auto" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 14px;">🌐</span>
+                <div><div>Auto (Live Weather)</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Sync with local city</div></div>
+              </button>
+              <button type="button" onclick="setManualWeatherVfx('clouds')" class="weather-fx-item" id="wfx-btn-clouds" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 14px;">☁️</span>
+                <div><div>Drifting Clouds</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Volumetric cloud layers</div></div>
+              </button>
+              <button type="button" onclick="setManualWeatherVfx('rain')" class="weather-fx-item" id="wfx-btn-rain" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 14px;">🌧️</span>
+                <div><div>Realistic Rain</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Dynamic droplets & ripples</div></div>
+              </button>
+              <button type="button" onclick="setManualWeatherVfx('thunder')" class="weather-fx-item" id="wfx-btn-thunder" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 14px;">⛈️</span>
+                <div><div>Thunderstorm</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Rain + ambient lightning</div></div>
+              </button>
+              <button type="button" onclick="setManualWeatherVfx('clear')" class="weather-fx-item" id="wfx-btn-clear" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 14px;">☀️</span>
+                <div><div>Clear Sky Shimmer</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Gentle rays & dust motes</div></div>
+              </button>
             </div>
           </div>
         </div>
@@ -11188,6 +11236,15 @@
       const bnav = document.getElementById('bnav-' + name);
       if (bnav) bnav.classList.add('active');
 
+      // Dynamically manage Weather VFX lifecycle
+      if (window.WeatherVFX) {
+        if (name === 'att') {
+          window.WeatherVFX.start();
+        } else {
+          window.WeatherVFX.pause();
+        }
+      }
+
       // Dynamically load data on tab selection
       if (name === 'leave') {
         loadLeaveBalances();
@@ -15049,6 +15106,386 @@
     }
     setupPasswordValidationListeners();
 
+        // ─── HIGH-PERFORMANCE ATMOSPHERIC WEATHER VFX MODULE ───
+    const WeatherVFX = {
+      canvas: null,
+      ctx: null,
+      animId: null,
+      mode: 'clouds', // 'clouds' | 'rain' | 'thunder' | 'clear'
+      isManual: false,
+      running: false,
+      clouds: [],
+      raindrops: [],
+      ripples: [],
+      sunSpecks: [],
+      lightning: { active: false, opacity: 0, nextTime: 0 },
+      width: 0,
+      height: 0,
+      dpr: 1,
+
+      init() {
+        this.canvas = document.getElementById('att-weather-canvas');
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.resize();
+        window.addEventListener('resize', () => {
+          this.resize();
+          this.initParticles();
+        });
+
+        // Restore manual preview preference if saved in session
+        const saved = sessionStorage.getItem('otsi_weather_vfx_mode');
+        if (saved && saved !== 'auto') {
+          this.mode = saved;
+          this.isManual = true;
+        }
+
+        this.initParticles();
+        this.start();
+      },
+
+      resize() {
+        if (!this.canvas) return;
+        const hero = this.canvas.parentElement;
+        if (!hero) return;
+        this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.width = hero.clientWidth || 800;
+        this.height = hero.clientHeight || 115;
+        this.canvas.width = Math.floor(this.width * this.dpr);
+        this.canvas.height = Math.floor(this.height * this.dpr);
+        if (this.ctx) {
+          this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+          this.ctx.scale(this.dpr, this.dpr);
+        }
+      },
+
+      initParticles() {
+        const w = this.width || 800;
+        const h = this.height || 115;
+
+        // Volumetric Cloud Clusters
+        this.clouds = [];
+        const cloudCount = Math.max(4, Math.floor(w / 180));
+        for (let i = 0; i < cloudCount; i++) {
+          const clusterX = (w / cloudCount) * i + Math.random() * 60;
+          const clusterY = h * 0.15 + Math.random() * (h * 0.5);
+          const scale = 0.75 + Math.random() * 0.55;
+          const speed = 0.16 + Math.random() * 0.22;
+          const baseOpacity = 0.13 + Math.random() * 0.15;
+          const floatOffset = Math.random() * Math.PI * 2;
+
+          const puffs = [
+            { dx: -30 * scale, dy: 4 * scale, r: 24 * scale },
+            { dx: -12 * scale, dy: -3 * scale, r: 30 * scale },
+            { dx: 10 * scale, dy: -5 * scale, r: 34 * scale },
+            { dx: 32 * scale, dy: 2 * scale, r: 25 * scale },
+            { dx: 4 * scale, dy: 5 * scale, r: 26 * scale }
+          ];
+
+          this.clouds.push({
+            x: clusterX,
+            baseY: clusterY,
+            y: clusterY,
+            speed,
+            scale,
+            baseOpacity,
+            floatOffset,
+            puffs,
+            totalWidth: 95 * scale
+          });
+        }
+
+        // Realistic Raindrops
+        this.raindrops = [];
+        const dropCount = Math.max(50, Math.floor(w / 14));
+        for (let i = 0; i < dropCount; i++) {
+          this.raindrops.push({
+            x: Math.random() * (w + 100) - 50,
+            y: Math.random() * h,
+            len: 12 + Math.random() * 16,
+            speed: 13 + Math.random() * 8,
+            opacity: 0.22 + Math.random() * 0.45,
+            thick: 0.8 + Math.random() * 0.9
+          });
+        }
+        this.ripples = [];
+
+        // Clear Sky Light Specks
+        this.sunSpecks = [];
+        const speckCount = Math.max(14, Math.floor(w / 45));
+        for (let i = 0; i < speckCount; i++) {
+          this.sunSpecks.push({
+            x: w * 0.25 + Math.random() * (w * 0.75),
+            y: Math.random() * h,
+            r: 1 + Math.random() * 2.2,
+            speedY: -(0.2 + Math.random() * 0.35),
+            speedX: (Math.random() - 0.5) * 0.25,
+            opacity: 0.12 + Math.random() * 0.32,
+            pulse: Math.random() * Math.PI * 2
+          });
+        }
+
+        this.lightning = {
+          active: false,
+          opacity: 0,
+          nextTime: Date.now() + 5000 + Math.random() * 7000
+        };
+      },
+
+      setEffect(mode, isUserManual = false) {
+        this.mode = mode;
+        if (isUserManual) {
+          this.isManual = true;
+          sessionStorage.setItem('otsi_weather_vfx_mode', mode);
+        } else {
+          this.isManual = false;
+          sessionStorage.removeItem('otsi_weather_vfx_mode');
+        }
+        this.updateActiveBtnUI();
+        if (!this.running) this.start();
+      },
+
+      start() {
+        if (this.running) return;
+        this.running = true;
+        const loop = () => {
+          if (!this.running) return;
+          this.render();
+          this.animId = requestAnimationFrame(loop);
+        };
+        this.animId = requestAnimationFrame(loop);
+      },
+
+      pause() {
+        this.running = false;
+        if (this.animId) {
+          cancelAnimationFrame(this.animId);
+          this.animId = null;
+        }
+      },
+
+      render() {
+        if (!this.ctx || !this.width || !this.height) return;
+        const ctx = this.ctx;
+        const w = this.width;
+        const h = this.height;
+
+        ctx.clearRect(0, 0, w, h);
+
+        if (this.mode === 'clouds') {
+          this.renderClouds(ctx, w, h, 1);
+        } else if (this.mode === 'rain') {
+          this.renderRain(ctx, w, h, false);
+        } else if (this.mode === 'thunder') {
+          this.renderClouds(ctx, w, h, 0.4);
+          this.renderRain(ctx, w, h, true);
+        } else if (this.mode === 'clear') {
+          this.renderClear(ctx, w, h);
+        }
+      },
+
+      renderClouds(ctx, w, h, speedMult = 1) {
+        for (let c of this.clouds) {
+          c.x += c.speed * speedMult;
+          c.floatOffset += 0.015;
+          c.y = c.baseY + Math.sin(c.floatOffset) * 3;
+
+          if (c.x - c.totalWidth > w + 40) {
+            c.x = -c.totalWidth - 30;
+            c.baseY = h * 0.15 + Math.random() * (h * 0.5);
+          }
+
+          for (let p of c.puffs) {
+            const px = c.x + p.dx;
+            const py = c.y + p.dy;
+            const pr = p.r;
+            const grad = ctx.createRadialGradient(px, py, 0, px, py, pr);
+            grad.addColorStop(0, `rgba(255, 255, 255, ${c.baseOpacity})`);
+            grad.addColorStop(0.65, `rgba(255, 255, 255, ${c.baseOpacity * 0.6})`);
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(px, py, pr, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+      },
+
+      renderRain(ctx, w, h, isThunder) {
+        const angleX = 3.2;
+
+        for (let d of this.raindrops) {
+          d.x += angleX;
+          d.y += d.speed;
+
+          if (d.y > h - 4) {
+            // Spawn micro ground ripple
+            if (Math.random() < 0.35 && this.ripples.length < 20) {
+              this.ripples.push({
+                x: d.x,
+                y: h - 2 - Math.random() * 3,
+                rx: 1,
+                ry: 0.35,
+                maxRx: 4 + Math.random() * 4,
+                opacity: 0.4
+              });
+            }
+            d.y = -d.len - Math.random() * 15;
+            d.x = Math.random() * (w + 80) - 40;
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(d.x, d.y);
+          ctx.lineTo(d.x + angleX * (d.len / d.speed), d.y + d.len);
+          ctx.strokeStyle = `rgba(225, 242, 255, ${d.opacity})`;
+          ctx.lineWidth = d.thick;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+
+        // Render ground ripples
+        for (let i = this.ripples.length - 1; i >= 0; i--) {
+          const rip = this.ripples[i];
+          rip.rx += 0.42;
+          rip.ry += 0.15;
+          rip.opacity -= 0.038;
+
+          if (rip.opacity <= 0 || rip.rx >= rip.maxRx) {
+            this.ripples.splice(i, 1);
+            continue;
+          }
+
+          ctx.beginPath();
+          ctx.ellipse(rip.x, rip.y, rip.rx, rip.ry, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${rip.opacity})`;
+          ctx.lineWidth = 0.75;
+          ctx.stroke();
+        }
+
+        // Thunderstorm lightning flash
+        if (isThunder) {
+          const now = Date.now();
+          if (!this.lightning.active && now > this.lightning.nextTime) {
+            this.lightning.active = true;
+            this.lightning.opacity = 0.30 + Math.random() * 0.14;
+            this.lightning.nextTime = now + 7000 + Math.random() * 8000;
+          } else if (this.lightning.active) {
+            this.lightning.opacity -= 0.045;
+            if (this.lightning.opacity <= 0) {
+              this.lightning.active = false;
+              this.lightning.opacity = 0;
+            } else {
+              ctx.fillStyle = `rgba(255, 255, 255, ${this.lightning.opacity})`;
+              ctx.fillRect(0, 0, w, h);
+            }
+          }
+        }
+      },
+
+      renderClear(ctx, w, h) {
+        // Soft sunbeam in top-right
+        const grad = ctx.createLinearGradient(w * 0.72, 0, w * 0.95, h);
+        grad.addColorStop(0, 'rgba(255, 245, 215, 0.11)');
+        grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.04)');
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Floating ambient dust specks
+        for (let s of this.sunSpecks) {
+          s.pulse += 0.04;
+          s.y += s.speedY;
+          s.x += s.speedX + Math.sin(s.pulse) * 0.2;
+
+          if (s.y < -6) {
+            s.y = h + 4;
+            s.x = w * 0.25 + Math.random() * (w * 0.75);
+          }
+
+          const alpha = s.opacity * (0.6 + 0.4 * Math.sin(s.pulse));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 248, 220, ${alpha})`;
+          ctx.shadowColor = 'rgba(255, 240, 180, 0.4)';
+          ctx.shadowBlur = 5;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      },
+
+      updateActiveBtnUI() {
+        const btns = ['auto', 'clouds', 'rain', 'thunder', 'clear'];
+        const active = this.isManual ? this.mode : 'auto';
+        btns.forEach(k => {
+          const b = document.getElementById(`wfx-btn-${k}`);
+          if (b) {
+            if (k === active) {
+              b.style.background = '#EFF6FF';
+              b.style.color = 'var(--otsi-blue)';
+              b.style.fontWeight = '700';
+            } else {
+              b.style.background = 'none';
+              b.style.color = '#1E293B';
+              b.style.fontWeight = '500';
+            }
+          }
+        });
+      }
+    };
+
+    function toggleWeatherFxMenu(e) {
+      if (e) e.stopPropagation();
+      const m = document.getElementById('weather-fx-menu');
+      if (!m) return;
+      const isHidden = m.style.display === 'none' || !m.style.display;
+      m.style.display = isHidden ? 'block' : 'none';
+      if (isHidden && window.WeatherVFX) {
+        window.WeatherVFX.updateActiveBtnUI();
+      }
+    }
+
+    function setManualWeatherVfx(mode) {
+      const m = document.getElementById('weather-fx-menu');
+      if (m) m.style.display = 'none';
+
+      if (mode === 'auto') {
+        if (window.WeatherVFX) {
+          window.WeatherVFX.setEffect(window.lastAutoWeatherCondition || 'clouds', false);
+        }
+        if (typeof toast === 'function') toast('Switched to Live City Weather VFX', 'info');
+      } else {
+        if (window.WeatherVFX) {
+          window.WeatherVFX.setEffect(mode, true);
+        }
+        const names = { rain: 'Realistic Rain', clouds: 'Drifting Clouds', thunder: 'Thunderstorm', clear: 'Clear Sky' };
+        if (typeof toast === 'function') toast(`VFX preview: ${names[mode] || mode}`, 'success');
+      }
+    }
+
+    // Dismiss VFX menu on click outside
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('weather-fx-menu');
+      const widget = document.getElementById('weather-widget');
+      if (menu && menu.style.display === 'block') {
+        if (!menu.contains(e.target) && !widget.contains(e.target)) {
+          menu.style.display = 'none';
+        }
+      }
+    });
+
+    // Auto pause VFX when tab is hidden or page is changed
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (window.WeatherVFX) window.WeatherVFX.pause();
+      } else {
+        const activePage = document.querySelector('.page.active');
+        if (activePage && activePage.id === 'page-att') {
+          if (window.WeatherVFX) window.WeatherVFX.start();
+        }
+      }
+    });
+
     async function fetchWeather() {
       const locEl = document.getElementById('att-location');
 
@@ -15113,6 +15550,20 @@
         const wText = document.getElementById('weather-text');
         if (wIcon) wIcon.textContent = icon;
         if (wText) wText.textContent = `${desc} - ${temp}°C`;
+
+        // Update atmospheric VFX based on weather condition
+        let autoEffect = 'clear';
+        if (code === 0) autoEffect = 'clear';
+        else if (code >= 1 && code <= 3) autoEffect = 'clouds';
+        else if (code >= 45 && code <= 48) autoEffect = 'clouds';
+        else if (code >= 51 && code <= 67) autoEffect = 'rain';
+        else if (code >= 71 && code <= 77) autoEffect = 'rain';
+        else if (code >= 95) autoEffect = 'thunder';
+
+        window.lastAutoWeatherCondition = autoEffect;
+        if (window.WeatherVFX && !window.WeatherVFX.isManual) {
+          window.WeatherVFX.setEffect(autoEffect, false);
+        }
       } catch (err) {
         console.error('Failed to fetch weather data:', err);
         const wText = document.getElementById('weather-text');
@@ -15701,6 +16152,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      if (window.WeatherVFX) {
+        window.WeatherVFX.init();
+      }
       fetchWeather();
       loadDynamicOrgTree();
       const urlParams = new URLSearchParams(window.location.search);
