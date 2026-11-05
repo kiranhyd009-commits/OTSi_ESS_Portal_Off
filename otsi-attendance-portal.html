@@ -1087,6 +1087,48 @@
       min-width: 90px;
     }
 
+    @media (max-width: 480px) {
+      .att-hero {
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      .att-hero-left {
+        min-width: 0;
+      }
+      .att-hero-name {
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .att-hero-role {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .att-date-chip {
+        font-size: 10.5px;
+        padding: 3px 8px;
+      }
+      .att-hero-right {
+        min-width: 78px;
+        flex-shrink: 0;
+        align-items: center;
+      }
+      .analog-Check {
+        width: 58px;
+        height: 58px;
+      }
+      .live-time {
+        font-size: 14px;
+      }
+      #weather-widget {
+        font-size: 10px !important;
+        padding: 2px 6px !important;
+      }
+    }
+
     .att-hero-greeting {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.7);
@@ -6255,14 +6297,13 @@
             <!-- Digital Time -->
             <div class="live-time" id="att-Check">--:--:--</div>
 
-            <!-- Weather Widget & VFX Switcher -->
+            <!-- Weather Widget -->
             <div id="weather-widget"
               onclick="toggleWeatherFxMenu(event)"
-              title="Click to preview realistic Rain, Clouds, Thunderstorm or Live Weather VFX"
-              style="margin-top: 2px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11.5px; font-weight: 600; color: rgba(255, 255, 255, 0.95); background: rgba(0, 0, 0, 0.22); padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(5px); cursor: pointer; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.18); user-select: none;">
+              title="Click to switch weather VFX"
+              style="margin-top: 2px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 11px; font-weight: 600; color: rgba(255, 255, 255, 0.9); background: rgba(0, 0, 0, 0.15); padding: 2px 8px; border-radius: 20px; backdrop-filter: blur(5px); cursor: pointer; user-select: none; max-width: 100%; white-space: nowrap;">
               <span id="weather-icon">☁️</span>
               <span id="weather-text">Loading weather...</span>
-              <i class="fas fa-magic" style="font-size: 9px; opacity: 0.75; margin-left: 2px;" title="VFX Menu"></i>
             </div>
 
             <!-- Weather FX Switcher Dropdown -->
