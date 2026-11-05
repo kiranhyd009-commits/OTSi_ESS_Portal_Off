@@ -6394,7 +6394,7 @@
               <div class="undo-banner-text">
                 <div class="undo-banner-title">Accidental Check-Out?</div>
                 <div class="undo-banner-sub">
-                  Checked out at <span id="undo-checkout-time-label">--:--</span>. Undo grace window expires in <strong id="undo-countdown-timer">15:00</strong>
+                  Checked out at <span id="undo-checkout-time-label">--:--</span>. Undo grace window expires in <strong id="undo-countdown-timer">05:00</strong>
                 </div>
               </div>
             </div>
@@ -8692,7 +8692,7 @@
           Are you sure you want to check out early?
         </div>
         <div style="font-size: 11.5px; color: var(--slate); text-align: center; margin-bottom: 20px;">
-          Accidental check-outs can still be undone within a 15-minute grace window.
+          Accidental check-outs can still be undone within a 5-minute grace window.
         </div>
 
         <!-- Action buttons -->
@@ -9487,10 +9487,10 @@
       const coTime = parseBackendTime(checkOutIso);
       const now = new Date();
 
-      // 15-minute grace window = 900 seconds
+      // 5-minute grace window = 300 seconds
       let remainingSecs = typeof remainingSecOverride === 'number'
         ? remainingSecOverride
-        : Math.round(900 - ((now - coTime) / 1000));
+        : Math.round(300 - ((now - coTime) / 1000));
 
       if (remainingSecs <= 0) {
         hideUndoCheckoutBanner();
@@ -9766,8 +9766,8 @@
             try {
               const coTime = parseBackendTime(today.check_out_time);
               const elapsedSecs = Math.round((new Date() - coTime) / 1000);
-              if (elapsedSecs >= 0 && elapsedSecs < 900) {
-                startUndoGraceTimer(today.check_out_time, 900 - elapsedSecs, loginEmpId);
+              if (elapsedSecs >= 0 && elapsedSecs < 300) {
+                startUndoGraceTimer(today.check_out_time, 300 - elapsedSecs, loginEmpId);
               } else {
                 hideUndoCheckoutBanner();
               }

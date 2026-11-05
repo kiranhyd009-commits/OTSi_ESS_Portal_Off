@@ -1330,15 +1330,15 @@ def undo_check_out():
         if not record.get('check_out_time'):
             return jsonify({'error': 'You are currently checked in. No check-out to undo.'}), 400
             
-        # Optional grace window validation (allow up to 30 minutes grace window for accidental checkouts)
+        # Grace window validation (allow up to 5 minutes grace window for accidental checkouts)
         check_out_str = record.get('check_out_time')
         try:
             clean_co = check_out_str.replace('Z', '+00:00')
             co_time = datetime.fromisoformat(clean_co)
             now_utc = datetime.now(timezone.utc)
             elapsed_minutes = (now_utc - co_time).total_seconds() / 60.0
-            if elapsed_minutes > 30.0:
-                return jsonify({'error': 'The 30-minute undo grace period has expired. Please submit an Attendance Correction request.'}), 400
+            if elapsed_minutes > 5.0:
+                return jsonify({'error': 'The 5-minute undo grace period has expired. Please submit an Attendance Correction request.'}), 400
         except Exception as te:
             logger.warning(f"Error parsing check_out_time for grace window: {te}")
             
