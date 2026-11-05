@@ -6651,17 +6651,30 @@
 
             <!-- Mode 2: Interactive Monthly Calendar Heatmap View -->
             <div id="leave-calendar-view-container" class="leave-cal-container" style="display:none;">
-              <div class="leave-cal-nav">
+              <div class="leave-cal-nav" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <div class="leave-cal-nav-title" id="leave-cal-month-title">
                   <i class="fas fa-calendar-day" style="color:var(--otsi-blue);"></i> September 2026
                 </div>
-                <div class="leave-cal-nav-arrows">
-                  <button class="leave-cal-arrow-btn" onclick="navLeaveCalendar(-1)" title="Previous Month"><i
-                      class="fas fa-chevron-left"></i></button>
-                  <button class="leave-cal-arrow-btn" onclick="navLeaveCalendar(0)" title="Current Month"
-                    style="width:auto; padding:0 8px; font-weight:600;">Today</button>
-                  <button class="leave-cal-arrow-btn" onclick="navLeaveCalendar(1)" title="Next Month"><i
-                      class="fas fa-chevron-right"></i></button>
+                <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                  <div style="display:inline-flex; align-items:center; gap:6px;">
+                    <label style="font-size:12px; font-weight:700; color:var(--slate);"><i class="fas fa-map-marker-alt" style="color:var(--otsi-blue);"></i> Location:</label>
+                    <select id="leave-cal-location-select" onchange="renderLeaveCalendar()"
+                      style="padding:5px 12px; font-size:12px; font-weight:700; border-radius:8px; border:1.5px solid var(--border); background:#fff; color:var(--text-dark); cursor:pointer;">
+                      <option value="All_India" selected>🇮🇳 India (All Locations)</option>
+                      <option value="Hyderabad">🏢 Hyderabad HQ</option>
+                      <option value="Bangalore">🏢 Bangalore DC</option>
+                      <option value="Delhi">🏢 New Delhi</option>
+                      <option value="US">🇺🇸 US Locations</option>
+                    </select>
+                  </div>
+                  <div class="leave-cal-nav-arrows">
+                    <button class="leave-cal-arrow-btn" onclick="navLeaveCalendar(-1)" title="Previous Month"><i
+                        class="fas fa-chevron-left"></i></button>
+                    <button class="leave-cal-arrow-btn" onclick="navLeaveCalendar(0)" title="Current Month"
+                      style="width:auto; padding:0 8px; font-weight:600;">Today</button>
+                    <button class="leave-cal-arrow-btn" onclick="navLeaveCalendar(1)" title="Next Month"><i
+                        class="fas fa-chevron-right"></i></button>
+                  </div>
                 </div>
               </div>
 
@@ -11310,7 +11323,11 @@
     async function loadHolidays() {
       try {
         const data = await apiFetch('/holidays');
-        window.companyHolidays = data.map(h => h.holiday_date);
+        window.allCompanyHolidaysData = data || [];
+        // Store India-only holidays for India working days & leave balance calculation
+        window.companyHolidays = (data || [])
+          .filter(h => (h.region === 'India' || !h.region))
+          .map(h => h.holiday_date);
 
         const tbodyIndia = document.getElementById('holiday-list-india');
         const tbodyUs = document.getElementById('holiday-list-us');
@@ -12338,6 +12355,45 @@
       renderLeaveCalendar();
     }
 
+    function getHolidayForCalendar(dateStr, selectedLoc) {
+      if (!window.allCompanyHolidaysData || !window.allCompanyHolidaysData.length) return null;
+      const locSelect = document.getElementById('leave-cal-location-select');
+      const loc = selectedLoc || (locSelect ? locSelect.value : 'All_India');
+
+      return window.allCompanyHolidaysData.find(h => {
+        if (h.holiday_date !== dateStr) return false;
+        const reg = (h.region || 'India').toUpperCase();
+        const rem = (h.remark || '').toLowerCase();
+
+        if (loc === 'US') {
+          return reg === 'US';
+        }
+
+        // India locations
+        if (reg !== 'INDIA') return false;
+
+        if (loc === 'All_India') {
+          return true;
+        }
+        if (loc === 'Hyderabad') {
+          // Hyderabad observes all India holidays except those specifically for other cities
+          if (rem.includes('only bangalore') || rem.includes('only delhi')) return false;
+          return true;
+        }
+        if (loc === 'Bangalore') {
+          // Bangalore observes holidays with 'only bangalore' or general holidays, but not excluded ones
+          if (rem.includes('excluding bangalore') || rem.includes('only delhi')) return false;
+          return true;
+        }
+        if (loc === 'Delhi') {
+          // Delhi observes holidays with 'only delhi' or general holidays, but not excluded ones
+          if (rem.includes('excluding delhi') || rem.includes('only bangalore')) return false;
+          return true;
+        }
+        return true;
+      });
+    }
+
     function renderLeaveCalendar() {
       const grid = document.getElementById('leave-cal-days-grid');
       const titleEl = document.getElementById('leave-cal-month-title');
@@ -12380,9 +12436,14 @@
 
         let eventsHtml = '';
 
-        // Check company holidays
-        if (holidays.includes(dateStr)) {
-          eventsHtml += `<div class="leave-cal-event-pill holiday" title="Official Holiday">🎉 Holiday</div>`;
+        // Check company holidays matching selected location
+        const matchedHol = getHolidayForCalendar(dateStr);
+        if (matchedHol) {
+          const locNotice = (matchedHol.remark && matchedHol.remark !== 'All Locations' && matchedHol.remark !== 'All US Locations')
+            ? ` (${matchedHol.remark})`
+            : '';
+          const fullHolidayTitle = `${matchedHol.occasion} · ${matchedHol.remark || 'All Locations'} [${matchedHol.region || 'India'}]`;
+          eventsHtml += `<div class="leave-cal-event-pill holiday" title="${fullHolidayTitle}">🎉 ${matchedHol.occasion}${locNotice}</div>`;
         }
 
         // Check leave applications covering this day
