@@ -2052,7 +2052,7 @@ def get_org_tree():
 
         # Team Scoped Tree (upward Chain View + colleagues reporting to same manager) vs Company Tree (all)
         if scope == 'team' and chain:
-            def clone_shallow(n, is_me_flag=False, include_direct_reports=False):
+            def clone_shallow(n: dict, is_me_flag: bool = False, include_direct_reports: bool = False) -> dict:
                 c_list = []
                 if include_direct_reports and n.get('children'):
                     c_list = [clone_shallow(ch, ch['employee_id'] == target_emp_id, False) for ch in n['children']]
@@ -2210,7 +2210,9 @@ def admin_edit_employee(employee_id):
         if 'manager_id' in update_data and 'manager_name' not in update_data:
             mgr = SupabaseDB.select_one('employees', {'employee_id': update_data['manager_id']})
             if mgr:
-                update_data['manager_name'] = mgr.get('full_name')
+                mgr_name = mgr.get('full_name')
+                if mgr_name is not None:
+                    update_data['manager_name'] = str(mgr_name)
 
         if not update_data:
             return jsonify({'error': 'No valid fields provided for update'}), 400
@@ -2652,7 +2654,8 @@ def get_executive_overview():
 
         practice_summaries = []
         for p in practice_defs:
-            p_emps = [e for e in employees if p['dept_pattern'].lower() in (e.get('department') or '').lower()]
+            p_dept_pat = str(p.get('dept_pattern', '')).lower()
+            p_emps = [e for e in employees if p_dept_pat in (e.get('department') or '').lower()]
             p_ids = {e['employee_id'] for e in p_emps}
             p_total = len(p_emps)
             p_present = len([a for a in today_att if a.get('employee_id') in p_ids and a.get('status') in ['present', 'late']])
