@@ -9889,6 +9889,11 @@
         loginEmpId = profile.employee_id;
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('app').style.display = 'block';
+        if (window.WeatherVFX) {
+          window.WeatherVFX.init();
+          window.WeatherVFX.resize();
+          window.WeatherVFX.start();
+        }
         document.body.classList.remove('auth-mode');
         initApp();
         await loadTodayAttendance();
@@ -10781,6 +10786,11 @@
     // ─── INIT APP ───
     function initApp() {
       document.getElementById('att-emp-name').textContent = loginName;
+      if (window.WeatherVFX) {
+        window.WeatherVFX.init();
+        window.WeatherVFX.resize();
+        window.WeatherVFX.start();
+      }
       document.getElementById('att-emp-role').textContent = currentRole === 'hr' ? 'HR Manager · ' + loginEmpId : currentRole === 'admin' ? 'Administrator · ' + loginEmpId : (currentProfile && currentProfile.designation ? currentProfile.designation : 'Software Engineer') + ' · ' + loginEmpId;
       document.getElementById('header-avatar').textContent = loginName.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
       document.getElementById('profile-avatar-lg').textContent = loginName.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
@@ -15107,7 +15117,7 @@
     setupPasswordValidationListeners();
 
         // ─── HIGH-PERFORMANCE ATMOSPHERIC WEATHER VFX MODULE ───
-    const WeatherVFX = {
+    window.WeatherVFX = {
       canvas: null,
       ctx: null,
       animId: null,
@@ -15127,11 +15137,6 @@
         this.canvas = document.getElementById('att-weather-canvas');
         if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
-        this.resize();
-        window.addEventListener('resize', () => {
-          this.resize();
-          this.initParticles();
-        });
 
         // Restore manual preview preference if saved in session
         const saved = sessionStorage.getItem('otsi_weather_vfx_mode');
@@ -15140,17 +15145,30 @@
           this.isManual = true;
         }
 
+        this.resize();
         this.initParticles();
         this.start();
+
+        if (!this._hasResizeListener) {
+          window.addEventListener('resize', () => {
+            this.resize();
+            this.initParticles();
+          });
+          this._hasResizeListener = true;
+        }
       },
 
       resize() {
         if (!this.canvas) return;
         const hero = this.canvas.parentElement;
         if (!hero) return;
+        const hw = hero.clientWidth || hero.offsetWidth;
+        const hh = hero.clientHeight || hero.offsetHeight;
+        if (!hw || !hh) return; // not rendered or hidden yet
+
         this.dpr = Math.min(window.devicePixelRatio || 1, 2);
-        this.width = hero.clientWidth || 800;
-        this.height = hero.clientHeight || 115;
+        this.width = hw;
+        this.height = hh;
         this.canvas.width = Math.floor(this.width * this.dpr);
         this.canvas.height = Math.floor(this.height * this.dpr);
         if (this.ctx) {
@@ -15163,23 +15181,23 @@
         const w = this.width || 800;
         const h = this.height || 115;
 
-        // Volumetric Cloud Clusters
+        // Volumetric Cloud Clusters across the open central space
         this.clouds = [];
-        const cloudCount = Math.max(4, Math.floor(w / 180));
+        const cloudCount = Math.max(4, Math.floor(w / 160));
         for (let i = 0; i < cloudCount; i++) {
-          const clusterX = (w / cloudCount) * i + Math.random() * 60;
-          const clusterY = h * 0.15 + Math.random() * (h * 0.5);
-          const scale = 0.75 + Math.random() * 0.55;
-          const speed = 0.16 + Math.random() * 0.22;
-          const baseOpacity = 0.13 + Math.random() * 0.15;
+          const clusterX = (w / cloudCount) * i + Math.random() * 50;
+          const clusterY = h * 0.15 + Math.random() * (h * 0.45);
+          const scale = 0.95 + Math.random() * 0.65;
+          const speed = 0.18 + Math.random() * 0.24;
+          const baseOpacity = 0.35 + Math.random() * 0.22; // Distinct, beautiful soft white clouds
           const floatOffset = Math.random() * Math.PI * 2;
 
           const puffs = [
-            { dx: -30 * scale, dy: 4 * scale, r: 24 * scale },
-            { dx: -12 * scale, dy: -3 * scale, r: 30 * scale },
-            { dx: 10 * scale, dy: -5 * scale, r: 34 * scale },
-            { dx: 32 * scale, dy: 2 * scale, r: 25 * scale },
-            { dx: 4 * scale, dy: 5 * scale, r: 26 * scale }
+            { dx: -38 * scale, dy: 6 * scale, r: 28 * scale },
+            { dx: -16 * scale, dy: -4 * scale, r: 35 * scale },
+            { dx: 14 * scale, dy: -6 * scale, r: 40 * scale },
+            { dx: 38 * scale, dy: 4 * scale, r: 30 * scale },
+            { dx: 6 * scale, dy: 7 * scale, r: 32 * scale }
           ];
 
           this.clouds.push({
@@ -15197,30 +15215,30 @@
 
         // Realistic Raindrops
         this.raindrops = [];
-        const dropCount = Math.max(50, Math.floor(w / 14));
+        const dropCount = Math.max(70, Math.floor(w / 10));
         for (let i = 0; i < dropCount; i++) {
           this.raindrops.push({
             x: Math.random() * (w + 100) - 50,
             y: Math.random() * h,
-            len: 12 + Math.random() * 16,
-            speed: 13 + Math.random() * 8,
-            opacity: 0.22 + Math.random() * 0.45,
-            thick: 0.8 + Math.random() * 0.9
+            len: 14 + Math.random() * 18,
+            speed: 14 + Math.random() * 9,
+            opacity: 0.45 + Math.random() * 0.45,
+            thick: 1.1 + Math.random() * 1.0
           });
         }
         this.ripples = [];
 
         // Clear Sky Light Specks
         this.sunSpecks = [];
-        const speckCount = Math.max(14, Math.floor(w / 45));
+        const speckCount = Math.max(16, Math.floor(w / 40));
         for (let i = 0; i < speckCount; i++) {
           this.sunSpecks.push({
             x: w * 0.25 + Math.random() * (w * 0.75),
             y: Math.random() * h,
-            r: 1 + Math.random() * 2.2,
-            speedY: -(0.2 + Math.random() * 0.35),
-            speedX: (Math.random() - 0.5) * 0.25,
-            opacity: 0.12 + Math.random() * 0.32,
+            r: 1.2 + Math.random() * 2.5,
+            speedY: -(0.25 + Math.random() * 0.4),
+            speedX: (Math.random() - 0.5) * 0.3,
+            opacity: 0.18 + Math.random() * 0.35,
             pulse: Math.random() * Math.PI * 2
           });
         }
@@ -15228,7 +15246,7 @@
         this.lightning = {
           active: false,
           opacity: 0,
-          nextTime: Date.now() + 5000 + Math.random() * 7000
+          nextTime: Date.now() + 4000 + Math.random() * 6000
         };
       },
 
@@ -15265,7 +15283,15 @@
       },
 
       render() {
-        if (!this.ctx || !this.width || !this.height) return;
+        if (!this.ctx) return;
+        if (!this.width || !this.height || this.width <= 0 || this.height <= 0) {
+          this.resize();
+          if (this.width > 0 && this.height > 0) {
+            this.initParticles();
+          } else {
+            return;
+          }
+        }
         const ctx = this.ctx;
         const w = this.width;
         const h = this.height;
@@ -15288,10 +15314,10 @@
         for (let c of this.clouds) {
           c.x += c.speed * speedMult;
           c.floatOffset += 0.015;
-          c.y = c.baseY + Math.sin(c.floatOffset) * 3;
+          c.y = c.baseY + Math.sin(c.floatOffset) * 4;
 
-          if (c.x - c.totalWidth > w + 40) {
-            c.x = -c.totalWidth - 30;
+          if (c.x - c.totalWidth > w + 60) {
+            c.x = -c.totalWidth - 40;
             c.baseY = h * 0.15 + Math.random() * (h * 0.5);
           }
 
@@ -15301,7 +15327,7 @@
             const pr = p.r;
             const grad = ctx.createRadialGradient(px, py, 0, px, py, pr);
             grad.addColorStop(0, `rgba(255, 255, 255, ${c.baseOpacity})`);
-            grad.addColorStop(0.65, `rgba(255, 255, 255, ${c.baseOpacity * 0.6})`);
+            grad.addColorStop(0.55, `rgba(255, 255, 255, ${c.baseOpacity * 0.65})`);
             grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
             ctx.fillStyle = grad;
@@ -15313,7 +15339,7 @@
       },
 
       renderRain(ctx, w, h, isThunder) {
-        const angleX = 3.2;
+        const angleX = 3.4;
 
         for (let d of this.raindrops) {
           d.x += angleX;
@@ -15321,14 +15347,14 @@
 
           if (d.y > h - 4) {
             // Spawn micro ground ripple
-            if (Math.random() < 0.35 && this.ripples.length < 20) {
+            if (Math.random() < 0.4 && this.ripples.length < 25) {
               this.ripples.push({
                 x: d.x,
                 y: h - 2 - Math.random() * 3,
                 rx: 1,
                 ry: 0.35,
                 maxRx: 4 + Math.random() * 4,
-                opacity: 0.4
+                opacity: 0.45
               });
             }
             d.y = -d.len - Math.random() * 15;
@@ -15338,7 +15364,7 @@
           ctx.beginPath();
           ctx.moveTo(d.x, d.y);
           ctx.lineTo(d.x + angleX * (d.len / d.speed), d.y + d.len);
-          ctx.strokeStyle = `rgba(225, 242, 255, ${d.opacity})`;
+          ctx.strokeStyle = `rgba(220, 242, 255, ${d.opacity})`;
           ctx.lineWidth = d.thick;
           ctx.lineCap = 'round';
           ctx.stroke();
@@ -15347,8 +15373,8 @@
         // Render ground ripples
         for (let i = this.ripples.length - 1; i >= 0; i--) {
           const rip = this.ripples[i];
-          rip.rx += 0.42;
-          rip.ry += 0.15;
+          rip.rx += 0.45;
+          rip.ry += 0.16;
           rip.opacity -= 0.038;
 
           if (rip.opacity <= 0 || rip.rx >= rip.maxRx) {
@@ -15359,7 +15385,7 @@
           ctx.beginPath();
           ctx.ellipse(rip.x, rip.y, rip.rx, rip.ry, 0, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(255, 255, 255, ${rip.opacity})`;
-          ctx.lineWidth = 0.75;
+          ctx.lineWidth = 0.85;
           ctx.stroke();
         }
 
@@ -15368,8 +15394,8 @@
           const now = Date.now();
           if (!this.lightning.active && now > this.lightning.nextTime) {
             this.lightning.active = true;
-            this.lightning.opacity = 0.30 + Math.random() * 0.14;
-            this.lightning.nextTime = now + 7000 + Math.random() * 8000;
+            this.lightning.opacity = 0.32 + Math.random() * 0.16;
+            this.lightning.nextTime = now + 6000 + Math.random() * 7000;
           } else if (this.lightning.active) {
             this.lightning.opacity -= 0.045;
             if (this.lightning.opacity <= 0) {
@@ -15386,8 +15412,8 @@
       renderClear(ctx, w, h) {
         // Soft sunbeam in top-right
         const grad = ctx.createLinearGradient(w * 0.72, 0, w * 0.95, h);
-        grad.addColorStop(0, 'rgba(255, 245, 215, 0.11)');
-        grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.04)');
+        grad.addColorStop(0, 'rgba(255, 245, 215, 0.13)');
+        grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.05)');
         grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, w, h);
@@ -15407,8 +15433,8 @@
           ctx.beginPath();
           ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(255, 248, 220, ${alpha})`;
-          ctx.shadowColor = 'rgba(255, 240, 180, 0.4)';
-          ctx.shadowBlur = 5;
+          ctx.shadowColor = 'rgba(255, 240, 180, 0.5)';
+          ctx.shadowBlur = 6;
           ctx.fill();
           ctx.shadowBlur = 0;
         }
@@ -15433,6 +15459,13 @@
         });
       }
     };
+
+    // Auto-initialize WeatherVFX
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      window.WeatherVFX.init();
+    } else {
+      document.addEventListener('DOMContentLoaded', () => window.WeatherVFX.init());
+    }
 
     function toggleWeatherFxMenu(e) {
       if (e) e.stopPropagation();

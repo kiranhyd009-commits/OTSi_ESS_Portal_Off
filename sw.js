@@ -1,5 +1,5 @@
 // OTSi ESS Portal - Mobile Service Worker
-const CACHE_NAME = 'otsi-ess-v41';
+const CACHE_NAME = 'otsi-ess-v42';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -60,7 +60,23 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. Navigation & static assets
+  // 2. HTML Navigation: Network-first to always serve latest code, cache fallback when offline
+  if (event.request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // 3. Static assets: Stale-while-revalidate for speed
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       const fetchPromise = fetch(event.request)
