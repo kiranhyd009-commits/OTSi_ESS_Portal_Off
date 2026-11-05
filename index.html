@@ -6665,11 +6665,11 @@
                     <label style="font-size:12px; font-weight:700; color:var(--slate);"><i class="fas fa-map-marker-alt" style="color:var(--otsi-blue);"></i> Location:</label>
                     <select id="leave-cal-location-select" onchange="renderLeaveCalendar()"
                       style="padding:5px 12px; font-size:12px; font-weight:700; border-radius:8px; border:1.5px solid var(--border); background:#fff; color:var(--text-dark); cursor:pointer;">
-                      <option value="All_India" selected>🇮🇳 India (All Locations)</option>
-                      <option value="Hyderabad">🏢 Hyderabad HQ</option>
-                      <option value="Bangalore">🏢 Bangalore DC</option>
-                      <option value="Delhi">🏢 New Delhi</option>
-                      <option value="US">🇺🇸 US Locations</option>
+                      <option value="All_India" selected>India (All Locations)</option>
+                      <option value="Hyderabad">Hyderabad HQ</option>
+                      <option value="Bangalore">Bangalore DC</option>
+                      <option value="Delhi">New Delhi</option>
+                      <option value="US">United States (US)</option>
                     </select>
                   </div>
                   <div class="leave-cal-nav-arrows">
@@ -11415,6 +11415,11 @@
         }
         if (usCount === 0) {
           tbodyUs.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--slate);padding:10px;">No holidays found.</td></tr>';
+        }
+
+        // Instantly reflect any company holiday changes on Leave Calendar View
+        if (typeof renderLeaveCalendar === 'function') {
+          renderLeaveCalendar();
         }
       } catch (e) {
         console.error('Failed to load holidays:', e);
