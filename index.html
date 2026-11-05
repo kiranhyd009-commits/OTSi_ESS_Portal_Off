@@ -9468,8 +9468,22 @@
       await doCheckOut();
     }
 
-    function startUndoGraceTimer(checkOutIso, remainingSecOverride) {
+    let undoGraceOwnerEmpId = null;
+
+    function startUndoGraceTimer(checkOutIso, remainingSecOverride, ownerEmpId) {
       if (!checkOutIso) return;
+      if (ownerEmpId) {
+        undoGraceOwnerEmpId = ownerEmpId;
+      } else if (!undoGraceOwnerEmpId && typeof loginEmpId !== 'undefined') {
+        undoGraceOwnerEmpId = loginEmpId;
+      }
+
+      // Enforce strict ownership: never display undo banner for another employee
+      if (undoGraceOwnerEmpId && typeof loginEmpId !== 'undefined' && loginEmpId && undoGraceOwnerEmpId !== loginEmpId) {
+        hideUndoCheckoutBanner();
+        return;
+      }
+
       const coTime = parseBackendTime(checkOutIso);
       const now = new Date();
 
@@ -9514,6 +9528,7 @@
     }
 
     function hideUndoCheckoutBanner() {
+      undoGraceOwnerEmpId = null;
       const banner = document.getElementById('undo-checkout-banner');
       if (banner) {
         banner.style.display = 'none';
@@ -9562,7 +9577,7 @@
           body: JSON.stringify(payload)
         });
         applyCheckedOutState(result.check_out_time, isWFH);
-        startUndoGraceTimer(result.check_out_time);
+        startUndoGraceTimer(result.check_out_time, null, loginEmpId);
         loadAttendanceStats();
         loadRecentAttendance();
         toast(`Checked out successfully (${isWFH ? 'WFH' : 'Office'})`, 'success');
@@ -9572,6 +9587,7 @@
     }
 
     function resetAttendanceUI() {
+      hideUndoCheckoutBanner();
       isCheckedIn = false;
       checkinTime = null;
       const checkinTimeEl = document.getElementById('checkin-time');
@@ -9608,6 +9624,7 @@
     }
 
     function applyCheckedInState(checkInIso, status, checkInWfh) {
+      hideUndoCheckoutBanner();
       isCheckedIn = true;
       checkinTime = checkInIso ? parseBackendTime(checkInIso) : new Date();
       const t = checkinTime.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' });
@@ -9750,10 +9767,16 @@
               const coTime = parseBackendTime(today.check_out_time);
               const elapsedSecs = Math.round((new Date() - coTime) / 1000);
               if (elapsedSecs >= 0 && elapsedSecs < 900) {
-                startUndoGraceTimer(today.check_out_time, 900 - elapsedSecs);
+                startUndoGraceTimer(today.check_out_time, 900 - elapsedSecs, loginEmpId);
+              } else {
+                hideUndoCheckoutBanner();
               }
-            } catch (err) {}
+            } catch (err) {
+              hideUndoCheckoutBanner();
+            }
           } else {
+            // Employee is checked in and has NOT checked out! Must never show accidental checkout banner
+            hideUndoCheckoutBanner();
             // Initially sync WFH toggle with morning checkin mode, then evaluate current location for checkout
             isWFH = checkinWasWfh;
             const sw = document.getElementById('wfh-toggle');
@@ -9761,6 +9784,7 @@
             checkLocation();
           }
         } else {
+          hideUndoCheckoutBanner();
           resetAttendanceUI();
           checkLocation();
         }
@@ -10137,6 +10161,7 @@
       }
     }
     function doLogout() {
+      hideUndoCheckoutBanner();
       clearSession();
       if (window.notifInterval) {
         clearInterval(window.notifInterval);
