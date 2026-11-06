@@ -4338,6 +4338,185 @@
     /* ════ ACCIDENTAL CHECK-OUT UNDO BANNER (OTSi Aurora Frame) ════ */
     
     
+    /* ════ 8 ADVANCED C-SUITE EXECUTIVE MODULES STYLES ════ */
+    /* AI Morning Briefing Card */
+    .exec-briefing-card {
+      background: linear-gradient(135deg, #022035 0%, #04466C 50%, #082E47 100%);
+      border-radius: 14px;
+      padding: 18px 24px;
+      color: #FFFFFF;
+      margin-bottom: 20px;
+      border: 1.5px solid rgba(16, 159, 218, 0.45);
+      box-shadow: 0 8px 24px rgba(4, 70, 108, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .exec-briefing-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #109FDA, #38BDF8, #10B981);
+    }
+    .exec-audio-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 700;
+      background: rgba(16, 159, 218, 0.25);
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      color: #38BDF8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .exec-audio-btn:hover {
+      background: rgba(16, 159, 218, 0.45);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+    .exec-audio-btn.playing {
+      background: #10B981;
+      color: #FFFFFF;
+      border-color: #10B981;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Interactive Global Delivery Map Container */
+    .exec-world-map-wrap {
+      background: #09131F;
+      border-radius: 14px;
+      border: 1.5px solid #1E293B;
+      padding: 22px;
+      color: #FFFFFF;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+    .exec-map-node {
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .exec-map-node:hover {
+      transform: scale(1.15);
+    }
+
+    /* RFP & Tender Pipeline Columns */
+    .rfp-funnel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .rfp-stage-col {
+      background: #F8FAFC;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .rfp-tender-card {
+      background: #FFFFFF;
+      border-radius: 10px;
+      border: 1px solid #CBD5E1;
+      padding: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+    }
+    .rfp-tender-card:hover {
+      border-color: var(--otsi-blue, #109FDA);
+      box-shadow: 0 6px 16px rgba(16, 159, 218, 0.12);
+      transform: translateY(-1px);
+    }
+
+    /* Governance Approval Cards */
+    .gov-approval-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      margin-bottom: 14px;
+      transition: all 0.2s ease;
+    }
+    .gov-approval-card:hover {
+      border-color: #04466C;
+      box-shadow: 0 6px 20px rgba(4, 70, 108, 0.08);
+    }
+    .gov-sign-btn {
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .gov-sign-btn.approve {
+      background: #059669;
+      color: #fff;
+    }
+    .gov-sign-btn.approve:hover {
+      background: #047857;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }
+    .gov-sign-btn.clarify {
+      background: #F59E0B;
+      color: #fff;
+    }
+    .gov-sign-btn.reject {
+      background: #EF4444;
+      color: #fff;
+    }
+
+    /* Account Farming Cards */
+    .farming-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .farming-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 18px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .farming-card:hover {
+      border-color: #109FDA;
+      box-shadow: 0 6px 18px rgba(16, 159, 218, 0.12);
+    }
+
+    /* Print Styles for Board Dossier */
+    @media print {
+      body.csuite-executive-mode {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      .top-nav, .header, .csuite-tabs-nav, .csuite-lens-toggle, #csuite-announcements-strip, .btn-sub, .exec-audio-btn {
+        display: none !important;
+      }
+      .csuite-subtab-panel {
+        display: block !important;
+        page-break-inside: avoid;
+      }
+      .exec-briefing-card {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        border: 1px solid #000000 !important;
+        box-shadow: none !important;
+      }
+    }
+    
     /* ════ C-SUITE EXECUTIVE DEDICATED COMMAND CENTER STYLES ════ */
     body.csuite-executive-mode .bottom-nav {
       display: none !important;
@@ -7604,6 +7783,10 @@
                           style="padding:8px 12px; font-size:12px; font-weight:700; background:rgba(245,158,11,0.25); border:1px solid rgba(245,158,11,0.5); color:#FDE68A; border-radius:8px; cursor:pointer;" title="Broadcast Company Announcement">
                     📢 Broadcast
                   </button>
+                  <button type="button" class="btn-sub" onclick="generateBoardDossier()"
+                          style="padding:8px 12px; font-size:12px; font-weight:700; background:rgba(16,185,129,0.25); border:1px solid rgba(16,185,129,0.5); color:#A7F3D0; border-radius:8px; cursor:pointer;" title="Download Board-Ready Executive Dossier">
+                    📊 Board Dossier
+                  </button>
                   <button type="button" class="btn-sub" onclick="exportExecutiveReport()"
                           style="padding:8px 12px; font-size:12px; font-weight:700; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; cursor:pointer;" title="Export Executive PDF">
                     📄 Export PDF
@@ -7635,6 +7818,36 @@
             </button>
           </div>
 
+          <!-- ════ 1. 🎙️ AI EXECUTIVE MORNING BRIEFING WIDGET ════ -->
+          <div class="exec-briefing-card" id="exec-ai-briefing-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:20px;">🎙️</span>
+                <span style="font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#38BDF8;">
+                  AI EXECUTIVE SITREP · 30-SEC MORNING BRIEFING
+                </span>
+                <span class="tag tag-g" style="font-size:10px; font-weight:700;">Live Synced</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <button type="button" class="exec-audio-btn" id="btn-audio-briefing" onclick="playExecutiveBriefingAudio()" title="Listen to Executive Audio Readout">
+                  <span id="audio-icon">▶</span> <span id="audio-label">Listen Audio Briefing</span>
+                </button>
+                <button type="button" class="exec-audio-btn" onclick="copyExecutiveBriefing()" title="Copy Briefing Text">
+                  <span>📋</span> <span>Copy Briefing</span>
+                </button>
+              </div>
+            </div>
+            <div id="exec-briefing-text" style="font-size:13.5px; line-height:1.6; color:rgba(255,255,255,0.92); margin-bottom:12px;">
+              Good morning. Across OTSi today, 257 active personnel are on duty with 89.4% billable utilization. Hyderabad Delivery Tower leads presence at 82.2% in-office. Zero Sev-1 delivery escalations overnight. The National Health Analytics Platform (NHAP) Phase 3 milestone is on track for delivery in 12 days. Active commercial and government pipeline stands at $34.2M towards our $48.5M annual target.
+            </div>
+            <div id="exec-briefing-takeaways" style="display:flex; flex-wrap:wrap; gap:8px;">
+              <span style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.1); padding:3px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.15);">👥 257 Global Personnel</span>
+              <span style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.1); padding:3px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.15);">⚡ 89.4% Billable Utilization</span>
+              <span style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.1); padding:3px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.15);">🛡️ 0 Overnight Escalations</span>
+              <span style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.1); padding:3px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.15);">🚀 NHAP Phase 3 in 12 Days</span>
+            </div>
+          </div>
+
           <!-- ════ C-SUITE EXECUTIVE INTELLIGENCE SUB-NAVIGATION ════ -->
           <div class="csuite-tabs-nav" id="csuite-tabs-nav">
             <button type="button" class="csuite-tab-btn active" id="csuite-tab-btn-cockpit" onclick="switchExecutiveSubTab('cockpit')">
@@ -7655,6 +7868,12 @@
             <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-appreciations" onclick="switchExecutiveSubTab('appreciations')">
               <span>🌟</span> Client Wall of Fame
             </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-rfp" onclick="switchExecutiveSubTab('rfp')">
+              <span>📑</span> Strategic RFP &amp; Tenders ($33.7M)
+            </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-governance" onclick="switchExecutiveSubTab('governance')">
+              <span>✍️</span> C-Suite Governance Desk <span class="tag tag-o" style="font-size:9.5px; padding:1px 5px; margin-left:3px;" id="badge-gov-pending">4 Pending</span>
+            </button>
             <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-news" onclick="switchExecutiveSubTab('news')">
               <span>🌐</span> Global Tech Newswire
             </button>
@@ -7668,7 +7887,48 @@
           <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
           <!-- VIEW 1: STRATEGIC GROWTH & PORTFOLIO (PRESIDENT'S LENS)                        -->
           <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
-          <div id="csuite-view-strategic">
+          <!-- ════ 2. 🗺️ INTERACTIVE GLOBAL DELIVERY OPERATIONS MAP ════ -->
+            <div class="exec-world-map-wrap">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+                <div>
+                  <div style="font-size:15px; font-weight:800; display:flex; align-items:center; gap:8px;">
+                    <span>🗺️</span> Global Delivery Operations Pulse (5 GDCs)
+                  </div>
+                  <div style="font-size:12px; color:#94A3B8; margin-top:2px;">Real-time presence, local timezones and campus leadership</div>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <span class="tag tag-g" style="font-size:10px; font-weight:700;">All Campuses Operational</span>
+                </div>
+              </div>
+
+              <!-- Interactive Node Badges Grid -->
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px;" id="exec-map-nodes-container">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
+            <!-- ════ 6. 🚨 EARLY WARNING SYSTEM (EWS) & THREAT RADAR ════ -->
+            <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:18px 20px; margin-bottom:22px; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:18px;">🚨</span>
+                  <div>
+                    <div style="font-size:14px; font-weight:800; color:#0F172A;">Early Warning System (EWS) &amp; Delivery Threat Radar</div>
+                    <div style="font-size:11.5px; color:var(--slate);">Predictive SLA risks, key-person dependencies &amp; compliance health</div>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <span style="font-size:11.5px; font-weight:700; color:#059669; background:#ECFDF5; padding:4px 10px; border-radius:8px;">
+                    CMMI L5 / ISO Audit Readiness: 98.6%
+                  </span>
+                </div>
+              </div>
+              <div id="exec-ews-alerts-container" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:12px;">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
+            <div id="csuite-view-strategic">
             <!-- Strategic KPI Strip -->
             <div class="csuite-kpi-grid">
               <div class="csuite-kpi-card">
@@ -7927,6 +8187,58 @@
 
           </div><!-- End #csuite-tab-cockpit -->
 
+<!-- ════ 3. 📑 STRATEGIC RFP & GOVT TENDER PURSUIT PIPELINE ════ -->
+          <div id="csuite-tab-rfp" class="csuite-subtab-panel">
+            <div class="csuite-kpi-grid" style="margin-bottom:20px;">
+              <div class="csuite-kpi-card accent-green">
+                <div class="csuite-kpi-label"><span>Active Pursuits Pipeline</span><span>💼</span></div>
+                <div class="csuite-kpi-val" id="rfp-stat-total-val">$33.7M</div>
+                <div class="csuite-kpi-sub">8 State &amp; National Tenders</div>
+              </div>
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label"><span>Weighted Win Value</span><span>🎯</span></div>
+                <div class="csuite-kpi-val">$24.6M</div>
+                <div class="csuite-kpi-sub">73.0% Risk-Adjusted Conversion</div>
+              </div>
+              <div class="csuite-kpi-card accent-purple">
+                <div class="csuite-kpi-label"><span>L1 Finalist / Award Pending</span><span>🏆</span></div>
+                <div class="csuite-kpi-val">$4.8M</div>
+                <div class="csuite-kpi-sub">National Health Tele-Consultation</div>
+              </div>
+              <div class="csuite-kpi-card accent-amber">
+                <div class="csuite-kpi-label"><span>Avg Win Probability</span><span>📈</span></div>
+                <div class="csuite-kpi-val">78.0%</div>
+                <div class="csuite-kpi-sub">Based on CMMI L5 Tier-1 Credentials</div>
+              </div>
+            </div>
+
+            <div class="rfp-funnel-grid" id="exec-rfp-funnel-container">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+          <!-- ════ 4. ✍️ C-SUITE GOVERNANCE & EXECUTIVE SIGNOFF DESK ════ -->
+          <div id="csuite-tab-governance" class="csuite-subtab-panel">
+            <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:20px 22px; margin-bottom:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div>
+                  <div style="font-size:16px; font-weight:800; color:#0F172A; display:flex; align-items:center; gap:8px;">
+                    <span>✍️</span> High-Stakes Governance &amp; Executive Signoff Queue
+                  </div>
+                  <div style="font-size:12.5px; color:var(--slate); margin-top:2px;">
+                    Strictly reserved for President &amp; CEO: Major CapEx, SOW margin exceptions &amp; executive leadership offers.
+                  </div>
+                </div>
+                <span class="tag tag-o" style="font-size:11px; font-weight:700;">4 Items Awaiting Review</span>
+              </div>
+            </div>
+
+            <div id="exec-governance-container">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+
           <!-- ════ TAB 2: PROJECTS & GOVT PROGRAMS HUB ════ -->
           <div id="csuite-tab-projects" class="csuite-subtab-panel">
             <div class="exec-proj-filter-bar">
@@ -8059,6 +8371,41 @@
 
           <!-- ════ TAB 5: ACHIEVEMENTS, TARGETS & ROADMAP ════ -->
           <div id="csuite-tab-targets" class="csuite-subtab-panel">
+            <!-- ════ 5. 💵 FINANCIAL HEALTH & GROSS MARGIN INTELLIGENCE ════ -->
+            <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:20px 22px; margin-bottom:22px; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
+              <div style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+                <span>💵</span> Financial Health, DSO &amp; Gross Margin Cockpit
+              </div>
+              <div class="csuite-kpi-grid" style="margin-bottom:18px;">
+                <div class="csuite-kpi-card accent-green">
+                  <div class="csuite-kpi-label"><span>Days Sales Outstanding (DSO)</span><span>⏱️</span></div>
+                  <div class="csuite-kpi-val">41.2 Days</div>
+                  <div class="csuite-kpi-sub">Target &le; 45d · Optimal Collection</div>
+                </div>
+                <div class="csuite-kpi-card">
+                  <div class="csuite-kpi-label"><span>Quarterly Billed Revenue</span><span>📑</span></div>
+                  <div class="csuite-kpi-val">$9.4M</div>
+                  <div class="csuite-kpi-sub">$8.7M Realized Collections</div>
+                </div>
+                <div class="csuite-kpi-card accent-purple">
+                  <div class="csuite-kpi-label"><span>Standard Grace Window</span><span>⏳</span></div>
+                  <div class="csuite-kpi-val">$700K</div>
+                  <div class="csuite-kpi-sub">Within Normal SLA Terms</div>
+                </div>
+                <div class="csuite-kpi-card accent-amber">
+                  <div class="csuite-kpi-label"><span>EBITDA Margin Run-Rate</span><span>📈</span></div>
+                  <div class="csuite-kpi-val">22.8%</div>
+                  <div class="csuite-kpi-sub">$7.8M Annualized Operating Profit</div>
+                </div>
+              </div>
+
+              <!-- Gross Margins by Practice -->
+              <div style="font-size:13px; font-weight:800; color:#334155; margin-bottom:10px;">Gross Margin Contribution by Practice</div>
+              <div id="exec-practice-margins-container" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
             <!-- Revenue & Pipeline Target Strip -->
             <div class="csuite-kpi-grid" style="margin-bottom:22px;">
               <div class="csuite-kpi-card accent-green">
@@ -8129,6 +8476,25 @@
               </div>
             </div>
 
+            <!-- ════ 7. 🤝 TIER-1 ACCOUNT HEALTH & FARMING/HUNTING RADAR ════ -->
+            <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:20px 22px; margin-bottom:22px; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                <div>
+                  <div style="font-size:15px; font-weight:800; color:#0F172A; display:flex; align-items:center; gap:8px;">
+                    <span>🤝</span> Tier-1 Account Health &amp; Cross-Sell Radar
+                  </div>
+                  <div style="font-size:12px; color:var(--slate);">Contract renewal countdowns and high-probability practice expansion opportunities</div>
+                </div>
+                <span class="tag tag-b" style="font-size:11px; font-weight:700;">6 Core Enterprise Accounts</span>
+              </div>
+              <div class="farming-grid" id="exec-farming-container">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
+            <div style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+              <span>🌟</span> Executive Client Appreciations &amp; Letters of Commendation
+            </div>
             <div class="exec-appreciation-grid" id="exec-appreciations-container">
               <!-- Dynamically Populated -->
             </div>
@@ -11746,6 +12112,274 @@
       if (msgEl) msgEl.textContent = latest.message || '';
     }
 
+    
+    /* ════ 8 MODULES JAVASCRIPT LOGIC & RENDERERS ════ */
+
+    // 1. 🎙️ AI Executive Morning Briefing
+    let isBriefingSpeaking = false;
+
+    function playExecutiveBriefingAudio() {
+      if (!('speechSynthesis' in window)) {
+        toast('Speech synthesis is not supported on this device/browser.', 'warning');
+        return;
+      }
+
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        updateAudioButton(false);
+        return;
+      }
+
+      const text = document.getElementById('exec-briefing-text') ? document.getElementById('exec-briefing-text').textContent : '';
+      if (!text) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.lang = 'en-US';
+
+      utterance.onstart = () => updateAudioButton(true);
+      utterance.onend = () => updateAudioButton(false);
+      utterance.onerror = () => updateAudioButton(false);
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function updateAudioButton(speaking) {
+      isBriefingSpeaking = speaking;
+      const btn = document.getElementById('btn-audio-briefing');
+      const icon = document.getElementById('audio-icon');
+      const label = document.getElementById('audio-label');
+      if (btn && icon && label) {
+        if (speaking) {
+          btn.classList.add('playing');
+          icon.textContent = '⏹';
+          label.textContent = 'Stop Audio';
+        } else {
+          btn.classList.remove('playing');
+          icon.textContent = '▶';
+          label.textContent = 'Listen Audio Briefing';
+        }
+      }
+    }
+
+    function copyExecutiveBriefing() {
+      const text = document.getElementById('exec-briefing-text') ? document.getElementById('exec-briefing-text').textContent.trim() : '';
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          toast('Executive SITREP briefing copied to clipboard!', 'success');
+        });
+      } else {
+        toast('Briefing copied to clipboard.', 'info');
+      }
+    }
+
+    function renderExecutiveBriefing(briefing) {
+      if (!briefing) return;
+      const textEl = document.getElementById('exec-briefing-text');
+      if (textEl && briefing.summary) textEl.textContent = briefing.summary;
+
+      const takeawaysEl = document.getElementById('exec-briefing-takeaways');
+      if (takeawaysEl && briefing.key_takeaways) {
+        takeawaysEl.innerHTML = briefing.key_takeaways.map(t => `
+          <span style="font-size:11px; font-weight:600; background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.15);">${t}</span>
+        `).join('');
+      }
+    }
+
+    // 2. 🗺️ Global Delivery Map Nodes
+    function renderGlobalMapNodes(nodes) {
+      const container = document.getElementById('exec-map-nodes-container');
+      if (!container || !nodes) return;
+
+      container.innerHTML = nodes.map(n => `
+        <div class="exec-map-node" style="background:#132235; border:1px solid #1E3A5F; border-radius:10px; padding:12px 14px;" onclick="filterExecutiveLocation('${n.code}')">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <strong style="font-size:13px; color:#FFFFFF;">${n.city}</strong>
+            <span style="font-size:10px; font-weight:700; color:#38BDF8; background:rgba(56,189,248,0.15); padding:2px 6px; border-radius:4px;">${n.timezone}</span>
+          </div>
+          <div style="font-size:11px; color:#94A3B8; margin-bottom:8px;">${n.campus}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span class="tag tag-b" style="font-size:10.5px; font-weight:700;">${n.headcount} Staff</span>
+            <span style="font-size:11px; font-weight:700; color:#10B981;">${n.in_office_pct}% In-Office</span>
+          </div>
+          <div style="font-size:10.5px; color:#64748B; margin-top:6px; border-top:1px solid #1E293B; padding-top:4px;">
+            Lead: ${n.lead}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 3. 📑 Strategic RFP Pipeline
+    function renderRfpPipeline(rfp) {
+      const container = document.getElementById('exec-rfp-funnel-container');
+      if (!container || !rfp || !rfp.stages) return;
+
+      const totalValEl = document.getElementById('rfp-stat-total-val');
+      if (totalValEl && rfp.total_pipeline_value) totalValEl.textContent = rfp.total_pipeline_value;
+
+      container.innerHTML = rfp.stages.map(s => `
+        <div class="rfp-stage-col">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid ${s.color}; padding-bottom:8px;">
+            <div>
+              <div style="font-size:13px; font-weight:800; color:#0F172A;">${s.stage}</div>
+              <div style="font-size:11.5px; color:var(--slate);">${s.count} Tenders</div>
+            </div>
+            <span style="font-size:12px; font-weight:800; color:${s.color};">${s.value}</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            ${(s.tenders || []).map(t => `
+              <div class="rfp-tender-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:4px;">
+                  <span class="tag tag-b" style="font-size:9.5px; font-weight:700;">${t.id}</span>
+                  <span style="font-size:10.5px; font-weight:800; color:#059669;">Win: ${t.win_prob}</span>
+                </div>
+                <div style="font-size:13px; font-weight:800; color:#0F172A; margin-bottom:4px; line-height:1.3;">${t.name}</div>
+                <div style="font-size:11.5px; color:var(--otsi-blue, #109FDA); font-weight:700; margin-bottom:6px;">${t.client}</div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:#475569; border-top:1px solid #F1F5F9; padding-top:6px;">
+                  <span>Value: <strong>${t.value}</strong></span>
+                  <span>Due: <strong>${t.deadline}</strong></span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 4. ✍️ Governance Signoffs
+    function renderGovernanceApprovals(approvals) {
+      const container = document.getElementById('exec-governance-container');
+      if (!container || !approvals) return;
+
+      const badge = document.getElementById('badge-gov-pending');
+      const pendingCount = approvals.filter(a => a.status === 'Pending Approval').length;
+      if (badge) badge.textContent = `${pendingCount} Pending`;
+
+      container.innerHTML = approvals.map(a => `
+        <div class="gov-approval-card" id="card-${a.id}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="tag tag-o" style="font-size:10px; font-weight:800;">${a.category}</span>
+                <span style="font-size:11px; color:var(--slate);">Req: ${a.requester} · ${a.date}</span>
+              </div>
+              <div style="font-size:16px; font-weight:800; color:#0F172A; margin-top:4px;">${a.title}</div>
+            </div>
+            <div id="status-badge-${a.id}">
+              <span class="tag ${a.status === 'Pending Approval' ? 'tag-o' : 'tag-g'}" style="font-size:11px; font-weight:700;">${a.status}</span>
+            </div>
+          </div>
+          <div style="font-size:13px; color:#334155; line-height:1.5; margin-bottom:10px;">
+            ${a.description}
+          </div>
+          <div style="background:#F8FAFC; border-left:3px solid #04466C; padding:8px 12px; border-radius:4px; font-size:11.5px; color:#04466C; margin-bottom:14px;">
+            <strong>Governance Impact:</strong> ${a.impact}
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:8px;" id="actions-${a.id}">
+            <button type="button" class="gov-sign-btn clarify" onclick="handleGovernanceSignoff('${a.id}', 'clarify')">❓ Request Clarification</button>
+            <button type="button" class="gov-sign-btn reject" onclick="handleGovernanceSignoff('${a.id}', 'reject')">❌ Reject</button>
+            <button type="button" class="gov-sign-btn approve" onclick="handleGovernanceSignoff('${a.id}', 'approve')">✅ Digitally Sign &amp; Approve</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function handleGovernanceSignoff(apprId, action) {
+      try {
+        const res = await apiFetch(`/executive/approvals/${apprId}/action`, {
+          method: 'POST',
+          body: JSON.stringify({ action })
+        });
+        toast(res.message || 'Governance signoff action executed.', 'success');
+        const badgeEl = document.getElementById(`status-badge-${apprId}`);
+        const actionsEl = document.getElementById(`actions-${apprId}`);
+        if (badgeEl) {
+          const tagClass = action === 'approve' ? 'tag-g' : (action === 'clarify' ? 'tag-o' : 'tag-r');
+          badgeEl.innerHTML = `<span class="tag ${tagClass}" style="font-size:11px; font-weight:700;">${res.status}</span>`;
+        }
+        if (actionsEl && action === 'approve') {
+          actionsEl.innerHTML = `<span style="font-size:12px; font-weight:700; color:#059669;">✍️ Digitally Signed by ${loginName} (${loginEmpId})</span>`;
+        }
+      } catch (err) {
+        toast(err.message || 'Action failed.', 'error');
+      }
+    }
+
+    // 5. 💵 Financial Health
+    function renderFinancialHealth(fin) {
+      const container = document.getElementById('exec-practice-margins-container');
+      if (!container || !fin || !fin.gross_margin_by_practice) return;
+
+      container.innerHTML = fin.gross_margin_by_practice.map(p => `
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:8px; padding:10px 12px;">
+          <div style="font-size:12px; font-weight:700; color:#0F172A; margin-bottom:4px;">${p.practice}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:11.5px; color:var(--slate);">${p.revenue}</span>
+            <strong style="font-size:13.5px; color:${p.color || '#059669'};">${p.margin_pct}% Margin</strong>
+          </div>
+          <div style="width:100%; height:5px; background:#E2E8F0; border-radius:3px; overflow:hidden; margin-top:6px;">
+            <div style="width:${p.margin_pct * 2}%; height:100%; background:${p.color || '#059669'}; border-radius:3px;"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 6. 🚨 Early Warning System (EWS)
+    function renderEWSAlerts(ews) {
+      const container = document.getElementById('exec-ews-alerts-container');
+      if (!container || !ews || !ews.alerts) return;
+
+      container.innerHTML = ews.alerts.map(a => {
+        const borderCol = a.level === 'Warning' ? '#EF4444' : (a.level === 'Advisory' ? '#F59E0B' : '#10B981');
+        return `
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-left:4px solid ${borderCol}; border-radius:8px; padding:12px 14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <span class="tag ${a.level === 'Warning' ? 'tag-o' : (a.level === 'Advisory' ? 'tag-s' : 'tag-g')}" style="font-size:10px; font-weight:700;">${a.category}</span>
+              <span style="font-size:10.5px; font-weight:700; color:#475569;">${a.urgency}</span>
+            </div>
+            <div style="font-size:13px; font-weight:800; color:#0F172A; margin-bottom:3px;">${a.title}</div>
+            <div style="font-size:11.5px; color:#475569; line-height:1.4; margin-bottom:6px;">${a.description}</div>
+            <div style="font-size:11px; font-weight:600; color:#04466C;">&bull; Action: ${a.action}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 7. 🤝 Account Farming & Cross-Sell
+    function renderAccountFarming(farming) {
+      const container = document.getElementById('exec-farming-container');
+      if (!container || !farming) return;
+
+      container.innerHTML = farming.map(a => `
+        <div class="farming-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span class="tag tag-b" style="font-size:10px; font-weight:800;">${a.status}</span>
+              <span style="font-size:11.5px; font-weight:800; color:#059669;">NPS: ${a.nps}</span>
+            </div>
+            <div style="font-size:14.5px; font-weight:800; color:#0F172A; margin-bottom:4px; line-height:1.3;">${a.account}</div>
+            <div style="font-size:11.5px; color:var(--slate); margin-bottom:10px;">Partner: <strong>${a.client_partner}</strong></div>
+            <div style="background:#F8FAFC; border-radius:8px; padding:8px 12px; margin-bottom:10px; display:flex; justify-content:space-between; font-size:11.5px;">
+              <span>Contract: <strong>${a.contract_value}</strong></span>
+              <span>Renewal in: <strong style="color:#04466C;">${a.renewal_countdown}</strong></span>
+            </div>
+          </div>
+          <div style="background:#ECFDF5; border:1px solid #A7F3D0; padding:8px 10px; border-radius:6px; font-size:11px; color:#065F46;">
+            <strong>🎯 Cross-Sell Target:</strong> ${a.cross_sell_opportunity}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 8. 📄 1-Click Board-Ready Executive Dossier
+    function generateBoardDossier() {
+      toast('Compiling Monthly Operating Review (MOR) Board Dossier...', 'info');
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    }
+
     function renderExecutiveProjects(filter = 'all', search = '') {
       if (!currentExecutiveData) return;
       const container = document.getElementById('exec-projects-container');
@@ -12335,6 +12969,16 @@
         if (typeof renderExecutiveTargets === 'function') renderExecutiveTargets();
         if (typeof renderExecutiveAppreciations === 'function') renderExecutiveAppreciations();
         if (typeof renderExecutiveNews === 'function') renderExecutiveNews();
+        // Call all 8 executive modules renderers
+        if (currentExecutiveData) {
+          if (currentExecutiveData.executive_briefing) renderExecutiveBriefing(currentExecutiveData.executive_briefing);
+          if (currentExecutiveData.global_map_nodes) renderGlobalMapNodes(currentExecutiveData.global_map_nodes);
+          if (currentExecutiveData.rfp_pipeline) renderRfpPipeline(currentExecutiveData.rfp_pipeline);
+          if (currentExecutiveData.executive_approvals) renderGovernanceApprovals(currentExecutiveData.executive_approvals);
+          if (currentExecutiveData.financial_health) renderFinancialHealth(currentExecutiveData.financial_health);
+          if (currentExecutiveData.early_warning_system) renderEWSAlerts(currentExecutiveData.early_warning_system);
+          if (currentExecutiveData.account_farming) renderAccountFarming(currentExecutiveData.account_farming);
+        }
         if (currentExecutiveData && currentExecutiveData.announcements) {
           renderExecutiveAnnouncements(currentExecutiveData.announcements);
         }

@@ -3164,7 +3164,263 @@ def get_executive_overview():
                 }
             ]
 
+                # 1. 🎙️ AI Executive Morning Briefing
+        exec_briefing_text = (
+            f"Good morning {emp.get('full_name', 'Executive Official').split()[0]}. "
+            f"Across OTSi today, {total_headcount} active personnel are on duty with {billable_utilization}% billable utilization. "
+            f"Hyderabad Delivery Tower leads attendance at {locations_data[0]['in_office_pct']}% in-office. "
+            f"Zero Sev-1 delivery escalations overnight. "
+            f"The National Health Analytics Platform (NHAP) Phase 3 milestone is on track for delivery in 12 days. "
+            f"Active commercial and government pipeline stands at $34.2M towards our $48.5M annual target."
+        )
+        executive_briefing = {
+            'greeting': f"Good day, {emp.get('full_name', 'Executive Official')}",
+            'summary': exec_briefing_text,
+            'key_takeaways': [
+                f"Workforce Strength: {total_headcount} active staff across 5 global centers",
+                f"Live Utilization: {billable_utilization}% billable capacity on client delivery",
+                f"Overnight Health: 0 critical Sev-1 escalations logged",
+                f"Priority Milestone: NHAP Phase 3 stage review in 12 days"
+            ],
+            'generated_at': now_str
+        }
+
+        # 2. 🗺️ Interactive Global Delivery Map Nodes
+        global_map_nodes = [
+            {'code': 'hyd', 'city': 'Hyderabad HQ', 'country': 'India', 'campus': 'Hitec City Delivery Tower', 'lat': 17.4435, 'lng': 78.3772, 'headcount': locations_data[0]['headcount'], 'in_office_pct': locations_data[0]['in_office_pct'], 'lead': 'Chandra Sekhar M. (CEO)', 'timezone': 'IST (UTC+5:30)', 'status': 'Optimal', 'active_projects': 14},
+            {'code': 'blr', 'city': 'Bangalore DC', 'country': 'India', 'campus': 'Outer Ring Road Tech Park', 'lat': 12.9249, 'lng': 77.6756, 'headcount': locations_data[1]['headcount'], 'in_office_pct': locations_data[1]['in_office_pct'], 'lead': 'Suresh Nambiar (SVP)', 'timezone': 'IST (UTC+5:30)', 'status': 'Optimal', 'active_projects': 6},
+            {'code': 'vij', 'city': 'Vijayawada DC', 'country': 'India', 'campus': 'IT Park Tech Hub', 'lat': 16.5062, 'lng': 80.6480, 'headcount': locations_data[2]['headcount'], 'in_office_pct': locations_data[2]['in_office_pct'], 'lead': 'Venkat Ramana M.', 'timezone': 'IST (UTC+5:30)', 'status': 'Optimal', 'active_projects': 4},
+            {'code': 'us', 'city': 'US Client On-Site', 'country': 'United States', 'campus': 'Overland Park, KS & Dallas, TX', 'lat': 38.9822, 'lng': -94.6708, 'headcount': locations_data[3]['headcount'], 'in_office_pct': locations_data[3]['in_office_pct'], 'lead': 'Vikramaditya Rao (SVP)', 'timezone': 'CST (UTC-6)', 'status': 'On-Site Active', 'active_projects': 3},
+            {'code': 'ph', 'city': 'Philippines GDC', 'country': 'Philippines', 'campus': 'Manila Delivery Center', 'lat': 14.5995, 'lng': 120.9842, 'headcount': locations_data[4]['headcount'], 'in_office_pct': locations_data[4]['in_office_pct'], 'lead': 'Ravi Kiran V. (SVP)', 'timezone': 'PHT (UTC+8)', 'status': 'Optimal', 'active_projects': 2}
+        ]
+
+        # 3. 📑 Strategic RFP & Government Tender Pursuit Pipeline ($33.7M)
+        rfp_pipeline = {
+            'total_pipeline_value': '$33.7M',
+            'active_tenders_count': 8,
+            'weighted_win_value': '$24.6M',
+            'stages': [
+                {
+                    'stage': 'Expression of Interest (EoI)',
+                    'count': 3,
+                    'value': '$14.2M',
+                    'color': '#3B82F6',
+                    'tenders': [
+                        {'id': 'TND-01', 'name': 'National Water Data Grid & Telemetry', 'client': 'Ministry of Jal Shakti', 'value': '$5.8M', 'deadline': '15 Dec 2026', 'win_prob': '70%', 'lead': 'Public Sector CoE'},
+                        {'id': 'TND-02', 'name': 'Smart Highway Toll Telematics System', 'client': 'National Highways Authority', 'value': '$4.6M', 'deadline': '22 Dec 2026', 'win_prob': '65%', 'lead': 'Transit CoE'},
+                        {'id': 'TND-03', 'name': 'State Unified Citizen Portal & e-Vault', 'client': 'State IT Department', 'value': '$3.8M', 'deadline': '05 Jan 2027', 'win_prob': '75%', 'lead': 'Digital Practice'}
+                    ]
+                },
+                {
+                    'stage': 'Technical RFP Defense',
+                    'count': 2,
+                    'value': '$8.5M',
+                    'color': '#8B5CF6',
+                    'tenders': [
+                        {'id': 'TND-04', 'name': 'State Energy Cloud & Microgrid Analytics', 'client': 'State Electricity Regulatory Commission', 'value': '$4.8M', 'deadline': '28 Nov 2026', 'win_prob': '80%', 'lead': 'Energy Practice'},
+                        {'id': 'TND-05', 'name': 'Urban Drainage & Flood Alerting IoT', 'client': 'Municipal Corporation', 'value': '$3.7M', 'deadline': '08 Dec 2026', 'win_prob': '78%', 'lead': 'IoT & AI CoE'}
+                    ]
+                },
+                {
+                    'stage': 'Commercial Price Bid Evaluation',
+                    'count': 2,
+                    'value': '$6.2M',
+                    'color': '#F59E0B',
+                    'tenders': [
+                        {'id': 'TND-06', 'name': 'High Court Judicial e-Filing Expansion (Phase 2)', 'client': 'State High Court E-Committee', 'value': '$3.4M', 'deadline': '18 Nov 2026', 'win_prob': '88%', 'lead': 'Judiciary CoE'},
+                        {'id': 'TND-07', 'name': 'State Police CCTNS Modernization & Analytics', 'client': 'Police Housing & Tech Corp', 'value': '$2.8M', 'deadline': '25 Nov 2026', 'win_prob': '82%', 'lead': 'GovTech CoE'}
+                    ]
+                },
+                {
+                    'stage': 'Finalist / Contract Award Pending',
+                    'count': 1,
+                    'value': '$4.8M',
+                    'color': '#10B981',
+                    'tenders': [
+                        {'id': 'TND-08', 'name': 'National Health Tele-Consultation Aggregator', 'client': 'National Health Authority', 'value': '$4.8M', 'deadline': '10 Nov 2026', 'win_prob': '94%', 'lead': 'Health Practice (L1 Preferred)'}
+                    ]
+                }
+            ]
+        }
+
+        # 4. ✍️ C-Suite Governance & Executive Signoff Desk
+        executive_approvals = [
+            {
+                'id': 'APPR-01',
+                'title': 'Horizon 5G Cloud Capacity Expansion CapEx',
+                'category': 'Capital Expenditure ($320,000)',
+                'requester': 'Suresh V. / Vikramaditya Rao',
+                'urgency': 'High',
+                'date': '05 Nov 2026',
+                'status': 'Pending Approval',
+                'description': 'Procurement of dedicated multi-region edge Kubernetes nodes in US-East & EU-West to meet Black Friday 5G traffic SLA commitment.',
+                'impact': 'Prevents $45K/hr SLA penalty. Approved in engineering budget.',
+                'target_role': 'president'
+            },
+            {
+                'id': 'APPR-02',
+                'title': 'OmniPay Instant Multi-Currency Settlement SOW Amendment',
+                'category': 'SOW & Margin Amendment ($480,000)',
+                'requester': 'Deepak Sharma (Cloud Infrastructure VP)',
+                'urgency': 'Medium',
+                'date': '04 Nov 2026',
+                'status': 'Pending Approval',
+                'description': 'Expansion of scope to include SEPA real-time instant payment rail integration. 12-month extension with 34% projected gross margin.',
+                'impact': 'Adds $480K high-margin revenue; requires 4 additional senior Go engineers.',
+                'target_role': 'ceo'
+            },
+            {
+                'id': 'APPR-03',
+                'title': 'Executive VP - GenAI & Artificial Intelligence Offer Signoff',
+                'category': 'Senior Leadership Offer Approval',
+                'requester': 'Priyanka Sengupta (HR Head)',
+                'urgency': 'High',
+                'date': '03 Nov 2026',
+                'status': 'Pending Approval',
+                'description': 'Candidate Dr. Arvind Swaminathan (Ex-Google Research Director). Leadership package approval for driving OTSi 2026 GenAI CoE.',
+                'impact': 'Key hire to spearhead ISO 42001 certification and $10M GenAI revenue target.',
+                'target_role': 'president'
+            },
+            {
+                'id': 'APPR-04',
+                'title': 'Hyderabad AI CoE NVIDIA GPU Server Cluster Procurement',
+                'category': 'Hardware CapEx ($195,000)',
+                'requester': 'Sunil Chander (IT Infrastructure Lead)',
+                'urgency': 'Normal',
+                'date': '02 Nov 2026',
+                'status': 'Pending Approval',
+                'description': 'On-premise sovereign AI fine-tuning server cluster with 8x NVIDIA H100 Tensor Core GPUs for public sector air-gapped tenders.',
+                'impact': 'Enables qualification for Ministry of Defense & State Air-Gapped AI mandates.',
+                'target_role': 'ceo'
+            }
+        ]
+
+        # 5. 💵 Financial Health & Margin Intelligence Cockpit
+        financial_health = {
+            'dso_days': 41.2,
+            'dso_target': 45.0,
+            'dso_status': 'Optimal (Healthy Collection)',
+            'quarterly_billed': '$9.4M',
+            'quarterly_collected': '$8.7M',
+            'in_grace_window': '$700K',
+            'ebitda_rate': '22.8%',
+            'ebitda_amount': '$7.8M Run-rate',
+            'gross_margin_by_practice': [
+                {'practice': 'AI & Data Science CoE', 'margin_pct': 36.2, 'revenue': '$8.2M', 'color': '#109FDA'},
+                {'practice': 'Cloud Solutions & Modernization', 'margin_pct': 31.8, 'revenue': '$10.9M', 'color': '#04466C'},
+                {'practice': 'Telecom & 5G Core OSS/BSS', 'margin_pct': 28.4, 'revenue': '$4.2M', 'color': '#7C3AED'},
+                {'practice': 'Application Engineering', 'margin_pct': 26.1, 'revenue': '$4.8M', 'color': '#D97706'},
+                {'practice': 'QA & Test Automation', 'margin_pct': 24.5, 'revenue': '$6.1M', 'color': '#059669'}
+            ]
+        }
+
+        # 6. 🚨 Early Warning System (EWS) & Delivery Threat Radar
+        early_warning_system = {
+            'threat_index': 'Low / Controlled',
+            'compliance_readiness_score': 98.6,
+            'alerts': [
+                {
+                    'id': 'EWS-01',
+                    'level': 'Warning',
+                    'category': 'Milestone Delivery Risk',
+                    'title': 'EuroLogix Sprint 7 Cloud Dependency Delay Buffer',
+                    'description': 'External client port API dependency has 3 days of buffer remaining. Delivery Director has scheduled daily war-room sync.',
+                    'action': 'Automated mitigation plan active; escalation to client CTO prepared.',
+                    'urgency': 'Attention Required'
+                },
+                {
+                    'id': 'EWS-02',
+                    'level': 'Advisory',
+                    'category': 'Key-Person Dependency',
+                    'title': 'Single-Architect Risk on Cadastral GIS PostGIS Engine',
+                    'description': 'Senior GeoSpatial Architect handles 90% of spatial partitioning algorithms.',
+                    'action': 'Pairing with secondary senior backend engineer in Sprint 9 initiated.',
+                    'urgency': 'In Progress'
+                },
+                {
+                    'id': 'EWS-03',
+                    'level': 'Info',
+                    'category': 'CMMI / ISO Compliance Audit',
+                    'title': 'Annual Surveillance Audit Readiness: 98.6%',
+                    'description': 'All 14 project audit trails, code repositories, and risk logs meet CMMI Level 5 and ISO 27001 requirements.',
+                    'action': 'Internal QA verification passed with zero major non-conformances.',
+                    'urgency': 'Optimal'
+                }
+            ]
+        }
+
+        # 7. 🤝 Tier-1 Client Account Health & Farming/Hunting Radar
+        account_farming = [
+            {
+                'account': 'Ministry of Health & Family Welfare (MoHFW)',
+                'contract_value': '$4.5M',
+                'account_health': 98,
+                'nps': '+96%',
+                'client_partner': 'Naveen Reddy T.',
+                'renewal_countdown': '410 Days',
+                'cross_sell_opportunity': 'Sovereign GenAI Clinical Protocol Assistant ($1.8M Pipeline)',
+                'status': 'Strategic Anchor'
+            },
+            {
+                'account': 'Horizon Telecom Group (US & EU)',
+                'contract_value': '$5.2M',
+                'account_health': 94,
+                'nps': '+94%',
+                'client_partner': 'Vikramaditya Rao / Suresh V.',
+                'renewal_countdown': '118 Days',
+                'cross_sell_opportunity': 'Private 5G Campus Slicing for Enterprise Logistics ($2.4M)',
+                'status': 'High Growth'
+            },
+            {
+                'account': 'OmniPay Financial Technologies',
+                'contract_value': '$4.1M',
+                'account_health': 92,
+                'nps': '+92%',
+                'client_partner': 'Deepak Sharma',
+                'renewal_countdown': '260 Days',
+                'cross_sell_opportunity': 'Real-Time AI Fraud Prevention Microservice ($1.2M)',
+                'status': 'Expanding'
+            },
+            {
+                'account': 'State Road Transport Corporation (TSRTC)',
+                'contract_value': '$3.2M',
+                'account_health': 95,
+                'nps': '+95%',
+                'client_partner': 'Venkat Ramana M.',
+                'renewal_countdown': '340 Days',
+                'cross_sell_opportunity': 'Electric Vehicle (EV) Depot Smart Charging Analytics ($1.5M)',
+                'status': 'Strategic Anchor'
+            },
+            {
+                'account': 'AuraCare Health Inc. (US)',
+                'contract_value': '$3.6M',
+                'account_health': 90,
+                'nps': '+90%',
+                'client_partner': 'Manoj Kumar K.',
+                'renewal_countdown': '195 Days',
+                'cross_sell_opportunity': 'Cloud Zero-Trust Cybersecurity IAM Extension ($850K)',
+                'status': 'Stable'
+            },
+            {
+                'account': 'State Power Distribution Corporation (DISCOM)',
+                'contract_value': '$3.8M',
+                'account_health': 93,
+                'nps': '+94%',
+                'client_partner': 'Sunil Chander',
+                'renewal_countdown': '512 Days',
+                'cross_sell_opportunity': 'Transformer Asset Predictive Maintenance AI ($1.4M)',
+                'status': 'Long-Term Retainer'
+            }
+        ]
+
         response_payload = {
+            'executive_briefing': executive_briefing,
+            'global_map_nodes': global_map_nodes,
+            'rfp_pipeline': rfp_pipeline,
+            'executive_approvals': executive_approvals,
+            'financial_health': financial_health,
+            'early_warning_system': early_warning_system,
+            'account_farming': account_farming,
             'government_projects': government_projects,
             'live_commercial_projects': live_commercial_projects,
             'otsi_heritage': otsi_heritage,
@@ -3344,6 +3600,31 @@ def create_executive_project():
         return jsonify({'message': 'Project created successfully', 'project': res}), 201
     except Exception as e:
         logger.error(f"Failed to create project: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+
+@app.route('/api/executive/approvals/<appr_id>/action', methods=['POST'])
+@token_required
+def executive_approval_action(appr_id):
+    """Execute executive signoff action (approve, clarify, reject) by President or CEO."""
+    try:
+        current_emp_id = g.current_employee_id
+        if current_emp_id not in ['OTSI0001', 'EMP1001']:
+            return jsonify({'error': 'Unauthorized: Only President and CEO can perform executive governance signoffs'}), 403
+
+        data = request.get_json() or {}
+        action = data.get('action', 'approve').lower()
+        remarks = data.get('remarks', 'Approved with executive digital signature.')
+
+        log_audit(current_emp_id, f'EXECUTIVE_SIGNOFF_{action.upper()}', f"Governance Item {appr_id}: {remarks}")
+        return jsonify({
+            'message': f"Item {appr_id} successfully processed with action: {action.upper()}",
+            'status': 'Signed & Approved' if action == 'approve' else ('Clarification Requested' if action == 'clarify' else 'Rejected'),
+            'signed_by': current_emp_id
+        }), 200
+    except Exception as e:
+        logger.error(f"Failed in executive approval action: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
 
