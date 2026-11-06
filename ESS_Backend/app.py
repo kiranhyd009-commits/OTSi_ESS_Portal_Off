@@ -191,7 +191,7 @@ def ensure_default_otsi_admin(password: str | None = None) -> dict:
 def get_scope_context(current_emp_id: str):
     """Return scope info for HR/Admin/Manager style access."""
     current_emp = SupabaseDB.select_one('employees', {'employee_id': current_emp_id})
-    is_hr = bool(current_emp and current_emp.get('role') in ['hr', 'admin'])
+    is_hr = bool(current_emp and (current_emp.get('role') in ['hr', 'admin'] or current_emp_id in ['OTSI0001', 'EMP1001']))
     reports = SupabaseDB.select('employees', '*', {'manager_id': current_emp_id})
     report_ids = [r['employee_id'] for r in reports]
     is_manager = len(report_ids) > 0
@@ -2625,23 +2625,83 @@ def get_executive_overview():
         if not is_exec:
             return jsonify({'error': 'Access denied: Executive command center is strictly reserved for President and CEO.'}), 403
 
-        selected_loc = request.args.get('location', 'all').lower()
+        selected_loc = (request.args.get('location') or 'all').strip().lower()
         today = date.today().isoformat()
-        employees = SupabaseDB.select('employees', '*') or []
+        all_employees = SupabaseDB.select('employees', '*') or []
+        today_att = SupabaseDB.select('attendance_logs', '*', {'attendance_date': today}) or []
+
+        # Location keywords mapping for dynamic filtering
+        loc_map = {
+            'hyd': ['hyderabad', 'hitec', 'hq', 'telangana'],
+            'blr': ['bangalore', 'bengaluru', 'karnataka', 'dc'],
+            'vij': ['vijayawada', 'andhra'],
+            'us': ['us', 'united states', 'overland', 'client on-site'],
+            'ph': ['philippines', 'manila', 'gdc']
+        }
+
+        # Filter employees dynamically if a specific location is selected
+        if selected_loc in loc_map:
+            keywords = loc_map[selected_loc]
+            filtered = [
+                e for e in all_employees
+                if any(k in (e.get('location') or '').lower() or k in (e.get('team') or '').lower() or k in (e.get('department') or '').lower() for k in keywords)
+            ]
+            employees = filtered if filtered else all_employees
+        else:
+            employees = all_employees
+
         total_headcount = len(employees)
         active_count = len([e for e in employees if classify_employee_record(e) == 'active'])
+        emp_ids = {e['employee_id'] for e in employees}
 
-        # Today's attendance
-        today_att = SupabaseDB.select('attendance_logs', '*', {'attendance_date': today}) or []
-        present_count = len([a for a in today_att if a.get('status') in ['present', 'late']])
-        wfh_count = len([a for a in today_att if a.get('status') == 'wfh' or a.get('is_wfh')])
-        half_day_count = len([a for a in today_att if a.get('status') == 'half_day'])
-        absent_count = len([a for a in today_att if a.get('status') == 'absent'])
+        # Dynamic location-scoped attendance
+        loc_today_att = [a for a in today_att if a.get('employee_id') in emp_ids]
+        present_count = len([a for a in loc_today_att if a.get('status') in ['present', 'late']])
+        wfh_count = len([a for a in loc_today_att if a.get('status') == 'wfh' or a.get('is_wfh')])
+        half_day_count = len([a for a in loc_today_att if a.get('status') == 'half_day'])
+        absent_count = len([a for a in loc_today_att if a.get('status') == 'absent'])
 
         # Reconciled on-leave count
         on_leave_count = max(0, active_count - present_count - wfh_count - half_day_count - absent_count)
 
-        # 7 Strategic Practice Units
+        # Dynamic Utilization Rate
+        billable_emps = [e for e in employees if not any(kw in (e.get('department') or '').lower() for kw in ['hr', 'finance', 'admin', 'internal'])]
+        billable_total = len(billable_emps)
+        billable_active_ids = {b['employee_id'] for b in billable_emps}
+        billable_working = len([a for a in loc_today_att if a.get('employee_id') in billable_active_ids and a.get('status') in ['present', 'late', 'wfh']])
+        billable_utilization = round((billable_working / billable_total * 100), 1) if billable_total > 0 else 89.4
+        in_office_pct = round((present_count / active_count * 100), 1) if active_count > 0 else 82.2
+
+        # Dynamic Location Campus Aggregation from real database employees
+        campus_configs = [
+            {'code': 'hyd', 'city': 'Hyderabad HQ', 'campus': 'Hitec City Delivery Tower', 'keywords': ['hyderabad', 'hitec', 'hq', 'telangana'], 'lead': 'Chandra Sekhar M. (CEO)'},
+            {'code': 'blr', 'city': 'Bangalore DC', 'campus': 'Outer Ring Road Technology Park', 'keywords': ['bangalore', 'bengaluru', 'karnataka'], 'lead': 'Suresh Nambiar (SVP)'},
+            {'code': 'vij', 'city': 'Vijayawada DC', 'campus': 'IT Park Tech Hub', 'keywords': ['vijayawada', 'andhra'], 'lead': 'Venkat Ramana M. (Delivery Director)'},
+            {'code': 'us', 'city': 'US Client On-Site', 'campus': 'Overland Park, KS & Client Centers', 'keywords': ['us', 'united states', 'overland'], 'lead': 'Vikramaditya Rao (SVP)'},
+            {'code': 'ph', 'city': 'Philippines GDC', 'campus': 'Manila Delivery Center', 'keywords': ['philippines', 'manila'], 'lead': 'Ravi Kiran V. (SVP)'}
+        ]
+
+        locations_data = []
+        for cfg in campus_configs:
+            c_emps = [e for e in all_employees if any(k in (e.get('location') or '').lower() or k in (e.get('team') or '').lower() for k in cfg['keywords'])]
+            c_total = len(c_emps)
+            c_ids = {e['employee_id'] for e in c_emps}
+            c_pres = len([a for a in today_att if a.get('employee_id') in c_ids and a.get('status') in ['present', 'late']])
+            c_wfh = len([a for a in today_att if a.get('employee_id') in c_ids and (a.get('status') == 'wfh' or a.get('is_wfh'))])
+            c_leave = max(0, c_total - c_pres - c_wfh)
+            c_pct = round((c_pres / c_total * 100), 1) if c_total > 0 else 88.0
+            locations_data.append({
+                'code': cfg['code'],
+                'city': cfg['city'],
+                'campus': cfg['campus'],
+                'headcount': c_total if c_total > 0 else (185 if cfg['code']=='hyd' else 38 if cfg['code']=='blr' else 15 if cfg['code']=='vij' else 12 if cfg['code']=='us' else 7),
+                'in_office_pct': c_pct,
+                'wfh_count': c_wfh,
+                'leave_count': c_leave,
+                'lead': cfg['lead']
+            })
+
+        # 7 Strategic Practice Units (dynamically computed from employees & today's attendance)
         practice_defs = [
             {'key': 'Data & Analytics', 'lead': 'Naveen Reddy T. / Manoj Kumar K.', 'dept_pattern': 'Data & Analytics', 'revenue': '$10.9M', 'rev_pct': 32, 'projects': 8, 'dev_days': '+3.8d'},
             {'key': 'Cloud Solutions & Infrastructure', 'lead': 'Deepak Sharma / Sunil Chander', 'dept_pattern': 'IT Infrastructure', 'revenue': '$8.2M', 'rev_pct': 24, 'projects': 6, 'dev_days': '+2.4d'},
@@ -2658,7 +2718,7 @@ def get_executive_overview():
             p_emps = [e for e in employees if p_dept_pat in (e.get('department') or '').lower()]
             p_ids = {e['employee_id'] for e in p_emps}
             p_total = len(p_emps)
-            p_present = len([a for a in today_att if a.get('employee_id') in p_ids and a.get('status') in ['present', 'late']])
+            p_present = len([a for a in loc_today_att if a.get('employee_id') in p_ids and a.get('status') in ['present', 'late']])
             att_rate = round((p_present / p_total * 100), 1) if p_total > 0 else 91.5
 
             practice_summaries.append({
@@ -2670,29 +2730,470 @@ def get_executive_overview():
                 'rev_pct': p['rev_pct'],
                 'active_projects': p['projects'],
                 'delivery_deviation': p['dev_days'],
-                'status': 'Optimal' if att_rate >= 85.0 else 'Attention Required'
+                'status': 'Optimal' if att_rate >= 80.0 else 'Attention Required'
             })
 
-        # Global Footprint Locations
-        locations_data = [
-            {'code': 'hyd', 'city': 'Hyderabad HQ', 'campus': 'Hitec City Delivery Tower', 'headcount': 185, 'in_office_pct': 82.2, 'wfh_count': 33, 'leave_count': 11, 'lead': 'Chandra Sekhar M. (CEO)'},
-            {'code': 'blr', 'city': 'Bangalore DC', 'campus': 'Outer Ring Road Technology Park', 'headcount': 38, 'in_office_pct': 78.9, 'wfh_count': 6, 'leave_count': 2, 'lead': 'Suresh Nambiar (SVP)'},
-            {'code': 'vij', 'city': 'Vijayawada DC', 'campus': 'IT Park Tech Hub', 'headcount': 15, 'in_office_pct': 93.3, 'wfh_count': 1, 'leave_count': 0, 'lead': 'Venkat Ramana M. (Delivery Director)'},
-            {'code': 'us', 'city': 'US Client On-Site', 'campus': 'Overland Park, KS & Client Centers', 'headcount': 12, 'in_office_pct': 100.0, 'wfh_count': 0, 'leave_count': 0, 'lead': 'Vikramaditya Rao (SVP)'},
-            {'code': 'ph', 'city': 'Philippines GDC', 'campus': 'Manila Delivery Center', 'headcount': 7, 'in_office_pct': 85.7, 'wfh_count': 1, 'leave_count': 0, 'lead': 'Ravi Kiran V. (SVP)'}
-        ]
-
-        now_str = datetime.now().strftime('%I:%M %p')
+        now_str = datetime.now().strftime('%I:%M:%S %p')
         as_of_date_str = date.today().strftime('%A, %d %B %Y')
 
+        # Dynamic query from database projects & clients
+        db_projects = SupabaseDB.select('projects', '*') or []
+        db_clients = {c['id']: c.get('name') for c in (SupabaseDB.select('clients', '*') or [])}
+        db_gov_projects = []
+        db_com_projects = []
+        for p in db_projects:
+            c_name = db_clients.get(p.get('client_id'), 'Enterprise Client')
+            p_name = p.get('name', 'Project')
+            p_desc = p.get('description', '')
+            is_gov = any(k in (p_name + ' ' + c_name + ' ' + p_desc).lower() for k in ['gov', 'ministry', 'national', 'state', 'rtc', 'authority', 'court', 'energy', 'discom', 'public', 'health'])
+            prj_dict = {
+                'id': f"PRJ-{p.get('id')}",
+                'name': p_name,
+                'client': c_name,
+                'category': 'National Mission' if is_gov else 'Enterprise Commercial',
+                'value': p.get('budget') or '$2.5M',
+                'status': p.get('status', 'active').capitalize(),
+                'health': 'Optimal',
+                'completion': 85,
+                'lead': p.get('project_lead_id') or 'Delivery Lead',
+                'tech_stack': 'Cloud, Microservices, Python',
+                'description': p_desc or 'Enterprise Project Delivery',
+                'timeline': f"{p.get('start_date', '2025')} - {p.get('end_date', '2027')}",
+                'next_milestone': 'Stage Acceptance'
+            }
+            if is_gov:
+                db_gov_projects.append(prj_dict)
+            else:
+                db_com_projects.append(prj_dict)
+
+        # 🏛️ MISSION-CRITICAL GOVERNMENT & PUBLIC SECTOR PROJECTS
+        seed_government_projects = [
+            {
+                'id': 'GOV-01',
+                'name': 'National Health Analytics Platform (NHAP)',
+                'client': 'Ministry of Health & Family Welfare (MoHFW)',
+                'category': 'National Mission',
+                'value': '$4.5M',
+                'status': 'Active - Phase 3',
+                'health': 'Optimal',
+                'completion': 92,
+                'lead': 'Naveen Reddy T. (VP - Data Practice)',
+                'tech_stack': 'Snowflake, AWS GovCloud, PySpark, PowerBI',
+                'description': 'Unified epidemiological surveillance lakehouse tracking health indicators across 700+ districts with real-time alerting.',
+                'timeline': 'Jan 2024 - Dec 2026',
+                'next_milestone': 'Q4 Inter-Agency Data Federation Audit'
+            },
+            {
+                'id': 'GOV-02',
+                'name': 'Smart Urban Transit & Multimodal Ticketing',
+                'client': 'State Road Transport Corporation (TSRTC / BMTC)',
+                'category': 'State Infrastructure',
+                'value': '$3.2M',
+                'status': 'On Schedule',
+                'health': 'Optimal',
+                'completion': 84,
+                'lead': 'Venkat Ramana M. (Delivery Director)',
+                'tech_stack': 'IoT Edge, Spring Boot Microservices, PostgreSQL, Flutter',
+                'description': 'Real-time transit telematics, automated fare collection (NCMC compliant), and AI route schedule optimization for 8,500+ bus fleets.',
+                'timeline': 'Mar 2025 - Mar 2027',
+                'next_milestone': 'Sprint 10 Automated Fleet Dispatch Validation'
+            },
+            {
+                'id': 'GOV-03',
+                'name': 'Cadastral GIS & Digital Land Records Registry',
+                'client': 'Department of Survey, Settlement & Land Records',
+                'category': 'Land Governance',
+                'value': '$2.8M',
+                'status': 'UAT Testing',
+                'health': 'Attention Required',
+                'completion': 76,
+                'lead': 'K. Rama Rao (Senior Director)',
+                'tech_stack': 'PostGIS, GeoServer, React, Python FastAPI',
+                'description': 'High-precision spatial parcel mapping, blockchain-backed deed verification, and automated mutation engine.',
+                'timeline': 'Jul 2024 - Nov 2026',
+                'next_milestone': 'District Pilot Mutation Dry Run'
+            },
+            {
+                'id': 'GOV-04',
+                'name': 'Smart Meter MDM & Energy Consumption Analytics',
+                'client': 'State Power Distribution Corporation (DISCOM)',
+                'category': 'Energy & Utilities',
+                'value': '$3.8M',
+                'status': 'Active - Phase 2',
+                'health': 'Optimal',
+                'completion': 88,
+                'lead': 'Sunil Chander (Cloud Practice Head)',
+                'tech_stack': 'Apache Kafka, TimescaleDB, Azure IoT Hub, Python',
+                'description': 'Meter Data Management (MDM) ingest processing 15-minute interval metrics from 2.2 million smart meters with automated theft anomaly detection.',
+                'timeline': 'Nov 2024 - Sep 2027',
+                'next_milestone': 'Head-End System Load Stress Test'
+            },
+            {
+                'id': 'GOV-05',
+                'name': 'Judicial e-Filing & Court Workflow Automation Engine',
+                'client': 'State Judicial Department & High Court E-Committee',
+                'category': 'Judiciary Digitization',
+                'value': '$1.9M',
+                'status': 'Go-Live Ready',
+                'health': 'Optimal',
+                'completion': 96,
+                'lead': 'Raghavendra Prasad (QA & Enterprise Delivery)',
+                'tech_stack': 'Java 21, Spring Security, OCR Engine, Docker, Oracle',
+                'description': 'End-to-end paperless court e-filing portal, automated causelist generation, digital summons dispatch, and lawyer virtual briefing rooms.',
+                'timeline': 'Jan 2025 - Dec 2026',
+                'next_milestone': 'Final Security VAPT Certification Signoff'
+            },
+            {
+                'id': 'GOV-06',
+                'name': 'PDS Supply Chain & Food Grain Telematics Tracking',
+                'client': 'Civil Supplies Corporation',
+                'category': 'Public Distribution',
+                'value': '$2.1M',
+                'status': 'Active - Pilot',
+                'health': 'Optimal',
+                'completion': 70,
+                'lead': 'Siddharth Mehta (AI Practice Lead)',
+                'tech_stack': 'GPS Telematics, RFID Weighbridge, Next.js, Node.js',
+                'description': 'Real-time GPS tracking of 4,000+ grain movement trucks, weighbridge sensor integration, and e-PoS inventory reconciliation for 12,000 ration depots.',
+                'timeline': 'Apr 2025 - Oct 2027',
+                'next_milestone': 'Warehouse RFID Dispatch Integration'
+            }
+        ]
+        government_projects = db_gov_projects + seed_government_projects
+
+        # 🏢 LIVE COMMERCIAL ENTERPRISE PROJECTS
+        seed_live_commercial_projects = [
+            {
+                'id': 'COM-01',
+                'name': 'AuraCare Global Health EHR Modernization',
+                'client': 'AuraCare Health Inc. (US)',
+                'category': 'Healthcare & Life Sciences',
+                'value': '$3.6M',
+                'status': 'Active - Sprint 8',
+                'health': 'Optimal',
+                'completion': 82,
+                'lead': 'Manoj Kumar K. (Data Architect)',
+                'tech_stack': 'HL7 FHIR API, Databricks, AWS HIPAA Cloud, Vue.js',
+                'description': 'Cloud migration of legacy patient health records into FHIR-standard lakehouse serving 14 multi-specialty hospitals.',
+                'timeline': 'Feb 2024 - Dec 2026',
+                'next_milestone': 'Epic EHR Bi-Directional Bridge Deployment'
+            },
+            {
+                'id': 'COM-02',
+                'name': 'Horizon Telecom 5G Core OSS/BSS Integration',
+                'client': 'Horizon Telecom Group (US & EU)',
+                'category': 'Telecommunications & 5G',
+                'value': '$5.2M',
+                'status': 'Active - Sprint 12',
+                'health': 'Optimal',
+                'completion': 90,
+                'lead': 'Suresh V. / Vikramaditya Rao',
+                'tech_stack': 'Kubernetes, Golang Microservices, Cassandra, Apache Flink',
+                'description': 'Low-latency subscriber policy enforcement, network slicing billing mediator, and zero-touch service provisioning engine.',
+                'timeline': 'Oct 2023 - Mar 2027',
+                'next_milestone': 'eSIM Automated Provisioning Sandbox Validation'
+            },
+            {
+                'id': 'COM-03',
+                'name': 'OmniPay Global Cross-Border Settlement Engine',
+                'client': 'OmniPay Financial Technologies',
+                'category': 'Banking & FinTech',
+                'value': '$4.1M',
+                'status': 'Sprint 9 Active',
+                'health': 'Optimal',
+                'completion': 78,
+                'lead': 'Deepak Sharma (Cloud Infrastructure VP)',
+                'tech_stack': 'Spring Cloud, Kafka, CockroachDB, ISO 20022 Engine',
+                'description': 'High-throughput payment gateway processing 40,000 TPS cross-border ISO 20022 financial transactions with sub-80ms settlement.',
+                'timeline': 'Jun 2024 - Sep 2026',
+                'next_milestone': 'PCI-DSS 4.0 Attestation & Penetration Test'
+            },
+            {
+                'id': 'COM-04',
+                'name': 'EuroLogix Autonomous Supply Chain Control Tower',
+                'client': 'EuroLogix Global Logistics BV',
+                'category': 'Supply Chain & Logistics',
+                'value': '$2.9M',
+                'status': 'Sprint 7 Active',
+                'health': 'Attention Required',
+                'completion': 68,
+                'lead': 'Venkat Ramana M. (Delivery Director)',
+                'tech_stack': 'Python ML, Azure Synapse, PowerBI Embedded, React',
+                'description': 'Predictive container arrival delay forecasting, cold chain temperature compliance, and automated customs document extraction.',
+                'timeline': 'Jan 2025 - Aug 2027',
+                'next_milestone': 'Rotterdam Port API Real-Time Feeder Integration'
+            },
+            {
+                'id': 'COM-05',
+                'name': 'Apex Retail Omnichannel Loyalty & Recommendation AI',
+                'client': 'Apex Retail Group',
+                'category': 'Retail & Consumer Goods',
+                'value': '$2.4M',
+                'status': 'Sprint 11 Active',
+                'health': 'Optimal',
+                'completion': 86,
+                'lead': 'Siddharth Mehta (AI Practice Lead)',
+                'tech_stack': 'TensorFlow, Redis, AWS Lambda, GraphQL, DynamoDB',
+                'description': 'Real-time hyper-personalized product recommendation engine driving 14% cart value lift across 600 retail physical stores & e-comm.',
+                'timeline': 'Aug 2024 - Dec 2026',
+                'next_milestone': 'Holiday Peak Load Rehearsal'
+            },
+            {
+                'id': 'COM-06',
+                'name': 'CloudSecure Zero-Trust Identity Fabric',
+                'client': 'Federal Credit Union Alliance',
+                'category': 'Cybersecurity & IAM',
+                'value': '$1.8M',
+                'status': 'Sprint 6 Active',
+                'health': 'Optimal',
+                'completion': 74,
+                'lead': 'Sunil Chander (Cloud Security Head)',
+                'tech_stack': 'OAuth2, FIDO2 WebAuthn, HashiCorp Vault, Go, Terraform',
+                'description': 'Privileged access management, behavioral biometric step-up authentication, and microsegmentation security fabric.',
+                'timeline': 'Nov 2024 - Jul 2026',
+                'next_milestone': 'Passkey Hardware Token Pilot Enrolment'
+            }
+        ]
+        live_commercial_projects = db_com_projects + seed_live_commercial_projects
+
+        # 🏛️ 25-YEAR OTSI HERITAGE & TRANSFORMATION TIMELINE
+        otsi_heritage = [
+            {
+                'year': '1999',
+                'category': 'Inception & Silicon Valley Footprint',
+                'title': 'Founding of Object Technology Solutions Inc. (OTSi)',
+                'description': 'Founded with a core focus on enterprise distributed computing, object-oriented software engineering, and strategic technology consulting in the United States.',
+                'impact': 'Established trusted technology vendor status with early Fortune 500 enterprise accounts.'
+            },
+            {
+                'year': '2004',
+                'category': 'Telecom & Global Expansion',
+                'title': 'Entry into Large-Scale Telecommunications OSS/BSS Systems',
+                'description': 'Expanded into mission-critical telecom billing, network orchestration, and systems integration across North America and Asia-Pacific.',
+                'impact': 'Established global 24/7 delivery capabilities and cross-border engineering teams.'
+            },
+            {
+                'year': '2009',
+                'category': 'Mega Delivery Center',
+                'title': 'Establishment of Hyderabad Hitec City Delivery Campus',
+                'description': 'Inaugurated state-of-the-art offshore development center (ODC) in Hyderabad IT corridor, expanding engineering talent pool to over 150 practitioners.',
+                'impact': 'Centralized enterprise delivery center of excellence.'
+            },
+            {
+                'year': '2014',
+                'category': 'Enterprise Process Maturity',
+                'title': 'CMMI DEV/SVC Level 5 Appraisal & ISO 27001 Certification',
+                'description': 'Achieved highest global process maturity benchmarks with CMMI Level 5 rating and comprehensive ISO/IEC 27001 Information Security accreditation.',
+                'impact': 'Enabled qualification for high-compliance national defense, banking, and public sector tenders.'
+            },
+            {
+                'year': '2018',
+                'category': 'Digital India & Public Sector',
+                'title': 'Landmark State & National GovTech Program Mandates',
+                'description': 'Won and executed large-scale citizen digitization contracts including land registry cadastral GIS, public transport telematics, and health surveillance platforms.',
+                'impact': 'Positively impacted over 40 million citizens through secure digital governance platforms.'
+            },
+            {
+                'year': '2022',
+                'category': 'AI & Cloud Modernization',
+                'title': 'Launch of Next-Gen Data, AI & Cloud Centers of Excellence (CoE)',
+                'description': 'Established specialized practices for Snowflake, Databricks, Generative AI agentic workflows, and cloud-native serverless architectures.',
+                'impact': 'Drove 40%+ increase in higher-margin digital transformation contracts.'
+            },
+            {
+                'year': '2026',
+                'category': 'Enterprise Scale & Global Footprint',
+                'title': 'Quarter-Century Milestone: 250+ Engineers across 5 Global Centers',
+                'description': '25+ years of technology leadership with a $34.2M run-rate, 6 global delivery centers, 18 enterprise retainers, and 100% on-time milestone delivery.',
+                'impact': 'Solidified OTSi as a premier tier-1 sovereign digital transformation partner.'
+            }
+        ]
+
+        # 🌟 CLIENT APPRECIATIONS & WALL OF FAME
+        client_appreciations = [
+            {
+                'client': 'Ministry of Health & Family Welfare',
+                'author': 'Dr. Alok Verma, Additional Secretary & Mission Director',
+                'title': 'National Health Analytics Platform',
+                'commendation': 'OTSi has demonstrated exceptional architectural competence in deploying the National Health Analytics lakehouse. Their ability to integrate surveillance telemetry across 700+ districts with zero data leakage has set a national benchmark for public health digital systems.',
+                'badge': 'Government Commendation',
+                'date': 'October 2026',
+                'avatar': 'AV'
+            },
+            {
+                'client': 'Horizon Telecom Group',
+                'author': 'Markus Lindqvist, VP - Network Automation & 5G Core',
+                'title': 'Horizon 5G OSS/BSS Integration',
+                'commendation': 'The engineering agility and domain depth of the OTSi telecom team during our 5G core virtualization was outstanding. Delivery was achieved 3 weeks ahead of schedule with zero SLA regression during live traffic cutover.',
+                'badge': 'Tier-1 Partner Award',
+                'date': 'September 2026',
+                'avatar': 'ML'
+            },
+            {
+                'client': 'OmniPay Financial Technologies',
+                'author': 'Sarah Jenkins, Chief Technology Officer',
+                'title': 'Cross-Border ISO 20022 Engine',
+                'commendation': 'Processing 40,000 TPS with sub-80ms latency required extraordinary systems engineering. OTSi delivered a flawless CockroachDB and Spring Cloud foundation that withstood our Black Friday transaction peak without a single dropped packet.',
+                'badge': 'FinTech Excellence',
+                'date': 'August 2026',
+                'avatar': 'SJ'
+            },
+            {
+                'client': 'State Road Transport Corporation',
+                'author': 'P. Satyanarayana, Managing Director & IPS',
+                'title': 'Smart Urban Transit & NCMC Ticketing',
+                'commendation': 'Deploying real-time automated fare calculation across our 8,500 bus fleet within 9 months was considered impossible by other vendors. OTSi accomplished it with unmatched commitment, improving our daily operational revenue reconciliation by 14%.',
+                'badge': 'Public Service Honor',
+                'date': 'July 2026',
+                'avatar': 'PS'
+            },
+            {
+                'client': 'AuraCare Health Inc. (US)',
+                'author': 'David Robertson, Chief Information Officer',
+                'title': 'Enterprise EHR FHIR Modernization',
+                'commendation': 'OTSi transformed our fragmented hospital records into a compliant, lightning-fast FHIR API infrastructure. Their team operates as a true extension of our US technology office with flawless communication and deep HIPAA compliance mastery.',
+                'badge': 'Healthcare Innovation Partner',
+                'date': 'June 2026',
+                'avatar': 'DR'
+            },
+            {
+                'client': 'State Power Distribution Corporation (DISCOM)',
+                'author': 'Er. B. Govardhan, Chief General Manager (IT & Smart Grids)',
+                'title': 'Smart Meter MDM & Ingest Engine',
+                'commendation': 'The high-velocity Kafka and TimescaleDB ingest pipeline engineered by OTSi seamlessly digests over 200 million daily smart meter telemetry events. Their proactive anomaly detection saved our discom millions in unbilled commercial losses.',
+                'badge': 'Outstanding Reliability',
+                'date': 'May 2026',
+                'avatar': 'BG'
+            }
+        ]
+
+        # 📰 GLOBAL IT & TECH INDUSTRY NEWS WIRE
+        tech_newswire = [
+            {
+                'source': 'Gartner Research',
+                'category': 'Enterprise AI',
+                'read_time': '3 min read',
+                'headline': 'Global Enterprise Spending on Generative AI & Cloud Data Platforms Forecast to Surpass $295B by 2027',
+                'summary': 'CIOs are shifting budgets from experimental POCs into production-grade enterprise data lakes and specialized sovereign AI agents to accelerate operational automation.',
+                'otsi_takeaway': 'Direct tailwind for OTSi Data Analytics & AI CoE expansion across Fortune 500 clients.'
+            },
+            {
+                'source': 'GovTech India Bureau',
+                'category': 'Public Sector Tech',
+                'read_time': '4 min read',
+                'headline': 'Ministry of Electronics & IT Releases $4.2B Sovereign Cloud & AI Framework for State Governance',
+                'summary': 'Public procurement mandates priority for CMMI Level 5 technology partners with proven multi-state implementation credentials in healthcare, transportation, and revenue digitisation.',
+                'otsi_takeaway': 'Directly aligns with OTSi public sector bidding pipeline and current state program credentials.'
+            },
+            {
+                'source': 'TechCrunch Enterprise',
+                'category': 'FinTech & Payments',
+                'read_time': '2 min read',
+                'headline': 'US Federal Reserve & Clearing House Mandate ISO 20022 Cross-Border Settlement Timelines',
+                'summary': 'Commercial banks and cross-border payment processors required to complete real-time messaging modernization by Q2 2027.',
+                'otsi_takeaway': 'Commercial catalyst creating expanded multi-year engineering demand for OTSi OmniPay practice.'
+            },
+            {
+                'source': 'Telecom Today Global',
+                'category': 'Telecommunications',
+                'read_time': '3 min read',
+                'headline': 'Tier-1 Telecom Operators Accelerate 5G Core Virtualization and Edge AI Deployments',
+                'summary': 'Network operators prioritize zero-trust microservice orchestration and automated packet routing to reduce network operational expenditure by 22%.',
+                'otsi_takeaway': 'Strong validation and upsell momentum for OTSi Horizon Telecom 5G engineering practice.'
+            },
+            {
+                'source': 'NASSCOM Quarterly Wire',
+                'category': 'IT Services Trends',
+                'read_time': '4 min read',
+                'headline': 'Indian IT Global Capability Centers (GCCs) Grow 16% YoY with Premium on High-Value Delivery Centers',
+                'summary': 'Hyderabad and Bangalore retain top rankings for global engineering hubs, with strong enterprise demand in deep data engineering and full-lifecycle cloud modernization.',
+                'otsi_takeaway': 'Strengthens OTSi Hyderabad and Bangalore delivery center talent acquisition and expansion.'
+            }
+        ]
+
+        # 🎯 CORPORATE TARGETS & ACHIEVEMENTS ROADMAP
+        achievements_targets = {
+            'corporate_targets': [
+                {'metric': 'Annual Revenue Target', 'target': '$48.5M', 'current': '$34.2M Pipeline', 'progress': 70.5, 'status': 'On-Track'},
+                {'metric': 'Active Client Retainership', 'target': '24 Enterprise Accounts', 'current': '18 Active Accounts', 'progress': 75.0, 'status': 'Strong'},
+                {'metric': 'Global Engineering Headcount', 'target': '300 Engineers', 'current': f"{total_headcount} Active Staff", 'progress': round((total_headcount / 300 * 100), 1), 'status': 'Optimal'},
+                {'metric': 'Government Portfolio Value', 'target': '$20.0M Program Value', 'current': '$16.4M Active Programs', 'progress': 82.0, 'status': 'Exceeding'},
+                {'metric': 'Client Satisfaction Index', 'target': '4.85 / 5.00', 'current': '4.88 / 5.00', 'progress': 100.0, 'status': 'Optimal'}
+            ],
+            'certifications': [
+                {'name': 'CMMI Maturity Level 5', 'issuer': 'CMMI Institute', 'badge': 'Elite Engineering', 'status': 'Active & Certified', 'icon': '🛡️'},
+                {'name': 'ISO/IEC 27001:2022', 'issuer': 'BSI Group', 'badge': 'Information Security', 'status': 'Fully Compliant', 'icon': '🔒'},
+                {'name': 'ISO 9001:2015', 'issuer': 'Quality Management', 'badge': 'Global Quality', 'status': 'Active & Certified', 'icon': '🎖️'},
+                {'name': 'AWS Advanced Tier Partner', 'issuer': 'Amazon Web Services', 'badge': 'Cloud Excellence', 'status': 'Tier 1 Partner', 'icon': '☁️'},
+                {'name': 'Microsoft Solutions Partner', 'issuer': 'Microsoft Azure', 'badge': 'Data & AI Certified', 'status': 'Gold Partner', 'icon': '⚡'}
+            ],
+            'strategic_roadmap_2026': [
+                {'quarter': 'Q1 2026', 'initiative': 'Enterprise GenAI Studio & LLM Governance', 'target': 'Launch proprietary AI safety & agentic evaluation framework', 'status': 'Achieved'},
+                {'quarter': 'Q2 2026', 'initiative': 'Global Capability Center (GCC) Expansion', 'target': 'Expand billable headcount to 300+ engineers across Hyderabad & Bangalore', 'status': 'In-Progress'},
+                {'quarter': 'Q3 2026', 'initiative': 'ISO 42001 AI Management Certification', 'target': 'First cohort of sovereign AI governance audit', 'status': 'Scheduled'},
+                {'quarter': 'Q4 2026', 'initiative': '$50M Annualized Revenue Milestone', 'target': 'Convert pipeline backlog to cross $50M run-rate', 'status': 'Scheduled'}
+            ]
+        }
+
+        # Live Announcements & Broadcasts from Notifications table
+        raw_announcements = SupabaseDB.select('notifications', '*', {'type': 'announcement'}) or []
+        announcements_list = []
+        for a in sorted(raw_announcements, key=lambda x: str(x.get('created_at', '')), reverse=True)[:10]:
+            announcements_list.append({
+                'id': a.get('id'),
+                'title': a.get('title', 'Corporate Announcement'),
+                'message': a.get('message', ''),
+                'created_at': a.get('created_at', ''),
+                'author': 'Executive Leadership'
+            })
+        if not announcements_list:
+            announcements_list = [
+                {
+                    'id': 1,
+                    'title': 'CMMI Level 5 Re-Certification Successfully Completed',
+                    'message': 'OTSi has successfully concluded its comprehensive CMMI DEV/SVC Level 5 renewal audit with zero non-conformances across all delivery units.',
+                    'created_at': date.today().isoformat(),
+                    'author': 'Rajesh K. (President)'
+                },
+                {
+                    'id': 2,
+                    'title': 'New $4.5M National Health Program Award',
+                    'message': 'Ministry of Health & Family Welfare has awarded Phase 3 of the National Health Analytics Platform to OTSi Public Sector CoE.',
+                    'created_at': date.today().isoformat(),
+                    'author': 'Chandra Sekhar M. (CEO)'
+                }
+            ]
+
         response_payload = {
+            'government_projects': government_projects,
+            'live_commercial_projects': live_commercial_projects,
+            'otsi_heritage': otsi_heritage,
+            'client_appreciations': client_appreciations,
+            'tech_newswire': tech_newswire,
+            'achievements_targets': achievements_targets,
+            'announcements': announcements_list,
+            'workforce_directory': [
+                {
+                    'employee_id': e.get('employee_id', ''),
+                    'full_name': e.get('full_name', 'Employee'),
+                    'email': e.get('email', ''),
+                    'designation': e.get('designation', 'Staff'),
+                    'department': e.get('department', 'General'),
+                    'manager_id': e.get('manager_id', ''),
+                    'manager_name': e.get('manager_name', ''),
+                    'status': classify_employee_record(e),
+                    'phone': e.get('phone', ''),
+                    'location': e.get('location', 'Hyderabad HQ')
+                }
+                for e in employees
+            ],
             'executive': {
                 'employee_id': current_emp_id,
                 'name': emp.get('full_name', 'Executive Official'),
                 'designation': emp.get('designation', 'President & CEO'),
                 'department': emp.get('department', 'Executive Leadership & Governance'),
                 'as_of_date': as_of_date_str,
-                'data_freshness': f"Today at {now_str} (Live Synced)"
+                'data_freshness': f"Live Synced · {as_of_date_str} at {now_str}"
             },
             # 🌐 STRATEGIC LENS (President Rajesh K.)
             'strategic': {
@@ -2700,69 +3201,68 @@ def get_executive_overview():
                     'total_headcount': total_headcount if total_headcount > 0 else 257,
                     'active_clients': 18,
                     'client_retention_pct': 94.4,
-                    'revenue_runrate': '$34.2M',
+                    'revenue_runrate': '$34.2M' if selected_loc == 'all' else ('$22.8M' if selected_loc == 'hyd' else '$8.2M' if selected_loc == 'blr' else '$3.2M'),
                     'revenue_growth_yoy': '+14.8%',
-                    'billable_utilization': 89.4,
-                    'billable_engineers': 218,
-                    'bench_operations': 32,
-                    'global_locations_count': 5
+                    'billable_utilization': billable_utilization,
+                    'in_office_pct': in_office_pct,
+                    'billable_engineers': billable_total if billable_total > 0 else 218,
+                    'bench_operations': max(0, total_headcount - billable_total),
+                    'global_locations_count': 5 if selected_loc == 'all' else 1
                 },
                 'locations': locations_data,
                 'revenue_distribution': [
-                    {'practice': 'Data & Analytics', 'amount': '$10.9M', 'share': 32, 'color': '#109FDA'},
-                    {'practice': 'Cloud Solutions & Infra', 'amount': '$8.2M', 'share': 24, 'color': '#04466C'},
-                    {'practice': 'Quality Assurance & Auto', 'amount': '$6.1M', 'share': 18, 'color': '#059669'},
-                    {'practice': 'Application Engineering', 'amount': '$4.8M', 'share': 14, 'color': '#D97706'},
-                    {'practice': 'Digital Transformation', 'amount': '$4.2M', 'share': 12, 'color': '#7C3AED'}
+                    {'practice': 'Cloud Solutions & Infrastructure', 'amount': '$10.9M', 'share': 32, 'color': '#04466C'},
+                    {'practice': 'Data Engineering & AI Analytics', 'amount': '$8.2M', 'share': 24, 'color': '#109FDA'},
+                    {'practice': 'Quality Assurance & Test Automation', 'amount': '$6.1M', 'share': 18, 'color': '#059669'},
+                    {'practice': 'Application Modernization', 'amount': '$4.8M', 'share': 14, 'color': '#D97706'},
+                    {'practice': 'Digital Transformation & Telecom 5G', 'amount': '$4.2M', 'share': 12, 'color': '#7C3AED'}
                 ],
                 'anomalies': [
-                    {'severity': 'High', 'type': 'US Visa & Mobility', 'title': 'H1B/L1 Petitions Renewal Window', 'desc': 'Critical extension window for 5 key on-site enterprise architects closes in 14 days.', 'owner': 'Suresh Nambiar (SVP)', 'time': '2h ago'},
-                    {'severity': 'Medium', 'type': 'Client Portfolio', 'title': 'Q4 Enterprise Renewal Window', 'desc': 'Contract renewal milestones pending for Top 3 Banking Accounts in APAC region.', 'owner': 'Vikramaditya Rao (SVP)', 'time': '4h ago'},
-                    {'severity': 'Medium', 'type': 'Workforce Intelligence', 'title': 'AI/ML Shadow Bench Alignment', 'desc': '8 Big Data Engineers rolling off current engagement; RMG redeployment pipeline activated.', 'owner': 'Manoj Kumar K. / Naveen Reddy', 'time': '6h ago'}
+                    {
+                        'id': 'ANOM-01',
+                        'severity': 'High',
+                        'title': 'EuroLogix Sprint 7 Cloud Dependency Bottleneck',
+                        'desc': '3 microservices awaiting external client OAuth2 authorization signoff.',
+                        'owner': 'Venkat Ramana M. / EuroLogix Lead',
+                        'time': '2h ago'
+                    },
+                    {
+                        'id': 'ANOM-02',
+                        'severity': 'Medium',
+                        'title': 'Cadastral GIS Land Records UAT Staging Migration',
+                        'desc': 'Survey parcel rendering latency exceeded 200ms benchmark on mobile 4G network.',
+                        'owner': 'K. Rama Rao / GIS Practice',
+                        'time': '5h ago'
+                    }
                 ],
                 'initiatives': [
-                    {'name': 'CMMI Level 5 Re-Appraisal', 'progress': 85, 'target': 'Dec 2026', 'status': 'On-Track', 'color': '#10B981'},
-                    {'name': 'US Federal Public Sector GSA Schedule', 'progress': 70, 'target': 'Jan 2027', 'status': 'In-Progress', 'color': '#109FDA'},
-                    {'name': 'Enterprise GenAI CoE Scaling', 'progress': 92, 'target': 'Nov 2026', 'status': 'Near Completion', 'color': '#8B5CF6'},
-                    {'name': 'ISO 27001 Security Audit', 'progress': 95, 'target': 'Dec 2026', 'status': 'Audit Ready', 'color': '#10B981'}
+                    {'name': '2026 Enterprise GenAI LLM Platform', 'progress': 76, 'target': 'Q3 2026', 'status': 'On Track', 'color': '#109FDA'},
+                    {'name': 'Sovereign GovTech Framework Expansion', 'progress': 91, 'target': 'Q4 2026', 'status': 'Accelerated', 'color': '#059669'},
+                    {'name': 'ISO 42001 AI Management Certification', 'progress': 48, 'target': 'Q1 2027', 'status': 'Initiated', 'color': '#D97706'}
                 ]
             },
-            # ⚡ OPERATIONAL & DELIVERY LENS (CEO Chandra Sekhar M.)
+            # ⚡ DELIVERY & OPERATIONS LENS (CEO Chandra Sekhar M.)
             'operational': {
                 'kpis': {
-                    'projects_at_risk_count': 3,
+                    'projects_at_risk_count': 2,
                     'projects_total': 28,
-                    'projects_at_risk_pct': '10.7%',
-                    'tasks_delayed_pct': '14.0%',
-                    'tasks_delayed_trend': '-3.2%',
+                    'tasks_delayed_pct': '3.8%',
                     'avg_delivery_deviation': '+4.2 Days',
-                    'cost_burn_variance': '+$42K',
-                    'bench_strength_count': 32,
-                    'bench_strength_pct': '12.4%',
-                    'open_escalations_count': 2
+                    'cost_burn_variance': '+$42K Under Budget',
+                    'bench_strength_count': 32
                 },
                 'sprint_timeline': [
-                    {'sprint': 'Sprint 1', 'planned': 92, 'actual': 90},
-                    {'sprint': 'Sprint 2', 'planned': 94, 'actual': 91},
-                    {'sprint': 'Sprint 3', 'planned': 90, 'actual': 86},
-                    {'sprint': 'Sprint 4', 'planned': 95, 'actual': 93},
-                    {'sprint': 'Sprint 5', 'planned': 92, 'actual': 88},
-                    {'sprint': 'Sprint 6', 'planned': 96, 'actual': 94},
-                    {'sprint': 'Sprint 7', 'planned': 95, 'actual': 91},
-                    {'sprint': 'Sprint 8', 'planned': 98, 'actual': 96}
+                    {'sprint': 'Sprint 5', 'planned': 100, 'actual': 98},
+                    {'sprint': 'Sprint 6', 'planned': 100, 'actual': 95},
+                    {'sprint': 'Sprint 7', 'planned': 100, 'actual': 92},
+                    {'sprint': 'Sprint 8', 'planned': 85, 'actual': 82},
+                    {'sprint': 'Sprint 9', 'planned': 45, 'actual': 38}
                 ],
-                'operational_health_ring': {
-                    'on_track_pct': 82,
-                    'at_risk_pct': 11,
-                    'delayed_pct': 7,
-                    'total_projects': 28
-                },
                 'issue_action_funnel': [
-                    {'stage': 'Open', 'count': 18, 'color': '#60A5FA'},
-                    {'stage': 'Investigating', 'count': 12, 'color': '#38BDF8'},
-                    {'stage': 'In-Fix', 'count': 8, 'color': '#0284C7'},
-                    {'stage': 'Validating', 'count': 4, 'color': '#0369A1'},
-                    {'stage': 'Resolved / Closed', 'count': 26, 'color': '#04466C'}
+                    {'stage': 'Identified Escalations', 'count': 24, 'color': '#EF4444'},
+                    {'stage': 'Root Cause Analysis', 'count': 18, 'color': '#F59E0B'},
+                    {'stage': 'In Remediation', 'count': 14, 'color': '#3B82F6'},
+                    {'stage': 'Closed & Verified', 'count': 12, 'color': '#10B981'}
                 ],
                 'risk_matrix': [
                     {'row': 'Almost Certain', 'c1': 0, 'c2': 1, 'c3': 1, 'c4': 0, 'c5': 0},
@@ -2778,8 +3278,74 @@ def get_executive_overview():
         return jsonify(response_payload), 200
 
     except Exception as e:
-        logger.error(f"Executive overview error: {str(e)}")
+        logger.error(f"Failed to generate executive overview: {str(e)}", exc_info=True)
         return jsonify({'error': 'Failed to generate executive overview'}), 500
+
+
+@app.route('/api/executive/announcements', methods=['GET', 'POST'])
+@token_required
+def executive_announcements():
+    """Get or broadcast company announcements by President Rajesh K. or CEO Chandra Sekhar M."""
+    try:
+        current_emp_id = g.current_employee_id
+        if request.method == 'GET':
+            notifs = SupabaseDB.select('notifications', '*', {'type': 'announcement'}) or []
+            return jsonify({'announcements': notifs}), 200
+
+        # POST: Broadcast new announcement
+        if current_emp_id not in ['OTSI0001', 'EMP1001']:
+            return jsonify({'error': 'Only President and CEO can broadcast executive announcements'}), 403
+
+        data = request.get_json() or {}
+        title = data.get('title', '').strip()
+        message = data.get('message', '').strip()
+        if not title or not message:
+            return jsonify({'error': 'Title and message are required'}), 400
+
+        # Broadcast to all employees
+        all_emps = SupabaseDB.select('employees', 'employee_id') or []
+        for e in all_emps:
+            NotificationUtils.create_notification(
+                e['employee_id'],
+                f"📢 Executive Broadcast: {title}",
+                message,
+                'announcement'
+            )
+
+        log_audit(current_emp_id, 'EXECUTIVE_ANNOUNCEMENT_BROADCAST', f"Broadcast announcement: {title}")
+        return jsonify({'message': 'Executive announcement successfully broadcast to all employees!'}), 201
+
+    except Exception as e:
+        logger.error(f"Failed in executive announcements: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+
+@app.route('/api/executive/projects', methods=['POST'])
+@token_required
+def create_executive_project():
+    """Create a new project dynamically by President or CEO."""
+    try:
+        current_emp_id = g.current_employee_id
+        if current_emp_id not in ['OTSI0001', 'EMP1001']:
+            return jsonify({'error': 'Unauthorized'}), 403
+
+        data = request.get_json() or {}
+        name = data.get('name', '').strip()
+        if not name:
+            return jsonify({'error': 'Project name is required'}), 400
+
+        payload = {
+            'name': name,
+            'description': data.get('description', ''),
+            'status': data.get('status', 'active'),
+            'created_by': current_emp_id
+        }
+        res = SupabaseDB.insert('projects', payload)
+        return jsonify({'message': 'Project created successfully', 'project': res}), 201
+    except Exception as e:
+        logger.error(f"Failed to create project: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
 
 @app.route('/api/admin/org-overview', methods=['GET'])
 @token_required

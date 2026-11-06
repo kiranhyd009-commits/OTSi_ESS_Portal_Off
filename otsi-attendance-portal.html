@@ -4337,6 +4337,273 @@
     }
     /* ════ ACCIDENTAL CHECK-OUT UNDO BANNER (OTSi Aurora Frame) ════ */
     
+    
+    /* ════ C-SUITE EXECUTIVE DEDICATED COMMAND CENTER STYLES ════ */
+    body.csuite-executive-mode .bottom-nav {
+      display: none !important;
+    }
+    body.csuite-executive-mode #page-att,
+    body.csuite-executive-mode #page-leave,
+    body.csuite-executive-mode #page-ts,
+    body.csuite-executive-mode #page-hd {
+      display: none !important;
+    }
+    body.csuite-executive-mode .main-scroll {
+      padding-bottom: 28px !important;
+    }
+    body.csuite-executive-mode #weather-widget {
+      display: none !important;
+    }
+    body:not(.csuite-executive-mode) #page-executive {
+      display: none !important;
+    }
+
+    /* Executive Navigation Sub-Pills */
+    .csuite-tabs-nav {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 6px 0 16px;
+      margin-bottom: 20px;
+      border-bottom: 1.5px solid #E2E8F0;
+      -webkit-overflow-scrolling: touch;
+    }
+    .csuite-tabs-nav::-webkit-scrollbar {
+      height: 4px;
+    }
+    .csuite-tabs-nav::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    .csuite-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 24px;
+      border: 1.5px solid #E2E8F0;
+      background: #FFFFFF;
+      color: #475569;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .csuite-tab-btn:hover {
+      border-color: var(--otsi-blue, #109FDA);
+      color: var(--otsi-navy, #04466C);
+      transform: translateY(-1px);
+    }
+    .csuite-tab-btn.active {
+      background: linear-gradient(135deg, var(--otsi-navy, #04466C) 0%, var(--otsi-blue, #109FDA) 100%);
+      color: #FFFFFF;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(16, 159, 218, 0.28);
+    }
+
+    .csuite-subtab-panel {
+      display: none;
+      animation: csuiteFadeIn 0.25s ease-out;
+    }
+    .csuite-subtab-panel.active {
+      display: block;
+    }
+
+    @keyframes csuiteFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Projects Hub */
+    .exec-proj-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .exec-filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .exec-filter-pill {
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 20px;
+      border: 1px solid #CBD5E1;
+      background: #F8FAFC;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .exec-filter-pill.active {
+      background: #04466C;
+      color: #FFFFFF;
+      border-color: #04466C;
+      box-shadow: 0 2px 8px rgba(4, 70, 108, 0.25);
+    }
+    .exec-search-inp {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #CBD5E1;
+      font-size: 12.5px;
+      min-width: 260px;
+      outline: none;
+      transition: border 0.2s ease;
+    }
+    .exec-search-inp:focus {
+      border-color: var(--otsi-blue, #109FDA);
+    }
+    .exec-proj-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 18px;
+    }
+    .exec-proj-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      transition: all 0.22s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .exec-proj-card:hover {
+      border-color: var(--otsi-blue, #109FDA);
+      box-shadow: 0 8px 25px rgba(16, 159, 218, 0.12);
+      transform: translateY(-2px);
+    }
+    .exec-proj-card.gov-accent::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
+    }
+    .exec-proj-card.com-accent::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--otsi-navy, #04466C) 0%, var(--otsi-blue, #109FDA) 100%);
+    }
+
+    /* Workforce Directory */
+    .exec-workforce-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 14px;
+    }
+    .exec-emp-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.2s ease;
+    }
+    .exec-emp-card:hover {
+      border-color: var(--otsi-blue, #109FDA);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transform: translateY(-1px);
+    }
+    .exec-emp-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #04466C, #109FDA);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Heritage Timeline */
+    .exec-heritage-item {
+      position: relative;
+      padding-left: 36px;
+      padding-bottom: 28px;
+      border-left: 2.5px solid #CBD5E1;
+    }
+    .exec-heritage-item:last-child {
+      border-left-color: transparent;
+      padding-bottom: 0;
+    }
+    .exec-heritage-dot {
+      position: absolute;
+      left: -9px;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--otsi-blue, #109FDA);
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 0 0 2px rgba(16, 159, 218, 0.35);
+    }
+
+    /* Appreciations */
+    .exec-appreciation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+    .exec-appreciation-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 22px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.22s ease;
+    }
+    .exec-appreciation-card:hover {
+      border-color: #38BDF8;
+      box-shadow: 0 8px 24px rgba(56, 189, 248, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* News Grid */
+    .exec-news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 18px;
+    }
+    .exec-news-card {
+      background: #FFFFFF;
+      border-radius: 12px;
+      border: 1.5px solid #E2E8F0;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .exec-news-card:hover {
+      border-color: var(--otsi-blue, #109FDA);
+      box-shadow: 0 8px 22px rgba(16, 159, 218, 0.12);
+      transform: translateY(-2px);
+    }
+
     /* ════ C-SUITE EXECUTIVE INTELLIGENCE PULSE (OTSi Signature Blue) ════ */
     .csuite-hero {
       background: linear-gradient(135deg, #032b43 0%, #04466C 55%, #0A192F 100%);
@@ -7333,6 +7600,10 @@
                     <option value="ph">🇵🇭 Philippines GDC</option>
                   </select>
 
+                  <button type="button" class="btn-sub" onclick="openExecutiveBroadcastModal()"
+                          style="padding:8px 12px; font-size:12px; font-weight:700; background:rgba(245,158,11,0.25); border:1px solid rgba(245,158,11,0.5); color:#FDE68A; border-radius:8px; cursor:pointer;" title="Broadcast Company Announcement">
+                    📢 Broadcast
+                  </button>
                   <button type="button" class="btn-sub" onclick="exportExecutiveReport()"
                           style="padding:8px 12px; font-size:12px; font-weight:700; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; cursor:pointer;" title="Export Executive PDF">
                     📄 Export PDF
@@ -7346,6 +7617,53 @@
               </div>
             </div>
           </div>
+
+          <!-- ════ LIVE EXECUTIVE ANNOUNCEMENTS & MILESTONES STRIP ════ -->
+          <div id="csuite-announcements-strip" style="background:#FFFBEB; border:1.5px solid #FDE68A; border-radius:12px; padding:12px 18px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; gap:12px; box-shadow:0 2px 8px rgba(245,158,11,0.08);">
+            <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+              <span style="font-size:22px; flex-shrink:0;">📢</span>
+              <div style="min-width:0;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="tag tag-o" style="font-size:10px; font-weight:800; padding:1px 6px;">LIVE BROADCAST</span>
+                  <strong id="csuite-latest-announcement-title" style="font-size:13px; color:#92400E; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">CMMI Level 5 Re-Certification Successfully Completed</strong>
+                </div>
+                <div id="csuite-latest-announcement-msg" style="font-size:12px; color:#78350F; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">OTSi has successfully concluded its comprehensive CMMI DEV/SVC Level 5 renewal audit with zero non-conformances across all delivery units.</div>
+              </div>
+            </div>
+            <button type="button" onclick="openExecutiveBroadcastModal()" style="padding:6px 14px; font-size:11.5px; font-weight:700; background:#F59E0B; color:#fff; border:none; border-radius:6px; cursor:pointer; white-space:nowrap; flex-shrink:0;">
+              + New Broadcast
+            </button>
+          </div>
+
+          <!-- ════ C-SUITE EXECUTIVE INTELLIGENCE SUB-NAVIGATION ════ -->
+          <div class="csuite-tabs-nav" id="csuite-tabs-nav">
+            <button type="button" class="csuite-tab-btn active" id="csuite-tab-btn-cockpit" onclick="switchExecutiveSubTab('cockpit')">
+              <span>📊</span> Executive Cockpit &amp; Lenses
+            </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-projects" onclick="switchExecutiveSubTab('projects')">
+              <span>📁</span> Projects &amp; Govt Programs
+            </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-workforce" onclick="switchExecutiveSubTab('workforce')">
+              <span>👥</span> Company &amp; Workforce
+            </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-heritage" onclick="switchExecutiveSubTab('heritage')">
+              <span>🏛️</span> 25-Year OTSi Heritage
+            </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-targets" onclick="switchExecutiveSubTab('targets')">
+              <span>🏆</span> Targets, Certs &amp; Roadmap
+            </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-appreciations" onclick="switchExecutiveSubTab('appreciations')">
+              <span>🌟</span> Client Wall of Fame
+            </button>
+            <button type="button" class="csuite-tab-btn" id="csuite-tab-btn-news" onclick="switchExecutiveSubTab('news')">
+              <span>🌐</span> Global Tech Newswire
+            </button>
+          </div>
+
+          <!-- ════ TAB 1: EXECUTIVE COCKPIT (DUAL LENS) ════ -->
+          <div id="csuite-tab-cockpit" class="csuite-subtab-panel active">
+
+
 
           <!-- ═══════════════════════════════════════════════════════════════════════════════ -->
           <!-- VIEW 1: STRATEGIC GROWTH & PORTFOLIO (PRESIDENT'S LENS)                        -->
@@ -7605,7 +7923,233 @@
                 </div>
               </div>
             </div>
+          
+
+          </div><!-- End #csuite-tab-cockpit -->
+
+          <!-- ════ TAB 2: PROJECTS & GOVT PROGRAMS HUB ════ -->
+          <div id="csuite-tab-projects" class="csuite-subtab-panel">
+            <div class="exec-proj-filter-bar">
+              <div class="exec-filter-pills" id="exec-proj-filter-pills">
+                <button type="button" class="exec-filter-pill active" onclick="filterExecutiveProjects('all', this)">🌐 All Projects (12)</button>
+                <button type="button" class="exec-filter-pill" onclick="filterExecutiveProjects('gov', this)">🏛️ Govt &amp; Public Sector (6)</button>
+                <button type="button" class="exec-filter-pill" onclick="filterExecutiveProjects('commercial', this)">🏢 Commercial Enterprise (6)</button>
+                <button type="button" class="exec-filter-pill" onclick="filterExecutiveProjects('high_value', this)">💎 High Priority ($1M+)</button>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <input type="text" id="exec-proj-search-inp" class="exec-search-inp" placeholder="🔍 Search projects, clients, lead or tech..." oninput="searchExecutiveProjects(this.value)">
+              </div>
+            </div>
+
+            <!-- Portfolio Metric Highlights -->
+            <div class="csuite-kpi-grid" style="margin-bottom:20px;">
+              <div class="csuite-kpi-card accent-green">
+                <div class="csuite-kpi-label"><span>Active Engagements</span><span>🚀</span></div>
+                <div class="csuite-kpi-val" id="exec-stat-total-proj">12 Projects</div>
+                <div class="csuite-kpi-sub">6 Commercial · 6 Mission-Critical Gov</div>
+              </div>
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label"><span>Combined Portfolio Value</span><span>💵</span></div>
+                <div class="csuite-kpi-val" id="exec-stat-proj-val">$38.4M</div>
+                <div class="csuite-kpi-sub">Contracted Multi-Year Value</div>
+              </div>
+              <div class="csuite-kpi-card accent-purple">
+                <div class="csuite-kpi-label"><span>GovTech Footprint</span><span>🏛️</span></div>
+                <div class="csuite-kpi-val">6 State/National</div>
+                <div class="csuite-kpi-sub">Health, Energy, GIS, Transit, Judiciary</div>
+              </div>
+              <div class="csuite-kpi-card accent-amber">
+                <div class="csuite-kpi-label"><span>Milestone SLA Delivery</span><span>⏱️</span></div>
+                <div class="csuite-kpi-val">96.8%</div>
+                <div class="csuite-kpi-sub">On-Time Stage Acceptance</div>
+              </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="exec-proj-grid" id="exec-projects-container">
+              <!-- Dynamically Populated -->
+            </div>
           </div>
+
+          <!-- ════ TAB 3: COMPANY & WORKFORCE HUB ════ -->
+          <div id="csuite-tab-workforce" class="csuite-subtab-panel">
+            <div class="csuite-kpi-grid" style="margin-bottom:20px;">
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label"><span>Total Workforce</span><span>👥</span></div>
+                <div class="csuite-kpi-val" id="wf-total-emp">257 Staff</div>
+                <div class="csuite-kpi-sub">Active Global Engineering Roster</div>
+              </div>
+              <div class="csuite-kpi-card accent-green">
+                <div class="csuite-kpi-label"><span>Billable Utilization</span><span>⚡</span></div>
+                <div class="csuite-kpi-val">89.4%</div>
+                <div class="csuite-kpi-sub">218 Direct Billable Eng</div>
+              </div>
+              <div class="csuite-kpi-card accent-purple">
+                <div class="csuite-kpi-label"><span>Global Delivery Centers</span><span>🌐</span></div>
+                <div class="csuite-kpi-val">5 GDCs</div>
+                <div class="csuite-kpi-sub">Hyderabad, Bangalore, Vijayawada, US, PH</div>
+              </div>
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label"><span>Retention Rate</span><span>🎯</span></div>
+                <div class="csuite-kpi-val">94.2%</div>
+                <div class="csuite-kpi-sub">Annualized Core Talent Retention</div>
+              </div>
+            </div>
+
+            <!-- Global Delivery Center Summaries -->
+            <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:20px; margin-bottom:22px;">
+              <div style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                <span>🏢</span> Global Delivery Centers &amp; Campus Leadership
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;" id="exec-campuses-grid">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
+            <!-- Workforce Search and Directory -->
+            <div class="exec-proj-filter-bar">
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <select id="wf-dept-filter" onchange="filterWorkforce()" style="padding:8px 12px; font-size:12px; font-weight:600; border-radius:8px; border:1.5px solid #CBD5E1; background:#fff; color:#0F172A; cursor:pointer;">
+                  <option value="all">🏢 All Departments</option>
+                  <option value="engineering">Engineering &amp; Cloud</option>
+                  <option value="ai">AI &amp; Data Science</option>
+                  <option value="telecom">Telecom &amp; 5G Core</option>
+                  <option value="qa">QA &amp; Test Automation</option>
+                  <option value="hr">HR &amp; People Operations</option>
+                  <option value="executive">Executive Leadership</option>
+                </select>
+                <select id="wf-loc-filter" onchange="filterWorkforce()" style="padding:8px 12px; font-size:12px; font-weight:600; border-radius:8px; border:1.5px solid #CBD5E1; background:#fff; color:#0F172A; cursor:pointer;">
+                  <option value="all">🌐 All Locations</option>
+                  <option value="Hyderabad">Hyderabad HQ</option>
+                  <option value="Bangalore">Bangalore Campus</option>
+                  <option value="Vijayawada">Vijayawada Hub</option>
+                  <option value="US">US Client Site</option>
+                  <option value="Philippines">Philippines GDC</option>
+                </select>
+              </div>
+              <div>
+                <input type="text" id="wf-search-inp" class="exec-search-inp" placeholder="🔍 Search employee name, ID, role or manager..." oninput="filterWorkforce()">
+              </div>
+            </div>
+
+            <!-- Workforce Cards Grid -->
+            <div class="exec-workforce-grid" id="exec-workforce-container">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+          <!-- ════ TAB 4: 25-YEAR OTSI HERITAGE ════ -->
+          <div id="csuite-tab-heritage" class="csuite-subtab-panel">
+            <div style="background:linear-gradient(135deg, #032b43 0%, #04466C 60%, #109FDA 100%); border-radius:14px; padding:24px 28px; color:#fff; margin-bottom:24px;">
+              <div style="font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; color:#38BDF8; margin-bottom:6px;">
+                🏛️ CORPORATE HERITAGE &amp; 25-YEAR MILESTONES
+              </div>
+              <div style="font-size:22px; font-weight:800; margin-bottom:6px;">
+                From Silicon Valley Inception to Global Transformation Engine (1999 – 2026)
+              </div>
+              <div style="font-size:13px; color:rgba(255,255,255,0.85); max-width:800px; line-height:1.5;">
+                Founded on principles of technical rigor, mission-critical dependability, and client partnership, OTSi has evolved across a quarter-century into an enterprise technology partner for Fortune 500 corporations and federal governments.
+              </div>
+            </div>
+
+            <div class="exec-heritage-timeline" id="exec-heritage-container">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+          <!-- ════ TAB 5: ACHIEVEMENTS, TARGETS & ROADMAP ════ -->
+          <div id="csuite-tab-targets" class="csuite-subtab-panel">
+            <!-- Revenue & Pipeline Target Strip -->
+            <div class="csuite-kpi-grid" style="margin-bottom:22px;">
+              <div class="csuite-kpi-card accent-green">
+                <div class="csuite-kpi-label"><span>2026 Annual Revenue Target</span><span>🎯</span></div>
+                <div class="csuite-kpi-val" id="tgt-annual-val">$48.5M</div>
+                <div class="csuite-kpi-sub">Target Growth: +18.4% YoY</div>
+              </div>
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label"><span>Current Realized Run-Rate</span><span>📈</span></div>
+                <div class="csuite-kpi-val" id="tgt-realized-val">$34.2M</div>
+                <div class="csuite-kpi-sub">70.5% Target Achieved (Q3 Track)</div>
+              </div>
+              <div class="csuite-kpi-card accent-purple">
+                <div class="csuite-kpi-label"><span>Contracted Backlog</span><span>📑</span></div>
+                <div class="csuite-kpi-val" id="tgt-backlog-val">$11.8M</div>
+                <div class="csuite-kpi-sub">Secured Signed Multi-Quarter POs</div>
+              </div>
+              <div class="csuite-kpi-card accent-amber">
+                <div class="csuite-kpi-label"><span>Weighted Pipeline</span><span>💼</span></div>
+                <div class="csuite-kpi-val" id="tgt-pipeline-val">$16.4M</div>
+                <div class="csuite-kpi-sub">8 Qualified Enterprise Pursuits</div>
+              </div>
+            </div>
+
+            <!-- Certifications & Enterprise Accreditations -->
+            <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:22px; margin-bottom:24px;">
+              <div style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+                <span>🎖️</span> Global Enterprise Accreditations &amp; Quality Badges
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px;" id="exec-certs-container">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+
+            <!-- Strategic 2026 Milestone Roadmap -->
+            <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:22px;">
+              <div style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+                <span>🗺️</span> 2026 Strategic Quarterly Execution Roadmap
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px;" id="exec-roadmap-container">
+                <!-- Dynamically Populated -->
+              </div>
+            </div>
+          </div>
+
+          <!-- ════ TAB 6: CLIENT APPRECIATIONS & WALL OF FAME ════ -->
+          <div id="csuite-tab-appreciations" class="csuite-subtab-panel">
+            <div class="csuite-kpi-grid" style="margin-bottom:22px;">
+              <div class="csuite-kpi-card accent-green">
+                <div class="csuite-kpi-label"><span>Executive CSAT Index</span><span>⭐</span></div>
+                <div class="csuite-kpi-val" id="apprec-csat-val">4.88 / 5.0</div>
+                <div class="csuite-kpi-sub">Based on 14 Enterprise Reviews</div>
+              </div>
+              <div class="csuite-kpi-card">
+                <div class="csuite-kpi-label"><span>Net Promoter Score (NPS)</span><span>💎</span></div>
+                <div class="csuite-kpi-val" id="apprec-nps-val">+94%</div>
+                <div class="csuite-kpi-sub">Top Decile IT Services Benchmark</div>
+              </div>
+              <div class="csuite-kpi-card accent-purple">
+                <div class="csuite-kpi-label"><span>On-Time Milestone SLA</span><span>⏱️</span></div>
+                <div class="csuite-kpi-val">98.2%</div>
+                <div class="csuite-kpi-sub">Zero High-Severity Delivery Escalations</div>
+              </div>
+              <div class="csuite-kpi-card accent-amber">
+                <div class="csuite-kpi-label"><span>Average Client Tenure</span><span>🤝</span></div>
+                <div class="csuite-kpi-val">6.4 Years</div>
+                <div class="csuite-kpi-sub">Long-Term Trusted Engineering Partner</div>
+              </div>
+            </div>
+
+            <div class="exec-appreciation-grid" id="exec-appreciations-container">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+          <!-- ════ TAB 7: GLOBAL TECH NEWSWIRE ════ -->
+          <div id="csuite-tab-news" class="csuite-subtab-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+              <div>
+                <div style="font-size:15px; font-weight:800; color:#0F172A;">🌐 Global IT &amp; Tech Intelligence Wire</div>
+                <div style="font-size:12px; color:var(--slate);">Curated strategic developments across AI, Cloud, GovTech, FinTech &amp; Telecom</div>
+              </div>
+              <span class="tag tag-b" style="font-size:11.5px; font-weight:700;">📡 Live Curated Feed</span>
+            </div>
+
+            <div class="exec-news-grid" id="exec-news-container">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+
+</div>
         </div>
       </div>
 
@@ -8505,6 +9049,41 @@
         <button class="modal-btn secondary"
           onclick="document.getElementById('forgot-modal').classList.remove('open')">Cancel</button>
         <button class="modal-btn primary" onclick="doForgotPassword()">Send Reset Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ EXECUTIVE BROADCAST ANNOUNCEMENT MODAL ════ -->
+  <div class="modal-overlay" id="exec-broadcast-modal">
+    <div class="modal-sheet" style="max-width:520px;">
+      <div class="modal-header">
+        <div class="modal-title" style="display:flex; align-items:center; gap:8px;">
+          <span>📢</span> Broadcast Executive Announcement
+        </div>
+        <button type="button" class="modal-close" onclick="closeExecutiveBroadcastModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px; color:var(--slate); margin-bottom:16px; line-height:1.5;">
+          Broadcast an official executive announcement or milestone to all active employees across Hyderabad, Bangalore, Vijayawada, US, and Philippines campuses.
+        </p>
+        <div class="fgroup" style="margin-bottom:14px;">
+          <label class="flabel">Announcement Title</label>
+          <div class="inp-wrap">
+            <input type="text" id="exec-broadcast-title" placeholder="e.g. Landmark $4.5M National Health Program Award" autocomplete="off">
+          </div>
+        </div>
+        <div class="fgroup" style="margin-bottom:18px;">
+          <label class="flabel">Broadcast Message Details</label>
+          <div class="inp-wrap">
+            <textarea id="exec-broadcast-msg" rows="4" placeholder="Enter message to be delivered to all employee notification feeds..." style="width:100%; padding:10px 12px; font-size:13px; border:1px solid var(--border); border-radius:8px; outline:none; resize:vertical; font-family:inherit;"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" class="btn-sub" onclick="closeExecutiveBroadcastModal()">Cancel</button>
+        <button type="button" class="btn-sub" onclick="submitExecutiveBroadcast()" style="background:linear-gradient(135deg, var(--otsi-navy, #04466C), var(--otsi-blue, #109FDA)); color:#fff; border:none; font-weight:700;">
+          🚀 Broadcast Now
+        </button>
       </div>
     </div>
   </div>
@@ -10001,10 +10580,15 @@
         }
         document.body.classList.remove('auth-mode');
         initApp();
-        await loadTodayAttendance();
-        loadAttendanceStats();
-        loadRecentAttendance();
-        checkLocation();
+        if (isExecutiveUser(loginEmpId)) {
+          showPage('executive');
+          await loadExecutiveOverview();
+        } else {
+          await loadTodayAttendance();
+          loadAttendanceStats();
+          loadRecentAttendance();
+          checkLocation();
+        }
         toast('Welcome, ' + loginName + '!', 'success');
       } catch (err) {
         toast(err.message, 'error');
@@ -10891,6 +11475,23 @@
 
     // ─── INIT APP ───
     function initApp() {
+      if (isExecutiveUser(loginEmpId)) {
+        document.body.classList.add('csuite-executive-mode');
+        // Dynamic live pulse interval (every 60 seconds)
+        if (!window._csuiteAutoRefreshTimer) {
+          window._csuiteAutoRefreshTimer = setInterval(() => {
+            if (document.body.classList.contains('csuite-executive-mode')) {
+              loadExecutiveOverview();
+            }
+          }, 60000);
+        }
+        const csuiteDd = document.getElementById('dd-csuite-dashboard');
+        if (csuiteDd) csuiteDd.style.display = 'flex';
+      } else {
+        document.body.classList.remove('csuite-executive-mode');
+        const csuiteDd = document.getElementById('dd-csuite-dashboard');
+        if (csuiteDd) csuiteDd.style.display = 'none';
+      }
       document.getElementById('att-emp-name').textContent = loginName;
       if (window.WeatherVFX) {
         window.WeatherVFX.init();
@@ -11051,6 +11652,404 @@
     /* ════ C-SUITE EXECUTIVE INTELLIGENCE PULSE LOGIC ════ */
     let currentExecutiveLens = 'strategic'; // 'strategic' or 'delivery'
     let currentExecutiveData = null;
+
+    
+    /* ════ EXECUTIVE SUBTABS SWITCHER & RENDERERS ════ */
+    let currentExecutiveSubTab = 'cockpit';
+    let currentExecutiveProjectsFilter = 'all';
+
+    function isExecutiveUser(empId) {
+      const id = (empId || (currentProfile && currentProfile.employee_id) || loginEmpId || '').toUpperCase();
+      return id === 'OTSI0001' || id === 'EMP1001';
+    }
+
+    function switchExecutiveSubTab(tabName) {
+      currentExecutiveSubTab = tabName;
+      // Toggle button active classes
+      document.querySelectorAll('.csuite-tab-btn').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`csuite-tab-btn-${tabName}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Toggle panel active classes
+      document.querySelectorAll('.csuite-subtab-panel').forEach(p => p.classList.remove('active'));
+      const activePanel = document.getElementById(`csuite-tab-${tabName}`);
+      if (activePanel) activePanel.classList.add('active');
+
+      // Re-render data if needed
+      if (currentExecutiveData) {
+        if (tabName === 'projects') renderExecutiveProjects(currentExecutiveProjectsFilter);
+        else if (tabName === 'workforce') renderExecutiveWorkforce();
+        else if (tabName === 'heritage') renderExecutiveHeritage();
+        else if (tabName === 'targets') renderExecutiveTargets();
+        else if (tabName === 'appreciations') renderExecutiveAppreciations();
+        else if (tabName === 'news') renderExecutiveNews();
+      }
+    }
+
+    function filterExecutiveProjects(cat, btn) {
+      currentExecutiveProjectsFilter = cat;
+      const pills = document.querySelectorAll('#exec-proj-filter-pills .exec-filter-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderExecutiveProjects(cat);
+    }
+
+    function searchExecutiveProjects(query) {
+      renderExecutiveProjects(currentExecutiveProjectsFilter, (query || '').toLowerCase().trim());
+    }
+
+    
+    function openExecutiveBroadcastModal() {
+      const m = document.getElementById('exec-broadcast-modal');
+      if (m) {
+        m.classList.add('open');
+        const t = document.getElementById('exec-broadcast-title');
+        if (t) setTimeout(() => t.focus(), 150);
+      }
+    }
+
+    function closeExecutiveBroadcastModal() {
+      const m = document.getElementById('exec-broadcast-modal');
+      if (m) m.classList.remove('open');
+    }
+
+    async function submitExecutiveBroadcast() {
+      const title = (document.getElementById('exec-broadcast-title').value || '').trim();
+      const msg = (document.getElementById('exec-broadcast-msg').value || '').trim();
+      if (!title || !msg) {
+        toast('Please enter both title and message.', 'error');
+        return;
+      }
+
+      try {
+        const res = await apiFetch('/executive/announcements', {
+          method: 'POST',
+          body: JSON.stringify({ title, message: msg })
+        });
+        toast(res.message || 'Announcement successfully broadcast!', 'success');
+        closeExecutiveBroadcastModal();
+        document.getElementById('exec-broadcast-title').value = '';
+        document.getElementById('exec-broadcast-msg').value = '';
+        // Refresh executive overview dynamically
+        loadExecutiveOverview();
+      } catch (err) {
+        toast(err.message || 'Failed to broadcast announcement.', 'error');
+      }
+    }
+
+    function renderExecutiveAnnouncements(announcements) {
+      if (!announcements || announcements.length === 0) return;
+      const latest = announcements[0];
+      const titleEl = document.getElementById('csuite-latest-announcement-title');
+      const msgEl = document.getElementById('csuite-latest-announcement-msg');
+      if (titleEl) titleEl.textContent = latest.title || 'Corporate Announcement';
+      if (msgEl) msgEl.textContent = latest.message || '';
+    }
+
+    function renderExecutiveProjects(filter = 'all', search = '') {
+      if (!currentExecutiveData) return;
+      const container = document.getElementById('exec-projects-container');
+      if (!container) return;
+
+      const govList = (currentExecutiveData.government_projects || []).map(p => ({ ...p, is_gov: true }));
+      const comList = (currentExecutiveData.live_commercial_projects || []).map(p => ({ ...p, is_gov: false }));
+      let allProjects = [...govList, ...comList];
+
+      if (filter === 'gov') allProjects = allProjects.filter(p => p.is_gov);
+      else if (filter === 'commercial') allProjects = allProjects.filter(p => !p.is_gov);
+      else if (filter === 'high_value') {
+        allProjects = allProjects.filter(p => (p.contract_value || '').includes('M') && !p.contract_value.startsWith('$1.'));
+      }
+
+      if (search) {
+        allProjects = allProjects.filter(p => 
+          (p.name || '').toLowerCase().includes(search) ||
+          (p.client || '').toLowerCase().includes(search) ||
+          (p.lead || '').toLowerCase().includes(search) ||
+          (p.practice || '').toLowerCase().includes(search) ||
+          (p.tech_stack || []).some(t => t.toLowerCase().includes(search))
+        );
+      }
+
+      const totalProjEl = document.getElementById('exec-stat-total-proj');
+      if (totalProjEl) totalProjEl.textContent = `${allProjects.length} Projects`;
+
+      if (allProjects.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--slate); background: #FFFFFF; border: 1px dashed #CBD5E1; border-radius: 12px;">
+            <div style="font-size: 28px; margin-bottom: 8px;">🔍</div>
+            <div style="font-size: 14px; font-weight: 700;">No projects match your filter or search query</div>
+            <div style="font-size: 12px; margin-top: 4px;">Try clearing the search term or switching to "All Projects"</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = allProjects.map(p => {
+        const accentClass = p.is_gov ? 'gov-accent' : 'com-accent';
+        const typeBadge = p.is_gov 
+          ? `<span class="tag tag-o" style="font-size:10.5px; font-weight:800;">🏛️ Mission-Critical Gov</span>`
+          : `<span class="tag tag-b" style="font-size:10.5px; font-weight:800;">🏢 Enterprise Commercial</span>`;
+
+        const techPills = (p.tech_stack || []).map(t => 
+          `<span style="font-size:10.5px; padding:2px 8px; border-radius:12px; background:#F1F5F9; color:#475569; font-weight:600;">${t}</span>`
+        ).join('');
+
+        return `
+          <div class="exec-proj-card ${accentClass}">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap:8px;">
+                ${typeBadge}
+                <span class="tag tag-g" style="font-size:10px; font-weight:700;">${p.status || 'Active'}</span>
+              </div>
+              <div style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:4px; line-height:1.3;">
+                ${p.name}
+              </div>
+              <div style="font-size:12px; font-weight:700; color:var(--otsi-blue, #109FDA); margin-bottom:12px;">
+                Client: ${p.client}
+              </div>
+              <div style="background:#F8FAFC; border-radius:8px; padding:10px 12px; margin-bottom:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11.5px;">
+                <div>
+                  <span style="color:var(--slate);">Value:</span>
+                  <div style="font-weight:800; color:#04466C;">${p.contract_value || 'Confidential'}</div>
+                </div>
+                <div>
+                  <span style="color:var(--slate);">Lead:</span>
+                  <div style="font-weight:700; color:#0F172A;">${p.lead || 'Practice Head'}</div>
+                </div>
+              </div>
+              <div style="margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; margin-bottom:4px;">
+                  <span style="color:var(--slate);">Milestone Completion</span>
+                  <span style="color:#059669;">${p.completion_pct || 80}%</span>
+                </div>
+                <div style="width:100%; height:6px; background:#E2E8F0; border-radius:3px; overflow:hidden;">
+                  <div style="width:${p.completion_pct || 80}%; height:100%; background:linear-gradient(90deg, #109FDA, #059669); border-radius:3px;"></div>
+                </div>
+              </div>
+              <div style="font-size:11px; color:#475569; margin-bottom:12px;">
+                <strong>Next Milestone:</strong> ${p.next_milestone || 'Stage Acceptance'}
+              </div>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:10px;">
+              ${techPills}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterWorkforce() {
+      const dept = (document.getElementById('wf-dept-filter') ? document.getElementById('wf-dept-filter').value : 'all').toLowerCase();
+      const loc = (document.getElementById('wf-loc-filter') ? document.getElementById('wf-loc-filter').value : 'all').toLowerCase();
+      const search = (document.getElementById('wf-search-inp') ? document.getElementById('wf-search-inp').value : '').toLowerCase().trim();
+      renderExecutiveWorkforce(dept, loc, search);
+    }
+
+    function renderExecutiveWorkforce(dept = 'all', loc = 'all', search = '') {
+      if (!currentExecutiveData) return;
+      const container = document.getElementById('exec-workforce-container');
+      if (!container) return;
+
+      // Render campus breakdown
+      const campusGrid = document.getElementById('exec-campuses-grid');
+      if (campusGrid && currentExecutiveData.strategic && currentExecutiveData.strategic.locations) {
+        campusGrid.innerHTML = currentExecutiveData.strategic.locations.map(c => `
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px 14px;">
+            <div style="font-size:13.5px; font-weight:800; color:#0F172A;">${c.city}</div>
+            <div style="font-size:11px; color:var(--slate); margin-top:2px;">${c.campus}</div>
+            <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span class="tag tag-b" style="font-size:10.5px; font-weight:700;">${c.headcount} Staff</span>
+              <span style="font-size:11px; font-weight:700; color:#059669;">${c.in_office_pct}% In-Office</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      let empList = currentExecutiveData.workforce_directory || [];
+      if (empList.length === 0) {
+        // Fallback demo dataset if backend empty
+        empList = [
+          { employee_id: 'OTSI0001', full_name: 'Rajesh K.', designation: 'President & Founder', department: 'Executive Leadership', location: 'Hyderabad HQ', manager_name: 'Board of Directors' },
+          { employee_id: 'EMP1001', full_name: 'Chandra Sekhar M.', designation: 'Chief Executive Officer', department: 'Executive Leadership', location: 'Hyderabad HQ', manager_name: 'Rajesh K.' },
+          { employee_id: 'EMP1002', full_name: 'Priya N.', designation: 'Vice President - Cloud & AI', department: 'Engineering & Cloud', location: 'Bangalore Campus', manager_name: 'Chandra Sekhar M.' },
+          { employee_id: 'EMP1003', full_name: 'K. Rama Rao', designation: 'Senior Delivery Director', department: 'GovTech Programs', location: 'Hyderabad HQ', manager_name: 'Chandra Sekhar M.' },
+          { employee_id: 'EMP1004', full_name: 'Michael Chen', designation: 'US Principal Architect', department: 'Commercial Practice', location: 'US Client Site', manager_name: 'Chandra Sekhar M.' },
+          { employee_id: 'EMP1005', full_name: 'Suresh V.', designation: 'Telecom 5G Practice Head', department: 'Telecom & 5G Core', location: 'Vijayawada Hub', manager_name: 'Chandra Sekhar M.' }
+        ];
+      }
+
+      if (dept !== 'all') {
+        empList = empList.filter(e => (e.department || '').toLowerCase().includes(dept));
+      }
+      if (loc !== 'all') {
+        empList = empList.filter(e => (e.location || '').toLowerCase().includes(loc));
+      }
+      if (search) {
+        empList = empList.filter(e => 
+          (e.full_name || '').toLowerCase().includes(search) ||
+          (e.employee_id || '').toLowerCase().includes(search) ||
+          (e.designation || '').toLowerCase().includes(search) ||
+          (e.department || '').toLowerCase().includes(search) ||
+          (e.manager_name || '').toLowerCase().includes(search)
+        );
+      }
+
+      const totalEmpEl = document.getElementById('wf-total-emp');
+      if (totalEmpEl) totalEmpEl.textContent = `${empList.length} Staff`;
+
+      if (empList.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--slate); background: #FFFFFF; border: 1px dashed #CBD5E1; border-radius: 12px;">
+            <div style="font-size: 28px; margin-bottom: 8px;">👥</div>
+            <div style="font-size: 14px; font-weight: 700;">No employees match the selected criteria</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = empList.slice(0, 48).map(e => {
+        const initials = (e.full_name || 'EM').split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase();
+        return `
+          <div class="exec-emp-card">
+            <div class="exec-emp-avatar">${initials}</div>
+            <div style="flex:1; min-width:0;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:6px;">
+                <div style="font-size:13.5px; font-weight:800; color:#0F172A; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${e.full_name}</div>
+                <span style="font-size:10px; font-weight:700; background:#E2E8F0; padding:2px 6px; border-radius:4px; color:#475569;">${e.employee_id}</span>
+              </div>
+              <div style="font-size:11.5px; font-weight:600; color:var(--otsi-blue, #109FDA); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">
+                ${e.designation || 'Staff'}
+              </div>
+              <div style="font-size:11px; color:var(--slate); margin-top:3px; display:flex; justify-content:space-between;">
+                <span>${e.department || 'Operations'}</span>
+                <span>${e.location || 'Hyderabad'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderExecutiveHeritage() {
+      if (!currentExecutiveData) return;
+      const container = document.getElementById('exec-heritage-container');
+      if (!container) return;
+
+      const items = currentExecutiveData.otsi_heritage || [];
+      container.innerHTML = items.map(h => `
+        <div class="exec-heritage-item">
+          <div class="exec-heritage-dot"></div>
+          <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:12px; padding:18px 22px; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span class="tag tag-b" style="font-size:12px; font-weight:800; padding:4px 10px;">${h.year}</span>
+              <span style="font-size:11.5px; font-weight:700; color:var(--slate);">${h.category || 'Milestone'}</span>
+            </div>
+            <div style="font-size:16px; font-weight:800; color:#0F172A; margin-bottom:6px;">
+              ${h.title}
+            </div>
+            <div style="font-size:13px; color:#475569; line-height:1.5; margin-bottom:10px;">
+              ${h.description}
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; color:#059669; background:#ECFDF5; padding:4px 10px; border-radius:6px;">
+              <span>🏆 Impact:</span> ${h.impact || 'Enterprise Transformation'}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderExecutiveTargets() {
+      if (!currentExecutiveData || !currentExecutiveData.achievements_targets) return;
+      const at = currentExecutiveData.achievements_targets;
+
+      // Certifications
+      const certContainer = document.getElementById('exec-certs-container');
+      if (certContainer && at.certifications) {
+        certContainer.innerHTML = at.certifications.map(c => `
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:14px 16px;">
+            <div style="font-size:22px; margin-bottom:6px;">${c.icon || '🎖️'}</div>
+            <div style="font-size:13.5px; font-weight:800; color:#0F172A;">${c.name}</div>
+            <div style="font-size:11.5px; color:var(--slate); margin-top:2px;">${c.issuer}</div>
+            <div style="margin-top:8px; display:inline-block; font-size:10.5px; font-weight:700; color:#059669; background:#ECFDF5; padding:2px 8px; border-radius:4px;">
+              Status: ${c.status || 'Active & Certified'}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Roadmap
+      const roadmapContainer = document.getElementById('exec-roadmap-container');
+      if (roadmapContainer && at.strategic_roadmap_2026) {
+        roadmapContainer.innerHTML = at.strategic_roadmap_2026.map(r => `
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:14px 16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span class="tag tag-b" style="font-size:11px; font-weight:800;">${r.quarter}</span>
+              <span class="tag ${r.status === 'Achieved' ? 'tag-g' : 'tag-o'}" style="font-size:10px; font-weight:700;">${r.status}</span>
+            </div>
+            <div style="font-size:13px; font-weight:800; color:#0F172A; margin-bottom:4px;">${r.initiative}</div>
+            <div style="font-size:11.5px; color:#475569; line-height:1.4;">${r.target}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderExecutiveAppreciations() {
+      if (!currentExecutiveData) return;
+      const container = document.getElementById('exec-appreciations-container');
+      if (!container) return;
+
+      const items = currentExecutiveData.client_appreciations || [];
+      container.innerHTML = items.map(a => `
+        <div class="exec-appreciation-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div style="color:#F59E0B; font-size:14px; letter-spacing:2px;">★★★★★</div>
+              <span class="tag tag-g" style="font-size:10px; font-weight:700;">Verified Commendation</span>
+            </div>
+            <div style="font-size:13.5px; color:#1E293B; font-style:italic; line-height:1.55; margin-bottom:16px;">
+              "${a.commendation}"
+            </div>
+          </div>
+          <div style="border-top:1px solid #F1F5F9; padding-top:12px; display:flex; align-items:center; gap:12px;">
+            <div style="width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg, #04466C, #109FDA); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0;">
+              ${(a.client || 'CL').slice(0, 2).toUpperCase()}
+            </div>
+            <div>
+              <div style="font-size:12.5px; font-weight:800; color:#0F172A;">${a.author}</div>
+              <div style="font-size:11px; color:var(--slate);">${a.title} · <strong style="color:#04466C;">${a.client}</strong></div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderExecutiveNews() {
+      if (!currentExecutiveData) return;
+      const container = document.getElementById('exec-news-container');
+      if (!container) return;
+
+      const news = currentExecutiveData.tech_newswire || [];
+      container.innerHTML = news.map(n => `
+        <div class="exec-news-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span class="tag tag-b" style="font-size:10.5px; font-weight:700;">${n.category}</span>
+              <span style="font-size:11px; color:var(--slate);">${n.source} · ${n.read_time}</span>
+            </div>
+            <div style="font-size:15px; font-weight:800; color:#0F172A; margin-bottom:8px; line-height:1.35;">
+              ${n.headline}
+            </div>
+            <div style="font-size:12.5px; color:#475569; line-height:1.5; margin-bottom:12px;">
+              ${n.summary}
+            </div>
+          </div>
+          <div style="background:#EFF6FF; border-left:3px solid #109FDA; padding:8px 12px; border-radius:6px; font-size:11.5px; color:#1E3A8A;">
+            <strong>OTSi Strategic Takeaway:</strong> ${n.otsi_takeaway || 'High-value opportunity for our engineering practices.'}
+          </div>
+        </div>
+      `).join('');
+    }
 
     function switchExecutiveLens(lens) {
       currentExecutiveLens = lens;
@@ -11328,6 +12327,17 @@
         }
       } catch (err) {
         console.error('Failed to load executive intelligence pulse', err);
+      } finally {
+        // Trigger tab renderers with loaded data
+        if (typeof renderExecutiveProjects === 'function') renderExecutiveProjects(currentExecutiveProjectsFilter);
+        if (typeof renderExecutiveWorkforce === 'function') renderExecutiveWorkforce();
+        if (typeof renderExecutiveHeritage === 'function') renderExecutiveHeritage();
+        if (typeof renderExecutiveTargets === 'function') renderExecutiveTargets();
+        if (typeof renderExecutiveAppreciations === 'function') renderExecutiveAppreciations();
+        if (typeof renderExecutiveNews === 'function') renderExecutiveNews();
+        if (currentExecutiveData && currentExecutiveData.announcements) {
+          renderExecutiveAnnouncements(currentExecutiveData.announcements);
+        }
       }
     }
 
@@ -15112,11 +16122,16 @@
         document.getElementById('app').style.display = 'block';
         document.body.classList.remove('auth-mode');
         initApp();
-        await loadTodayAttendance();
-        loadAttendanceStats();
-        loadRecentAttendance();
-        checkLocation();
-        loadDynamicOrgTree();
+        if (isExecutiveUser(loginEmpId)) {
+          showPage('executive');
+          await loadExecutiveOverview();
+        } else {
+          await loadTodayAttendance();
+          loadAttendanceStats();
+          loadRecentAttendance();
+          checkLocation();
+          loadDynamicOrgTree();
+        }
       } catch (err) {
         clearSession();
       }
