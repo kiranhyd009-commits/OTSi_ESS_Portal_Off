@@ -6804,19 +6804,19 @@
               </button>
               <button type="button" onclick="setManualWeatherVfx('clouds')" class="weather-fx-item" id="wfx-btn-clouds" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                 <span style="font-size: 14px;">☁️</span>
-                <div><div>Drifting Clouds</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Volumetric cloud layers</div></div>
+                <div><div>Drifting Clouds</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Volumetric cloud layers · 7s preview</div></div>
               </button>
               <button type="button" onclick="setManualWeatherVfx('rain')" class="weather-fx-item" id="wfx-btn-rain" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                 <span style="font-size: 14px;">🌧️</span>
-                <div><div>Realistic Rain</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Dynamic droplets & ripples</div></div>
+                <div><div>Realistic Rain</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Dynamic droplets & ripples · 7s preview</div></div>
               </button>
               <button type="button" onclick="setManualWeatherVfx('thunder')" class="weather-fx-item" id="wfx-btn-thunder" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                 <span style="font-size: 14px;">⛈️</span>
-                <div><div>Thunderstorm</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Rain + ambient lightning</div></div>
+                <div><div>Thunderstorm</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Rain + ambient lightning · 7s preview</div></div>
               </button>
               <button type="button" onclick="setManualWeatherVfx('clear')" class="weather-fx-item" id="wfx-btn-clear" style="width: 100%; text-align: left; background: none; border: none; padding: 8px 12px; font-size: 11.5px; font-weight: 600; color: #1E293B; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                 <span style="font-size: 14px;">☀️</span>
-                <div><div>Clear Sky Shimmer</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Gentle rays & dust motes</div></div>
+                <div><div>Clear Sky Shimmer</div><div style="font-size: 9.5px; color: #94A3B8; font-weight: 400;">Gentle rays & dust motes · 7s preview</div></div>
               </button>
             </div>
           </div>
@@ -13012,6 +13012,11 @@
           window.WeatherVFX.start();
         } else {
           window.WeatherVFX.pause();
+          if (typeof vfxPreviewTimer !== 'undefined' && vfxPreviewTimer) {
+            clearTimeout(vfxPreviewTimer);
+            vfxPreviewTimer = null;
+            window.WeatherVFX.setEffect(window.lastAutoWeatherCondition || 'clouds', false);
+          }
         }
       }
 
@@ -16903,12 +16908,9 @@
         if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
 
-        // Restore manual preview preference if saved in session
-        const saved = sessionStorage.getItem('otsi_weather_vfx_mode');
-        if (saved && saved !== 'auto') {
-          this.mode = saved;
-          this.isManual = true;
-        }
+        // Default to auto live weather
+        this.isManual = false;
+        this.mode = window.lastAutoWeatherCondition || 'clouds';
 
         this.resize();
         this.initParticles();
@@ -17017,13 +17019,7 @@
 
       setEffect(mode, isUserManual = false) {
         this.mode = mode;
-        if (isUserManual) {
-          this.isManual = true;
-          sessionStorage.setItem('otsi_weather_vfx_mode', mode);
-        } else {
-          this.isManual = false;
-          sessionStorage.removeItem('otsi_weather_vfx_mode');
-        }
+        this.isManual = isUserManual;
         this.updateActiveBtnUI();
         if (!this.running) this.start();
       },
@@ -17243,21 +17239,43 @@
       }
     }
 
+    let vfxPreviewTimer = null;
+
     function setManualWeatherVfx(mode) {
       const m = document.getElementById('weather-fx-menu');
       if (m) m.style.display = 'none';
+
+      // Cancel any running preview timer
+      if (vfxPreviewTimer) {
+        clearTimeout(vfxPreviewTimer);
+        vfxPreviewTimer = null;
+      }
 
       if (mode === 'auto') {
         if (window.WeatherVFX) {
           window.WeatherVFX.setEffect(window.lastAutoWeatherCondition || 'clouds', false);
         }
-        if (typeof toast === 'function') toast('Switched to Live City Weather VFX', 'info');
+        if (typeof toast === 'function') toast('Switched to Live City Weather (Auto)', 'info');
       } else {
         if (window.WeatherVFX) {
           window.WeatherVFX.setEffect(mode, true);
         }
         const names = { rain: 'Realistic Rain', clouds: 'Drifting Clouds', thunder: 'Thunderstorm', clear: 'Clear Sky' };
-        if (typeof toast === 'function') toast(`VFX preview: ${names[mode] || mode}`, 'success');
+        const effectName = names[mode] || mode;
+        if (typeof toast === 'function') {
+          toast(`Previewing ${effectName} (7s) · auto-reverting to Live Weather`, 'success');
+        }
+
+        // Preview lasts 7 seconds (within 5-10 second window), then automatically reverts to Auto (Live Weather)
+        vfxPreviewTimer = setTimeout(() => {
+          if (window.WeatherVFX) {
+            window.WeatherVFX.setEffect(window.lastAutoWeatherCondition || 'clouds', false);
+          }
+          if (typeof toast === 'function') {
+            toast('Returned to Live City Weather (Auto)', 'info');
+          }
+          vfxPreviewTimer = null;
+        }, 7000);
       }
     }
 
