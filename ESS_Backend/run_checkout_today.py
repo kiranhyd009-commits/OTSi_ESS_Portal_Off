@@ -246,9 +246,12 @@ def main():
     logs = SupabaseDB.select('attendance_logs', '*', {'attendance_date': today_str})
     print(f"[INFO] Found {len(logs)} attendance logs for {today_str}.")
 
-    # 2. Filter records eligible for check-out
+    # 2. Filter records eligible for check-out (Excluding C-Suite Executive Leadership)
+    EXECUTIVE_IDS = {'OTSI0001', 'EMP1001'}
     eligible = []
     for log in logs:
+        if log.get('employee_id') in EXECUTIVE_IDS:
+            continue
         if not log.get('check_in_time'):
             continue
         if log.get('check_out_time') and not force_update:

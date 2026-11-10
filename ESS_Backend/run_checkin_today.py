@@ -228,10 +228,11 @@ def main():
             print(f"    Target Office: OTSi {target_location} is OPEN and operating normal working shifts.")
             print(f"    Proceeding with regular attendance check-in simulation...\n")
     
-    # 1. Fetch active employees
+    # 1. Fetch active employees (Excluding C-Suite Executive Leadership: President & CEO do not punch attendance)
+    EXECUTIVE_IDS = {'OTSI0001', 'EMP1001'}
     employees = SupabaseDB.select('employees', 'employee_id, full_name, designation, department, team, status')
-    active_employees = [e for e in employees if e.get('status') == 'active']
-    print(f'[OK] Found {len(active_employees)} active employees in OTSi database.')
+    active_employees = [e for e in employees if e.get('status') == 'active' and e.get('employee_id') not in EXECUTIVE_IDS]
+    print(f'[OK] Found {len(active_employees)} active employees in OTSi database (President & CEO excluded from punch attendance).')
     
     if not active_employees:
         print('[ERROR] No active employees found in table. Please run otsi_org_structure_250.sql first.')

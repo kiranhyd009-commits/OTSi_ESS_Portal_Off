@@ -1048,8 +1048,10 @@ def reset_password():
 def check_in():
     """Check in for attendance"""
     try:
-        data = request.get_json()
         employee_id = g.current_employee_id
+        if employee_id in ('OTSI0001', 'EMP1001'):
+            return jsonify({'error': 'Executive Leadership (President & CEO) is exempt from operational attendance tracking.'}), 403
+        data = request.get_json()
         
         today = date.today()
         check_in_time = datetime.now(timezone.utc)
@@ -1216,6 +1218,8 @@ def check_out():
     """Check out from attendance"""
     try:
         employee_id = g.current_employee_id
+        if employee_id in ('OTSI0001', 'EMP1001'):
+            return jsonify({'error': 'Executive Leadership (President & CEO) is exempt from operational attendance tracking.'}), 403
         today = date.today()
         check_out_time = datetime.now(timezone.utc)
         
@@ -1508,8 +1512,10 @@ def get_leave_balance():
 def apply_leave():
     """Apply for leave"""
     try:
-        data = request.get_json()
         employee_id = g.current_employee_id
+        if employee_id in ('OTSI0001', 'EMP1001'):
+            return jsonify({'error': 'Executive Leadership (President & CEO) is exempt from operational leave applications.'}), 403
+        data = request.get_json()
         
         required = ['leave_type', 'start_date', 'end_date', 'reason']
         if not all(field in data for field in required):
@@ -2573,6 +2579,7 @@ def get_dashboard_stats():
         inactive_employees = len([e for e in employees if classify_employee_record(e) == 'inactive'])
         pending_registrations = len([e for e in employees if classify_employee_record(e) == 'pending'])
 
+        EXECUTIVE_IDS = {'OTSI0001', 'EMP1001'}
         if is_hr:
             today_attendance = SupabaseDB.select('attendance_logs', '*', {'attendance_date': today})
             all_pending_leaves = SupabaseDB.select('leave_applications', '*', {'status': 'pending'})
@@ -2583,6 +2590,10 @@ def get_dashboard_stats():
             all_pending_leaves = SupabaseDB.select('leave_applications', '*', {'status': 'pending', 'employee_id': ('in_', report_ids)}) if report_ids else []
             all_pending_corrections = SupabaseDB.select('attendance_correction_requests', '*', {'status': 'pending', 'employee_id': ('in_', report_ids)}) if report_ids else []
             open_tickets = 0
+
+        # Executive Leadership (President & CEO) are exempt from operational approvals
+        all_pending_leaves = [l for l in all_pending_leaves if l.get('employee_id') not in EXECUTIVE_IDS]
+        all_pending_corrections = [c for c in all_pending_corrections if c.get('employee_id') not in EXECUTIVE_IDS]
 
         present_count = len([a for a in today_attendance if a.get('status') in ['present', 'late']])
         live_present_count = len([a for a in today_attendance if a.get('check_in_time') and not a.get('check_out_time')])
@@ -3905,6 +3916,8 @@ def request_attendance_correction():
     """Submit a request for attendance correction"""
     try:
         employee_id = g.current_employee_id
+        if employee_id in ('OTSI0001', 'EMP1001'):
+            return jsonify({'error': 'Executive Leadership (President & CEO) is exempt from operational attendance tracking.'}), 403
         data = request.get_json()
         
         required = ['attendance_date', 'reason']
@@ -4101,6 +4114,10 @@ def get_attendance_corrections():
             
         reqs = SupabaseDB.select('attendance_correction_requests', '*', {'status': 'pending'})
         
+        # Exclude C-suite executive leadership from correction queues
+        EXECUTIVE_IDS = {'OTSI0001', 'EMP1001'}
+        reqs = [r for r in reqs if r.get('employee_id') not in EXECUTIVE_IDS]
+
         if not is_hr:
             reqs = [r for r in reqs if r['employee_id'] in report_ids]
         

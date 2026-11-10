@@ -11755,7 +11755,9 @@
     async function loadAttendanceCorrections() {
       try {
         const data = await apiFetch('/hr/attendance-corrections');
-        const list = data.corrections || [];
+        const rawList = data.corrections || [];
+        // Strictly exclude Executive Leadership (President & CEO do not punch or correct attendance)
+        const list = rawList.filter(c => typeof isExecutiveUser !== 'function' || !isExecutiveUser(c.employee_id));
         const container = document.getElementById('hr-corrections-list');
         container.innerHTML = '';
 
@@ -12996,6 +12998,12 @@
     }
 
     function showPage(name) {
+      // C-Suite Executives (President & CEO) are strictly bound to Executive Overview & Profile; exempt from operational punch/leaves
+      if (typeof isExecutiveUser === 'function' && isExecutiveUser()) {
+        if (['att', 'leave', 'ts', 'hd'].includes(name)) {
+          name = 'executive';
+        }
+      }
       closeNotifMenu();
       closeAvatarMenu();
       closeCorrectionForm();
