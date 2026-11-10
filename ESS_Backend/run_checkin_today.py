@@ -59,6 +59,40 @@ def get_company_holiday(target_date_str):
         pass
     return None
 
+def is_holiday_for_location(holiday_info, location="Hyderabad"):
+    """
+    Check if a holiday applies to a specific office location.
+    location: 'Hyderabad' (default HQ), 'Bangalore', 'Delhi', 'All'
+    """
+    if not holiday_info:
+        return False
+    occ, remark = holiday_info[:2]
+    rem = (remark or '').strip().lower()
+    loc = (location or 'Hyderabad').strip().lower()
+
+    if loc in ('all', 'all locations', 'india', 'all_india'):
+        return True
+
+    if 'hyderabad' in loc:
+        # Hyderabad HQ observes all general India holidays EXCEPT city-specific holidays for others
+        if 'only bangalore' in rem or 'only delhi' in rem:
+            return False
+        return True
+
+    if 'bangalore' in loc:
+        # Bangalore observes holidays with 'only bangalore' or general holidays, but not excluded ones
+        if 'excluding bangalore' in rem or 'only delhi' in rem:
+            return False
+        return True
+
+    if 'delhi' in loc:
+        # Delhi observes holidays with 'only delhi' or general holidays, but not excluded ones
+        if 'excluding delhi' in rem or 'only bangalore' in rem:
+            return False
+        return True
+
+    return True
+
 def parse_and_validate_date(input_val):
     today = date.today()
     if not input_val:
@@ -120,13 +154,28 @@ def generate_checkin_sql(batch, output_path):
         f.write("\n".join(lines))
 
 def main():
-    args = [a for a in sys.argv[1:] if not a.startswith('--')]
-    flags = [a.lower() for a in sys.argv[1:] if a.startswith('--')]
+    flags = [a.lower() for a in sys.argv[1:] if a.startswith('--') or a.startswith('-')]
     force_update = ('--force' in flags or '-f' in flags)
     allow_weekend = ('--include-weekend' in flags or '--weekend' in flags or '-w' in flags)
     is_clear_mode = ('--clear' in flags or '--delete' in flags)
 
-    raw_date = args[0] if args else globals().get('TARGET_DATE')
+    # Resolve office location and positional date arguments
+    target_location = 'Hyderabad'
+    positional_args = []
+    skip_next = False
+    for i, a in enumerate(sys.argv[1:]):
+        if skip_next:
+            skip_next = False
+            continue
+        if a in ('--location', '-l') and i + 1 < len(sys.argv[1:]):
+            target_location = sys.argv[1:][i + 1]
+            skip_next = True
+        elif a.startswith('--location='):
+            target_location = a.split('=', 1)[1]
+        elif not a.startswith('-'):
+            positional_args.append(a)
+
+    raw_date = positional_args[0] if positional_args else globals().get('TARGET_DATE')
     target_date = parse_and_validate_date(raw_date)
     today_str = target_date.isoformat()
     day_name = target_date.strftime('%A')
@@ -134,8 +183,9 @@ def main():
 
     print("=" * 65)
     print(f"[OTSi] Attendance Check-in Daily Simulator")
-    print(f"Date: {today_str} ({day_name})")
-    print(f"Mode: {'Clear records' if is_clear_mode else ('Force overwrite' if force_update else 'Insert new & un-checked-in')}")
+    print(f"Date:     {today_str} ({day_name})")
+    print(f"Location: {target_location} (OTSi HQ)" if target_location.lower() == 'hyderabad' else f"Location: {target_location}")
+    print(f"Mode:     {'Clear records' if is_clear_mode else ('Force overwrite' if force_update else 'Insert new & un-checked-in')}")
     print("=" * 65)
 
     # Handle --clear / --delete flag
@@ -159,17 +209,24 @@ def main():
         print(f"    python run_checkin_today.py {today_str} --include-weekend\n")
         return
 
-    # Check for Official Company Holiday
+    # Check for Official Company Holiday (Location-Aware)
     holiday_info = get_company_holiday(today_str)
-    if holiday_info and not allow_holiday:
+    if holiday_info:
         occ, loc_rem = holiday_info
-        print(f"\n[COMPANY HOLIDAY DETECTED] {today_str} ({day_name}) is an official OTSI Company Holiday:")
-        print(f"    Occasion : {occ}")
-        print(f"    Locations: {loc_rem}")
-        print("By default, no attendance check-in records are generated for official company holidays.")
-        print("\nTip: If you want to simulate holiday on-call / emergency duty, run:")
-        print(f"    python run_checkin_today.py {today_str} --include-holiday\n")
-        return
+        is_holiday_here = is_holiday_for_location(holiday_info, target_location)
+
+        if is_holiday_here and not allow_holiday:
+            print(f"\n[COMPANY HOLIDAY DETECTED] {today_str} ({day_name}) is an official OTSI Company Holiday in {target_location}:")
+            print(f"    Occasion : {occ}")
+            print(f"    Locations: {loc_rem}")
+            print(f"By default, no attendance check-in records are generated for official company holidays in {target_location}.")
+            print("\nTip: If you want to simulate holiday on-call / emergency duty, run:")
+            print(f"    python run_checkin_today.py {today_str} --include-holiday\n")
+            return
+        elif not is_holiday_here:
+            print(f"\n[REGIONAL HOLIDAY NOTE] {today_str} ({day_name}) is observed as a holiday for '{loc_rem}' ({occ}).")
+            print(f"    Target Office: OTSi {target_location} is OPEN and operating normal working shifts.")
+            print(f"    Proceeding with regular attendance check-in simulation...\n")
     
     # 1. Fetch active employees
     employees = SupabaseDB.select('employees', 'employee_id, full_name, designation, department, team, status')

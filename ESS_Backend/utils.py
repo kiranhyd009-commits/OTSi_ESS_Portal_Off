@@ -52,6 +52,55 @@ class LocationUtils:
         return min_dist <= metro_radius_m
 
 
+class HolidayUtils:
+    """Holiday and location-related utilities"""
+
+    @staticmethod
+    def is_holiday_for_location(holiday, location: str = "Hyderabad") -> bool:
+        """
+        Check if a holiday applies to a specific office location.
+        holiday can be a tuple/list (occasion, remark, [region]) or a dict from Supabase holidays table.
+        """
+        if not holiday:
+            return False
+        if isinstance(holiday, dict):
+            region = (holiday.get('region') or 'India').strip().upper()
+            remark = (holiday.get('remark') or '').strip().lower()
+        elif isinstance(holiday, (list, tuple)):
+            remark = (holiday[1] if len(holiday) > 1 else '').strip().lower()
+            region = (holiday[2] if len(holiday) > 2 else 'India').strip().upper()
+        else:
+            return True
+
+        loc = (location or 'Hyderabad').strip().lower()
+
+        if loc in ('us', 'usa', 'united states'):
+            return region == 'US'
+        else:
+            if region != 'INDIA':
+                return False
+
+        if loc in ('all', 'all locations', 'all_india', 'india'):
+            return True
+
+        if 'hyderabad' in loc:
+            if 'only bangalore' in remark or 'only delhi' in remark:
+                return False
+            return True
+
+        if 'bangalore' in loc:
+            if 'excluding bangalore' in remark or 'only delhi' in remark:
+                return False
+            return True
+
+        if 'delhi' in loc:
+            if 'excluding delhi' in remark or 'only bangalore' in remark:
+                return False
+            return True
+
+        return True
+
+
 class AttendanceUtils:
     """Attendance-related utilities"""
     
@@ -138,10 +187,13 @@ class AttendanceUtils:
         record_map = {r['attendance_date']: r for r in records}
         filled_records = []
         
-        # Fetch dynamic holidays from database
+        # Fetch dynamic holidays from database (location-aware: Hyderabad HQ default)
         try:
             holidays_data = SupabaseDB.select('holidays')
-            holiday_dates = {h['holiday_date'] for h in holidays_data}
+            holiday_dates = {
+                h['holiday_date'] for h in holidays_data
+                if HolidayUtils.is_holiday_for_location(h, 'Hyderabad')
+            }
         except Exception as e:
             logger.error(f"Failed to fetch holidays for gap filling: {str(e)}")
             holiday_dates = set()
@@ -308,7 +360,10 @@ class LeaveUtils:
         
         try:
             holidays_data = SupabaseDB.select('holidays')
-            holiday_dates = {h['holiday_date'] for h in holidays_data}
+            holiday_dates = {
+                h['holiday_date'] for h in holidays_data
+                if HolidayUtils.is_holiday_for_location(h, 'Hyderabad')
+            }
         except Exception as e:
             logger.error(f"Failed to fetch holidays for calculate_leave_days: {str(e)}")
             holiday_dates = set()

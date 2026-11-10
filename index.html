@@ -13162,8 +13162,14 @@
         const data = await apiFetch('/holidays');
         window.allCompanyHolidaysData = data || [];
         // Store India-only holidays for India working days & leave balance calculation
+        // Exclude city-specific regional holidays that do not apply to Hyderabad HQ (e.g. Only Bangalore, Only Delhi)
         window.companyHolidays = (data || [])
-          .filter(h => (h.region === 'India' || !h.region))
+          .filter(h => {
+            if (h.region && h.region.toUpperCase() === 'US') return false;
+            const rem = (h.remark || '').toLowerCase();
+            if (rem.includes('only bangalore') || rem.includes('only delhi')) return false;
+            return true;
+          })
           .map(h => h.holiday_date);
 
         const tbodyIndia = document.getElementById('holiday-list-india');
